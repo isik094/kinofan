@@ -8,7 +8,7 @@ use api\components\ApiUnchanged;
 use api\models\ApiLog;
 use common\models\ErrorLog;
 use common\models\IpBlock;
-use yii\db\ActiveRecord;
+use common\base\ActiveRecord;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
 use yii\rest\Controller;
@@ -141,6 +141,8 @@ class ApiController extends Controller
      */
     protected function makeObject(ActiveRecord $object, array $attributes)
     {
+        $object->formatter();
+
         if (!isset($this->ids[get_class($object)])) {
             $this->ids[get_class($object)] = [];
         }

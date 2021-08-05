@@ -4,6 +4,7 @@ namespace common\base;
 use api\components\Markdown;
 use api\models\SearchAttributeRules;
 use yii\validators\InlineValidator;
+use yii\validators\NumberValidator;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 
@@ -242,5 +243,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function markdown($attribute)
     {
         return Markdown::convert($this->$attribute);
+    }
+
+    /**
+     * @brief Форматирует данные в объекте в соответсвтии в с типами
+     */
+    public function formatter()
+    {
+        foreach ($this->getActiveValidators() as $validator) {
+            if ($validator instanceof NumberValidator) {
+                if ($validator->integerOnly === false) {
+                    foreach ($validator->attributes as $attribute) {
+                        $this->$attribute = (float)$this->$attribute;
+                    }
+                }
+            }
+        }
     }
 }
