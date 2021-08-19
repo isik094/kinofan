@@ -173,10 +173,20 @@ class ApiController extends Controller
     {
         if ($attrObject instanceof ApiFunction) {
             if ($attrObject->wayToObject) {
-                return $this->_runFunc($this->getFiniteObject($attrObject->wayToObject, $object), $attrObject);
+                $result = $this->_runFunc($this->getFiniteObject($attrObject->wayToObject, $object), $attrObject);
             } else {
-                return $this->_runFunc($object, $attrObject);
+                $result = $this->_runFunc($object, $attrObject);
             }
+
+            if ($attrObject->attributes !== null) {
+                if (is_array($result)) {
+                    return $this->makeObjects($result, $attrObject->attributes);
+                } elseif (is_object($result)) {
+                    return $this->makeObject($result, $attrObject->attributes);
+                }
+            }
+
+            return $result;
         } elseif ($attrObject instanceof ApiGetter) {
             $getterResult = $this->getFiniteObject($attrObject->getterName, $object);
 

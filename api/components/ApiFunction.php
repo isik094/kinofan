@@ -20,6 +20,10 @@ class ApiFunction
      * @var string
      */
     public $wayToObject;
+    /**
+     * @var array|null
+     */
+    public $attributes;
 
     /**
      * @inheritdoc
@@ -28,11 +32,12 @@ class ApiFunction
      * @param array|string|null $wayToObject
      * @param bool $enableCache
      */
-    public function __construct($function, array $args = [], $wayToObject = null, $enableCache = true)
+    public function __construct($function, array $args = [], $wayToObject = null, $enableCache = true, $attributes = null)
     {
         $this->function = $function;
         $this->args = $args;
         $this->enableCache = $enableCache;
         $this->wayToObject = $wayToObject;
+        $this->attributes = $attributes;
     }
 }
