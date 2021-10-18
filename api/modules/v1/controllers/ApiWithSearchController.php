@@ -76,9 +76,9 @@ abstract class ApiWithSearchController extends ApiController
 
         if ($sort) {
             $this->setSort($query, $sort);
-        } else {
-            $query->addOrderBy(['id' => SORT_DESC]);
         }
+
+        $query->addOrderBy(['id' => SORT_DESC]);
 
         $lastPage = null;
         if ($page) {
