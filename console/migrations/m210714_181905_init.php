@@ -42,6 +42,28 @@ ADD `access_token` varchar(255) COLLATE 'utf8_unicode_ci' NULL;");
   `ip` varchar(255) NOT NULL,
   `created_at` int NOT NULL
 ) ENGINE='InnoDB' COLLATE 'utf8_general_ci';");
+
+        $this->execute("CREATE TABLE `cron_task` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class` varchar(255) NOT NULL,
+  `properties` text DEFAULT NULL,
+  `time_limit` int(11) NOT NULL,
+  `created_at` int(11) NOT NULL,
+  `started_at` int(11) DEFAULT NULL,
+  `completed_at` int(11) DEFAULT NULL,
+  `fail_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        $this->execute("CREATE TABLE `cron_task_property` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `task_id` (`task_id`),
+  CONSTRAINT `cron_task_property_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `cron_task` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
     }
 
     /**
