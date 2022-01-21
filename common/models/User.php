@@ -208,4 +208,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    /**
+     * @return User
+     */
+    public static function getCurrent()
+    {
+        return Yii::$app->user->identity;
+    }
 }

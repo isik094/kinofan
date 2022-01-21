@@ -5,10 +5,12 @@ use api\components\ApiFromList;
 use api\components\ApiFunction;
 use api\components\ApiGetter;
 use api\components\ApiUnchanged;
+use api\components\rbac\RbacComponent;
 use api\models\ApiLog;
 use common\models\ErrorLog;
 use common\models\IpBlock;
 use common\base\ActiveRecord;
+use common\models\User;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
 use yii\rest\Controller;
@@ -90,7 +92,16 @@ class ApiController extends Controller
                 $log->save();
             }
 
-            return parent::beforeAction($action);
+            $beforeAction = parent::beforeAction($action);
+            //раскомментировать, если используется rbac
+//            if ($this->isPrivate && !\Yii::$app->request->isOptions) {
+//                $component = new RbacComponent(User::getCurrent());
+//                if (!$component->can(\Yii::$app->controller->route)) {
+//                    throw new ForbiddenHttpException('У Вас нет прав доступа');
+//                }
+//            }
+
+            return $beforeAction;
         } catch (\Throwable $t) {
             ErrorLog::createLogThrowable($t);
             throw $t;
