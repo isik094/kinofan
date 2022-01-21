@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $access_token
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -215,5 +216,32 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getCurrent()
     {
         return Yii::$app->user->identity;
+    }
+
+    /**
+     * @brief Генерация токена для api
+     * @return bool
+     * @throws \yii\base\Exception
+     * @throws \Exception
+     */
+    public function generateToken()
+    {
+        if (!$this->access_token || self::tokenIsExpired($this->access_token)) {
+            $this->access_token = time() . '_' . Yii::$app->security->generateRandomString(100);
+            return $this->saveStrict();
+        }
+
+        return true;
+    }
+
+    /**
+     * @brief Проверка на то, что токен устарел
+     * @param $token
+     * @return bool
+     */
+    private static function tokenIsExpired($token)
+    {
+        $tokenExplode = explode('_', $token);
+        return strtotime(date('Y-m-d 23:59:59', (int)$tokenExplode[0])) < time() - 86400;
     }
 }
