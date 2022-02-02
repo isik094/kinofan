@@ -3,6 +3,7 @@
 namespace console\controllers;
 
 use console\models\CronTask;
+use console\models\FileToDownloadCleaner;
 use yii\base\Exception;
 use yii\console\Controller;
 
@@ -30,7 +31,7 @@ class CronController extends Controller
 
             ],
             self::EVERY_HOUR => [
-
+                FileToDownloadCleaner::class,
             ],
             self::EVERY_DAY => [
 

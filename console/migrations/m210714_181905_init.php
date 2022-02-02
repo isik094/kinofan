@@ -64,6 +64,19 @@ ADD `access_token` varchar(255) COLLATE 'utf8_unicode_ci' NULL;");
   KEY `task_id` (`task_id`),
   CONSTRAINT `cron_task_property_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `cron_task` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        $this->execute("CREATE TABLE `file_to_download` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` int(11) NULL,
+  `uuid` varchar(255) NOT NULL,
+  `path` text NOT NULL,
+  `name` varchar(255) NULL,
+  `created_at` int NOT NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE='InnoDB' COLLATE 'utf8_general_ci';");
+
+        $this->execute("ALTER TABLE `file_to_download`
+ADD UNIQUE `uuid` (`uuid`);");
     }
 
     /**
