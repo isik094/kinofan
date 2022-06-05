@@ -74,9 +74,10 @@ class ApiController extends Controller
         try {
             $ip = Yii::$app->request->getUserIP();
 
-            if (IpBlock::findOne(['ip' => $ip])) {
-                throw new ForbiddenHttpException();
-            }
+            //раскомментировать в случае атак
+//            if (IpBlock::findOne(['ip' => $ip])) {
+//                throw new ForbiddenHttpException();
+//            }
 
             if (ArrayHelper::getValue(Yii::$app->params, 'api_log')) {
                 $log = new ApiLog([
