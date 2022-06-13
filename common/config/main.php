@@ -9,5 +9,9 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'dump' => [
+            'class' => \common\components\Dump::class,
+            'lifeTime' => 86400 * 30 //один месяц
+        ],
     ],
 ];
