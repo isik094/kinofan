@@ -21,13 +21,15 @@ class Dump extends Component
     public function create()
     {
         $dsn = Yii::$app->db->dsn;
+        $username = Yii::$app->db->username;
+        $password = Yii::$app->db->password;
         if (strpos($dsn, 'mysql:') !== false) {
             $result = explode('dbname=', $dsn);
             if (isset($result[1])) {
                 $dbName = $result[1];
                 $time = time();
                 $filePath = dirname(dirname(__DIR__)) . '/dumps/' . $time . '.sql.gz';
-                return shell_exec("mysqldump $dbName | gzip > $filePath");
+                return shell_exec("mysqldump -u$username -p$password $dbName | gzip > $filePath");
             } else {
                 throw new \Exception('Wrong db config');
             }
