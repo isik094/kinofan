@@ -254,7 +254,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             if ($validator instanceof NumberValidator) {
                 if ($validator->integerOnly === false) {
                     foreach ($validator->attributes as $attribute) {
-                        $this->$attribute = (float)$this->$attribute;
+                        $this->$attribute = $validator->integerOnly ? (int)$this->$attribute : (float)$this->$attribute;
                     }
                 }
             }
