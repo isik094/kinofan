@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae94a8b5b30fd5aa035192bfbff68745",
+    "content-hash": "ba79b0698812cac30e04065a02239fe7",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -360,6 +360,54 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/v4.14.0"
             },
             "time": "2021-12-25T01:21:49+00:00"
+        },
+        {
+            "name": "merlinthemagic/mts",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/merlinthemagic/MTS.git",
+                "reference": "e39acccdcabf4f883d8e452e939e97cd87822705"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/merlinthemagic/MTS/zipball/e39acccdcabf4f883d8e452e939e97cd87822705",
+                "reference": "e39acccdcabf4f883d8e452e939e97cd87822705",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "MTS/EnableMTS.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Martin Madsen",
+                    "email": "dev@martinpetermadsen.com",
+                    "homepage": "https://github.com/merlinthemagic",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Automation Tools",
+            "homepage": "https://github.com/merlinthemagic/MTS",
+            "keywords": [
+                "automation",
+                "bash",
+                "browser",
+                "phantomjs",
+                "php",
+                "shell"
+            ],
+            "support": {
+                "issues": "https://github.com/merlinthemagic/MTS/issues",
+                "source": "https://github.com/merlinthemagic/MTS/tree/master"
+            },
+            "time": "2017-01-04T14:54:42+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -5475,5 +5523,5 @@
         "php": ">=7.0.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
