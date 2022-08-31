@@ -1,19 +1,33 @@
 <?php
 return [
-    'admin' => [ //роль
+    'admin' => [
         'type' => 1,
-        'description' => 'Администратор', //описание роли
-        'actions' => [ // непосредственно права доступа
-            'user' => [ //контроллер
-                'index' => true, //экшн запроса списка
-                'create' => true, //экшн создания
-                'update' => true, //экшн изменения
-                'view' => true, //экшн просмотра
-                'delete' => true, //экшн удаления
-                'get-search-attributes' => true, //экшн для запроса списка параметром, по которым достутима фильтрация (для фронтов), всегда нужно добавлять такой экшн, если имеется метод для запроса списка с пагинацией
-                'get-sort-attributes' => true, //экшн для запроса списка параметром, по которым достутима сортировка (для фронтов), всегда нужно добавлять такой экшн, если имеется метод для запроса списка с пагинацией
+        'description' => 'Администратор',
+        'actions' => [
+            'user' => [
+                'index' => true,
+                'create' => true,
+                'update' => true,
+                'view' => true,
+                'delete' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
             ],
-            // можно добавлять другие контроллеры с экшнами
+        ]
+    ],
+    'user' => [
+        'type' => 1,
+        'description' => 'Пользователь',
+        'actions' => [
+            'user' => [
+                'index' => true,
+                'create' => true,
+                'update' => true,
+                'view' => true,
+                'delete' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
         ]
     ],
 ];
