@@ -97,7 +97,7 @@ class V1Controller extends Controller
                     $htmlPage = new CaptchaSolving(self::HOST_KINOPOISK . "film/{$value->kp_id}/");
                     $HtmlPageKinopoisk = $htmlPage->getHtmlPage();
 
-                    echo $HtmlPageKinopoisk;die;
+                    //echo $HtmlPageKinopoisk;die;
                     //$parser = new ParserMoviePage($HtmlPageKinopoisk, $model);
                     $parser = new ParserMoviePage($HtmlPageKinopoisk);
                     $parser->run();

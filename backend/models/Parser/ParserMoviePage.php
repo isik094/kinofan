@@ -42,10 +42,6 @@ class ParserMoviePage
         $data['production_year'] = $this->getProductionYear($htmlDomMovies);
         //$data['tagline'] = $this->getTagline($htmlDomMovies);
 
-
-        echo '<pre>';
-        print_r($data); die;
-
         $ratingMpaa = $htmlDomMovies->find('div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span.styles_rootHighContrast__Bevle');
         $data['rating_mpaa'] = pq($ratingMpaa)->text();
 
@@ -145,15 +141,25 @@ class ParserMoviePage
     public function getProductionYear($htmlDomMovies): string
     {
         try {
+            $a = [];
+            $ab = $htmlDomMovies->find('div.styles_rowDark__ucbcz');
+            $ab->remove('div.styles_valueDark__BCk93');
+            foreach ($ab as $value) {
+                //foreach ($productionYear as $item) {
+                    $a[] = trim(pq($value)->text());
+               // }
+            }
+
+            echo '<pre>';
+            print_r($a);
+            die;
+
+
             $movieData = [];
             $productionYear = $htmlDomMovies->find('div.styles_valueDark__BCk93 a');
             foreach ($productionYear as $value) {
                 $movieData[] = pq($value)->text();
             }
-
-            echo '<pre>';
-            print_r($movieData);
-            die;
 
             if (!$movieData[0]) {
                 $movieData2 = [];
