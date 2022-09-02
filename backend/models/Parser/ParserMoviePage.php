@@ -227,10 +227,10 @@ class ParserMoviePage
     /**
      * @brief Получить рейтинг MPAA обозначение
      * @param $htmlDomMovies
-     * @return string|null
+     * @return array|null
      * @throws \Exception
      */
-    public function getRatingMpaa($htmlDomMovies): ?string
+    public function getRatingMpaa($htmlDomMovies): ?array
     {
         try {
             $ratingMpaa = [];
@@ -240,7 +240,7 @@ class ParserMoviePage
                 $value = pq($value)->find('div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span');
                 foreach ($value as $item) {
                     if (pq($item)->text() !== '...' && pq($item)->text() !== 'слова' && pq($item)->text() !== 'сборы' && trim(pq($key)->text()) === 'Рейтинг MPAA') {
-                        $ratingMpaa = trim(pq($item)->text());
+                        $ratingMpaa[] = trim(pq($item)->text());
                     }
                 }
             }
