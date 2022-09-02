@@ -25,37 +25,39 @@ class ParserMoviePage
      */
     //public function __construct($htmlPageMovie, Movies $model)
     public function __construct($htmlPageMovie)
+
     {
         $this->htmlPageMovie = $htmlPageMovie;
         //$this->model = $model;
     }
 
+    /**
+     * @brief Сформировать данные фильма и сохранить
+     * @return void
+     * @throws \Exception
+     */
     public function run()
     {
-        $data = [];
-        $htmlDomMovies = \phpQuery::newDocument($this->htmlPageMovie);
+        try {
+            $data = [];
+            $htmlDomMovies = \phpQuery::newDocument($this->htmlPageMovie);
 
-        $data['title_ru'] = $this->getTitleRu($htmlDomMovies);
-        $data['title_eng'] = $this->getTitleEng($htmlDomMovies);
-        $data['short_description'] = $this->getShortDescription($htmlDomMovies);
-        $data['path'] = $this->getImages($htmlDomMovies);
-        $data['production_year'] = $this->getProductionYear($htmlDomMovies);
-        //$data['tagline'] = $this->getTagline($htmlDomMovies);
+            $data['title_ru'] = $this->getTitleRu($htmlDomMovies);
+            $data['title_eng'] = $this->getTitleEng($htmlDomMovies);
+            $data['short_description'] = $this->getShortDescription($htmlDomMovies);
+            $data['path'] = $this->getImages($htmlDomMovies);
+            $data['time'] = $this->getTime($htmlDomMovies);
+            $data['description'] = $this->getDescription($htmlDomMovies);
+            //$data['age'] = $this->getAge($htmlDomMovies);
+            $data['rating_mpaa'] = $this->getRatingMpaa($htmlDomMovies);
+            //$data['rating_mpaa_designation'] = $this->getRatingMpaaDescription($htmlDomMovies);
+            $data['about_film'] = $this->getAboutFilm($htmlDomMovies);
 
-        $ratingMpaa = $htmlDomMovies->find('div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span.styles_rootHighContrast__Bevle');
-        $data['rating_mpaa'] = pq($ratingMpaa)->text();
-
-        $ratingMpaaDesignation = $htmlDomMovies->find('div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span.styles_restrictionDescription__4j5Pk');
-        $data['rating_mpaa_designation'] = pq($ratingMpaaDesignation)->text();
-
-        $time = $htmlDomMovies->find('div.styles_valueDark__BCk93 styles_value__g6yP4 div.styles_valueDark__BCk93 styles_value__g6yP4');
-        $data['time'] = pq($time)->text();
-
-        $description = $htmlDomMovies->find('div.styles_synopsisSection__nJoAj div.styles_filmSynopsis__Cu2Oz p.styles_paragraph__wEGPz');
-        $data['description'] = pq($description)->text();
-
-        echo '<pre>';
-        print_r($data); die;
+            echo '<pre>';
+            print_r($data); die;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -133,57 +135,136 @@ class ParserMoviePage
     }
 
     /**
-     * @brief Получить год производства
+     * @brief Получить все характеристики фильма
      * @param $htmlDomMovies
-     * @return string
+     * @return array
      * @throws \Exception
      */
-    public function getProductionYear($htmlDomMovies): string
+    public function getAboutFilm($htmlDomMovies): array
     {
         try {
-            $a = [];
-            $ab = $htmlDomMovies->find('div.styles_rowDark__ucbcz');
-            $ab->remove('div.styles_valueDark__BCk93');
-            foreach ($ab as $value) {
-                //foreach ($productionYear as $item) {
-                    $a[] = trim(pq($value)->text());
-               // }
-            }
+            $filmCharacteristics = [];
+            $data = $htmlDomMovies->find('div.styles_rowDark__ucbcz');
 
-            echo '<pre>';
-            print_r($a);
-            die;
-
-
-            $movieData = [];
-            $productionYear = $htmlDomMovies->find('div.styles_valueDark__BCk93 a');
-            foreach ($productionYear as $value) {
-                $movieData[] = pq($value)->text();
-            }
-
-            if (!$movieData[0]) {
-                $movieData2 = [];
-                $productionYear = $htmlDomMovies->find('div.styles_valueLight__nAaO3 a');
-                foreach ($productionYear as $value) {
-                    $movieData2[] = pq($value)->text();
+            foreach ($data as $value) {
+                $key = pq($value)->find('div.styles_titleDark___tfMR');
+                $value = pq($value)->find('div.styles_valueDark__BCk93 a');
+                foreach ($value as $item) {
+                    if (pq($item)->text() !== '...' && pq($item)->text() !== 'слова' && pq($item)->text() !== 'сборы') {
+                        $filmCharacteristics[trim(pq($key)->text())][] = trim(pq($item)->text());
+                    }
                 }
-
-                return $movieData2[0];
             }
 
-            return $movieData[0];
+            return $filmCharacteristics;
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    public function getTagline($htmlDomMovies)
+    /**
+     * @brief Вернуть время
+     * @param $htmlDomMovies
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getTime($htmlDomMovies): ?string
     {
         try {
-            $tagline = $htmlDomMovies->find('div.styles_empty__Qfc3a div.styles_valueDark__BCk93');
-            $data['tagline'] = pq($tagline)->text();
+            $data = $htmlDomMovies->find('div.styles_rowDark__ucbcz');
+
+            $time = null;
+            foreach ($data as $value) {
+                $key = pq($value)->find('div.styles_titleDark___tfMR');
+                $value = pq($value)->find('div.styles_valueDark__BCk93 div.styles_valueDark__BCk93');
+                foreach ($value as $item) {
+                    if (pq($item)->text() !== '...' && pq($item)->text() !== 'слова' && pq($item)->text() !== 'сборы' && trim(pq($key)->text()) === 'Время') {
+                        $time = trim(pq($item)->text());
+                    }
+                }
+            }
+
+            return $time;
         } catch (\Exception $e) {
             throw $e;
         }
     }
+
+    /**
+     * @brief Получить описание фильма
+     * @param $htmlDomMovies
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getDescription($htmlDomMovies): ?string
+    {
+        try {
+            $description = $htmlDomMovies->find('div.styles_synopsisSection__nJoAj div.styles_filmSynopsis__Cu2Oz p.styles_paragraph__wEGPz');
+
+            return trim(pq($description)->text());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @brief Получить ограничения по возрасту
+     * @param $htmlDomMovies
+     * @return string|null
+     * @throws \Exception
+     */
+    /*public function getAge($htmlDomMovies): ?string
+    {
+        try {
+            $age = $htmlDomMovies->find('div.styles_rowDark__ucbcz div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span.styles_rootHighContrast__Bevle');
+
+            return trim(pq($age)->text());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }*/
+
+    /**
+     * @brief Получить рейтинг MPAA обозначение
+     * @param $htmlDomMovies
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getRatingMpaa($htmlDomMovies): ?string
+    {
+        try {
+            $ratingMpaa = [];
+            $data = $htmlDomMovies->find('div.styles_rowDark__ucbcz');
+            foreach ($data as $value) {
+                $key = pq($value)->find('div.styles_titleDark___tfMR');
+                $value = pq($value)->find('div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span');
+                foreach ($value as $item) {
+                    if (pq($item)->text() !== '...' && pq($item)->text() !== 'слова' && pq($item)->text() !== 'сборы' && trim(pq($key)->text()) === 'Рейтинг MPAA') {
+                        $ratingMpaa = trim(pq($item)->text());
+                    }
+                }
+            }
+
+            return $ratingMpaa;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @brief Получить описание рейтинга MPAA
+     * @param $htmlDomMovies
+     * @return string|null
+     * @throws \Exception
+     */
+    /*public function getRatingMpaaDescription($htmlDomMovies): ?string
+    {
+        try {
+            $ratingMpaaDesignation = $htmlDomMovies->find('div.styles_rowDark__ucbcz div.styles_valueDark__BCk93 a.styles_restrictionLink__iy4n9 span.styles_restrictionDescription__4j5Pk');
+
+            return trim(pq($ratingMpaaDesignation)->text());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }*/
 }

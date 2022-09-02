@@ -94,7 +94,8 @@ class V1Controller extends Controller
                         'kp_id' => $value->kp_id,
                     ]);*/
 
-                    $htmlPage = new CaptchaSolving(self::HOST_KINOPOISK . "film/{$value->kp_id}/");
+                    //$htmlPage = new CaptchaSolving(self::HOST_KINOPOISK . "film/{$value->kp_id}/");
+                    $htmlPage = new CaptchaSolving('https://www.kinopoisk.ru/film/3498/');
                     $HtmlPageKinopoisk = $htmlPage->getHtmlPage();
 
                     //echo $HtmlPageKinopoisk;die;
