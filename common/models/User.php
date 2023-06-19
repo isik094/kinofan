@@ -59,6 +59,29 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @brief Очистить все токены пользователя при смене пароля
+     * @param $insert
+     * @param $changedAttributes
+     * @return void
+     */
+    public function afterSave($insert, $changedAttributes) {
+        if (array_key_exists('password_hash', $changedAttributes)) {
+            UserRefreshTokens::deleteAll(['user_id' => $this->id]);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @brief Получить все роли пользователя
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserRoles()
+    {
+        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
@@ -67,11 +90,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @brief Получить пользователя по токену
+     * @param $token
+     * @param $type
+     * @return User
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): User
     {
-        return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => (int)$token->getClaim('uid'), 'status' => self::STATUS_ACTIVE]);
     }
 
     /**

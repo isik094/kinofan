@@ -13,5 +13,10 @@ return [
             'class' => \common\components\Dump::class,
             'lifeTime' => 86400 * 30 //один месяц
         ],
+        'jwt' => [
+            'class' => \sizeg\jwt\Jwt::class,
+            'key' => 'SECRET-KEY',  //typically a long random string
+            'jwtValidationData' => \common\components\JwtValidationData::class,
+        ],
     ],
 ];

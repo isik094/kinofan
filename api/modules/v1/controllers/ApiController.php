@@ -35,7 +35,7 @@ class ApiController extends Controller
 
         if ($this->isPrivate) {
             $behaviors['authenticator'] = [
-                'class' => HttpBearerAuth::class,
+                'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
                 'except' => ['options'],
             ];
         }
