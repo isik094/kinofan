@@ -6,7 +6,7 @@ use api\modules\v1\traits\FileToDownloadData;
 
 class FileController extends ApiController
 {
-    public $isPrivate = false;
+    public bool $isPrivate = false;
 
     use FileToDownloadData;
 
