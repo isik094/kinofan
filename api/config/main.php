@@ -60,7 +60,7 @@ return [
                     'controller' => ['v1/test'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST test' => 'test',
+                        'POST ' => 'test',
                         'OPTIONS test' => 'options',
                     ]
                 ],
@@ -71,6 +71,20 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS ' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/auth'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'OPTIONS ' => 'options',
+                        'POST register' => 'register',
+                        'OPTIONS register' => 'options',
+                        'POST refresh' => 'new-refresh-token',
+                        'DELETE refresh' => 'delete-refresh-token',
+                        'OPTIONS refresh' => 'options',
                     ]
                 ],
             ],

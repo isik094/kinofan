@@ -11,7 +11,6 @@ use common\models\ErrorLog;
 use common\models\IpBlock;
 use common\base\ActiveRecord;
 use common\models\User;
-use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
 use yii\rest\Controller;
 use Yii;
@@ -23,7 +22,7 @@ class ApiController extends Controller
      * Требуется ли авторизация для работы с контроллером
      * @var bool
      */
-    protected $isPrivate = true;
+    protected bool $isPrivate = true;
 
     /**
      * @inheritdoc
@@ -95,12 +94,12 @@ class ApiController extends Controller
 
             $beforeAction = parent::beforeAction($action);
             //раскомментировать, если используется rbac
-//            if ($this->isPrivate && !\Yii::$app->request->isOptions) {
-//                $component = new RbacComponent(User::getCurrent());
-//                if (!$component->can(\Yii::$app->controller->route)) {
-//                    throw new ForbiddenHttpException('У Вас нет прав доступа');
-//                }
-//            }
+            if ($this->isPrivate && !\Yii::$app->request->isOptions) {
+                $component = new RbacComponent(User::getCurrent());
+                if (!$component->can(\Yii::$app->controller->route)) {
+                    throw new ForbiddenHttpException('У Вас нет прав доступа');
+                }
+            }
 
             return $beforeAction;
         } catch (\Throwable $t) {

@@ -1,10 +1,11 @@
 <?php
 namespace common\models;
 
-use common\base\ActiveRecord;
 use Yii;
-use yii\behaviors\TimestampBehavior;
+use api\models\UserRole;
+use common\base\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * User model
@@ -21,6 +22,8 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property string $access_token
+ *
+ * @property UserRole[] $userRoles
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -28,11 +31,27 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    /** @var array|string[] */
+    public static array $userStatus = [
+        self::STATUS_DELETED => 'Удален',
+        self::STATUS_INACTIVE => 'Не активен',
+        self::STATUS_ACTIVE => 'Активен',
+    ];
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
+
+    /** @var array|string[]  */
+    public static array $userRoles = [
+        self::ROLE_ADMIN => 'Администратор',
+        self::ROLE_USER => 'Пользователь',
+    ];
+
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user}}';
     }
@@ -54,7 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => array_keys(self::$userStatus)],
         ];
     }
 
