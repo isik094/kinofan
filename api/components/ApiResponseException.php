@@ -7,7 +7,7 @@ use common\models\ErrorLog;
 class ApiResponseException
 {
     public $error;
-    public $data;
+    public $message;
     public $status;
 
     /**
@@ -24,7 +24,7 @@ class ApiResponseException
         }
 
         $this->error = true;
-        $this->data = $e->getMessage();
+        $this->message = $e->getMessage();
         $this->status = $status;
     }
 }

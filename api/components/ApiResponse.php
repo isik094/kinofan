@@ -5,7 +5,7 @@ namespace api\components;
 class ApiResponse
 {
     public $error;
-    public $data;
+    public $message;
     public $status;
 
     /**
@@ -26,7 +26,7 @@ class ApiResponse
         }
 
         $this->error = $error;
-        $this->data = $data;
+        $this->message = $data;
         $this->status = $status;
 
         if (!$this->status) {
