@@ -20,7 +20,9 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "guzzlehttp/guzzle": "^7.4",
         "electrolinux/phpquery": "^0.9.6",
-        "2captcha/2captcha": "^1.0"
+        "2captcha/2captcha": "^1.0",
+        "sizeg/yii2-jwt": "^2.0",
+        "lcobucci/jwt": "^3.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
