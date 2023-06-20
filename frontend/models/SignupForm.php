@@ -60,7 +60,6 @@ class SignupForm extends Model
         $this->sendEmail($user);
 
         return $user;
-
     }
 
     /**
