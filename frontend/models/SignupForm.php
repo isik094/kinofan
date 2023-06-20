@@ -24,7 +24,7 @@ class SignupForm extends Model
             ['username', 'required'],
             ['username', 'email'],
             ['username', 'string', 'max' => 255],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Такой пользователь уже зарегистрирован.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
