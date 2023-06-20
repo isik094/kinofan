@@ -22,7 +22,8 @@
         "electrolinux/phpquery": "^0.9.6",
         "2captcha/2captcha": "^1.0",
         "sizeg/yii2-jwt": "^2.0",
-        "lcobucci/jwt": "^3.3"
+        "lcobucci/jwt": "^3.3",
+        "zircote/swagger-php": "^4.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
