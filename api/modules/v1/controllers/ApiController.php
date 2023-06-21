@@ -1,6 +1,10 @@
 <?php
 namespace api\modules\v1\controllers;
 
+use Yii;
+use yii\rest\Controller;
+use yii\helpers\ArrayHelper;
+use yii\web\ForbiddenHttpException;
 use api\components\ApiFromList;
 use api\components\ApiFunction;
 use api\components\ApiGetter;
@@ -11,10 +15,6 @@ use common\models\ErrorLog;
 use common\models\IpBlock;
 use common\base\ActiveRecord;
 use common\models\User;
-use yii\helpers\ArrayHelper;
-use yii\rest\Controller;
-use Yii;
-use yii\web\ForbiddenHttpException;
 
 /**
  * @OA\Info(
