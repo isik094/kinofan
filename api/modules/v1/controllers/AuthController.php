@@ -52,14 +52,10 @@ class AuthController extends ApiController
      *             )
      *         )
      *     ),
-     *    @OA\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="Запрос выполнен успешно",
      *     ),
-     *     @OA\Response(
-     *         response=406,
-     *         description="Ошибка валидации",
-     *     )
      * )
      *
      * @brief Регистрация

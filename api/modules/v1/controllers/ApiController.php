@@ -27,6 +27,14 @@ use common\models\User;
  *     email="isik94@ciloud.com",
  *  )
  * )
+ * @OA\Components(
+ *     @OA\SecurityScheme(
+ *         securityScheme="bearerAuth",
+ *         type="http",
+ *         scheme="bearer",
+ *     ),
+ *     @OA\Attachable
+ * )
  * @OA\Server(
  *     url="http://kinofan.api/v1",
  *     description="API server"

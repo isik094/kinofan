@@ -25,6 +25,17 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property UserRole[] $userRoles
  */
+
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     @OA\Schema(
+ *       required={"id"},
+ *       @OA\Property(property="id", format="int64", type="integer")
+ *     )
+ * )
+ */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
