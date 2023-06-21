@@ -1,0 +1,67 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Kinofan API",
+        "description": "API для проекта Кинофан",
+        "contact": {
+            "name": "Nasirov Ismail",
+            "email": "isik94@ciloud.com"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://kinofan.api/v1",
+            "description": "API server"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "description": "Данный эндпоинт создаeт нового пользователя с ролью user",
+                "operationId": "addUser",
+                "requestBody": {
+                    "description": "Данные для регистрации пользователя",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "username": "isik@yandex.ru",
+                                    "password": "qwert123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно"
+                    },
+                    "406": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Методы для работы с пользователями"
+        }
+    ]
+}
