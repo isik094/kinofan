@@ -16,6 +16,22 @@ use yii\rest\Controller;
 use Yii;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * @OA\Info(
+ *     title="Kinofan API",
+ *     description = "API для проекта Кинофан",
+ *     version="1.0",
+ *     version="1.0",
+ *     @OA\Contact(
+ *     name="Nasirov Ismail",
+ *     email="isik94@ciloud.com",
+ *  )
+ * )
+ * @OA\Server(
+ *     url="http://kinofan.api/v1",
+ *     description="API server"
+ * )
+ */
 class ApiController extends Controller
 {
     /**

@@ -14,6 +14,12 @@ use common\models\LoginForm;
 use common\models\UserRefreshTokens;
 use frontend\models\SignupForm;
 
+/**
+ * @OA\Tag(
+ *     name="Auth",
+ *     description="Методы для работы с пользователями"
+ * )
+ */
 class AuthController extends ApiController
 {
     use UserData, UserRefreshTokenData;
@@ -22,6 +28,40 @@ class AuthController extends ApiController
     protected bool $isPrivate = false;
 
     /**
+     * @OA\Post(
+     *     path="/auth/register",
+     *     summary="Регистрация нового пользователя",
+     *     description="Данный эндпоинт создаeт нового пользователя с ролью user",
+     *     operationId="addUser",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *       description = "Данные для регистрации пользователя",
+     *       required = true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="username",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string",
+     *                 ),
+     *                 example={"username": "isik@yandex.ru", "password": "qwert123"}
+     *             )
+     *         )
+     *     ),
+     *    @OA\Response(
+     *         response=200,
+     *         description="Запрос выполнен успешно",
+     *     ),
+     *     @OA\Response(
+     *         response=406,
+     *         description="Ошибка валидации",
+     *     )
+     * )
+     *
      * @brief Регистрация
      * @return ApiResponse|ApiResponseException
      */
