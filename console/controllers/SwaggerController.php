@@ -14,6 +14,7 @@ class SwaggerController extends Controller
     const SCAN_DIRECTORY = '@common/models';
     const COMPONENTS_DIRECTORY = '@common/components';
     const FRONTEND_MODELS = '@frontend/models';
+    const API_MODELS = '@api/models';
 
     /**
      * @brief Сгенерировать автоматическую документацию для API
@@ -29,6 +30,7 @@ class SwaggerController extends Controller
             Yii::getAlias(self::SCAN_DIRECTORY),
             Yii::getAlias(self::COMPONENTS_DIRECTORY),
             Yii::getAlias(self::FRONTEND_MODELS),
+            Yii::getAlias(self::API_MODELS),
         ]);
 
         $handle = fopen($file, 'wb');

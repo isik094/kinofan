@@ -10,6 +10,15 @@ use yii\behaviors\TimestampBehavior;
 
 
 /**
+ * @OA\Schema(
+ *     schema="UserRoles",
+ *     type="object",
+ *     @OA\Property(property="userRoles", type="array", @OA\Items(
+ *          @OA\Property(property="role", type="string", example="admin", description="Ключ роли пользователя"),
+ *          @OA\Property(property="roleTranslate", type="string", example="Администратор", description="Перевод роли на русский язык"),
+ *     ))
+ * )
+ *
  * Class UserRole
  * @package common\models
  *

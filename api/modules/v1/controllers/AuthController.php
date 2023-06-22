@@ -37,25 +37,12 @@ class AuthController extends ApiController
      *     @OA\RequestBody(
      *       description = "Данные для регистрации пользователя",
      *       required = true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="username",
-     *                     type="string",
-     *                 ),
-     *                 @OA\Property(
-     *                     property="password",
-     *                     type="string",
-     *                 ),
-     *                 example={"username": "isik@yandex.ru", "password": "qwert123"}
-     *             )
-     *         )
+     *       @OA\JsonContent(ref="#/components/schemas/SignupForm")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Запрос выполнен успешно",
-     *         @OA\JsonContent(type="array",@OA\Items(ref="#/components/schemas/User")),
+     *         @OA\JsonContent(ref="#/components/schemas/User"),
      *     ),
      *     @OA\Response(
      *         response=401,

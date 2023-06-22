@@ -30,19 +30,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object",
-                                "example": {
-                                    "username": "isik@yandex.ru",
-                                    "password": "qwert123"
-                                }
+                                "$ref": "#/components/schemas/SignupForm"
                             }
                         }
                     }
@@ -53,10 +41,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/User"
-                                    }
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -220,16 +205,96 @@
     "components": {
         "schemas": {
             "User": {
-                "properties": {
-                    "id": {
-                        "description": "ID пользователя",
-                        "type": "integer",
-                        "example": "1"
+                "type": "object",
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "ID пользователя",
+                                "type": "integer",
+                                "example": "1"
+                            },
+                            "username": {
+                                "description": "Никнейм пользователя",
+                                "type": "email",
+                                "example": "qwe@gmail.com"
+                            },
+                            "email": {
+                                "description": "Электронная почта пользователя",
+                                "type": "email",
+                                "example": "qwe@gmail.com"
+                            },
+                            "status": {
+                                "description": "Статус пользователя",
+                                "type": "integer",
+                                "enum": [
+                                    "0",
+                                    "9",
+                                    "10"
+                                ],
+                                "example": "10"
+                            },
+                            "statusText": {
+                                "description": "Статус пользователя",
+                                "type": "string",
+                                "enum": [
+                                    "Удален",
+                                    "Не активен",
+                                    "Активен"
+                                ],
+                                "example": "Активен"
+                            },
+                            "created_at": {
+                                "description": "Время в unixtime",
+                                "type": "integer",
+                                "example": "1687464863"
+                            }
+                        },
+                        "type": "object"
                     },
+                    {
+                        "$ref": "#/components/schemas/UserRoles"
+                    }
+                ]
+            },
+            "SignupForm": {
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
                     "username": {
-                        "description": "Никнейм пользователя",
-                        "type": "email",
-                        "example": "qwe@gmail.com"
+                        "description": "Электронная почта пользователя",
+                        "type": "string",
+                        "example": "isik@yandex.ru"
+                    },
+                    "password": {
+                        "description": "Пароль",
+                        "type": "string",
+                        "example": "qwerty"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRoles": {
+                "properties": {
+                    "userRoles": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "role": {
+                                    "description": "Ключ роли пользователя",
+                                    "type": "string",
+                                    "example": "admin"
+                                },
+                                "roleTranslate": {
+                                    "description": "Перевод роли на русский язык",
+                                    "type": "string",
+                                    "example": "Администратор"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"

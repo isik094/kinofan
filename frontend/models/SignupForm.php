@@ -7,6 +7,14 @@ use yii\base\Model;
 use common\models\User;
 
 /**
+ *
+ * @OA\Schema(
+ *     schema="SignupForm",
+ *     required={"username", "password"},
+ *     @OA\Property(property="username", type="string", example="isik@yandex.ru", description="Электронная почта пользователя"),
+ *     @OA\Property(property="password", type="string", example="qwerty", description="Пароль"),
+ * )
+ *
  * Signup form
  */
 class SignupForm extends Model

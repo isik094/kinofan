@@ -10,8 +10,18 @@ use yii\behaviors\TimestampBehavior;
 /**
  * @OA\Schema(
  *     schema="User",
- *     @OA\Property(property="id", type="integer", example="1", description="ID пользователя"),
- *     @OA\Property(property="username", type="email", example="qwe@gmail.com", description="Никнейм пользователя"),
+ *     type="object",
+ *     allOf={
+ *         @OA\Schema(
+ *           @OA\Property(property="id", type="integer", example="1", description="ID пользователя"),
+ *           @OA\Property(property="username", type="email", example="qwe@gmail.com", description="Никнейм пользователя"),
+ *           @OA\Property(property="email", type="email", example="qwe@gmail.com", description="Электронная почта пользователя"),
+ *           @OA\Property(property="status", type="integer", example="10", description="Статус пользователя", enum={"0", "9", "10"}),
+ *           @OA\Property(property="statusText", type="string", example="Активен", description="Статус пользователя", enum={"Удален", "Не активен", "Активен"}),
+ *           @OA\Property(property="created_at", type="integer", example="1687464863", description="Время в unixtime"),
+ *         ),
+ *         @OA\Schema (ref="#/components/schemas/UserRoles")
+ *     }
  * )
  *
  * User model
@@ -52,7 +62,6 @@ class User extends ActiveRecord implements IdentityInterface
         self::ROLE_ADMIN => 'Администратор',
         self::ROLE_USER => 'Пользователь',
     ];
-
 
     /**
      * {@inheritdoc}

@@ -23,7 +23,7 @@ trait UserData
             'email',
             'status',
             'statusText' => new ApiFromList('status', User::$userStatus),
-            'createdAt',
+            'created_at',
             'userRoles' => new ApiGetter('userRoles', $this->userRole()),
         ];
     }
