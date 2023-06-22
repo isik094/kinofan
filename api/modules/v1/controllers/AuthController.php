@@ -56,6 +56,22 @@ class AuthController extends ApiController
      *         response=200,
      *         description="Запрос выполнен успешно",
      *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Пустой или неправильный токен",
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Запрещено",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Не найдено",
+     *     ),
+     *     @OA\Response(
+     *         response=406,
+     *         description="Ошибка валидации",
+     *     ),
      * )
      *
      * @brief Регистрация
@@ -79,6 +95,52 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *     path="/auth/login",
+     *     summary="Авторизация пользователя",
+     *     description="Данный эндпоинт выдает accessToken и refreshToken",
+     *     operationId="authUser",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *       description = "Данные для авторизации пользователя",
+     *       required = true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="username",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string",
+     *                 ),
+     *                 example={"username": "isik@yandex.ru", "password": "qwert123"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Запрос выполнен успешно",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Пустой или неправильный токен",
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Запрещено",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Не найдено",
+     *     ),
+     *     @OA\Response(
+     *         response=406,
+     *         description="Ошибка валидации",
+     *     ),
+     * )
+     *
      * @brief Авторизация
      * @return ApiResponse|ApiResponseException
      */
@@ -109,6 +171,48 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *     path="/auth/refresh",
+     *     summary="Получить новый временный accessToken",
+     *     description="Данный эндпоинт выдает refreshToken и новый временный accessToken",
+     *     operationId="newRefreshToken",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *       description = "Данные для получения accessToken",
+     *       required = true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="refreshToken",
+     *                     type="string",
+     *                 ),
+     *                 example={"refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Запрос выполнен успешно",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Пустой или неправильный токен",
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Запрещено",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Не найдено",
+     *     ),
+     *     @OA\Response(
+     *         response=406,
+     *         description="Ошибка валидации",
+     *     ),
+     * )
+     *
      * @brief Получить новый access_token пользователю
      * @return ApiResponse|ApiResponseException|\yii\web\UnauthorizedHttpException
      * @throws \Throwable
@@ -137,6 +241,48 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Delete(
+     *     path="/auth/refresh",
+     *     summary="Разлогинить пользователя и удалить refreshToken",
+     *     description="Данный эндпоинт удаляет refreshToken для пользователя, который вышел из системы",
+     *     operationId="deleteRefreshToken",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *       description = "Данные для получения accessToken",
+     *       required = true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="refreshToken",
+     *                     type="string",
+     *                 ),
+     *                 example={"refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Запрос выполнен успешно",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Пустой или неправильный токен",
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Запрещено",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Не найдено",
+     *     ),
+     *     @OA\Response(
+     *         response=406,
+     *         description="Ошибка валидации",
+     *     ),
+     * )
+     *
      * @brief Выход из системы на устройстве
      * @return ServerErrorHttpException|ApiResponse|ApiResponseException
      * @throws \Throwable

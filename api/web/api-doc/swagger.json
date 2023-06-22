@@ -51,10 +51,167 @@
                     "200": {
                         "description": "Запрос выполнен успешно"
                     },
+                    "401": {
+                        "description": "Пустой или неправильный токен"
+                    },
+                    "403": {
+                        "description": "Запрещено"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    },
                     "406": {
                         "description": "Ошибка валидации"
                     }
                 }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "description": "Данный эндпоинт выдает accessToken и refreshToken",
+                "operationId": "authUser",
+                "requestBody": {
+                    "description": "Данные для авторизации пользователя",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "username": "isik@yandex.ru",
+                                    "password": "qwert123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно"
+                    },
+                    "401": {
+                        "description": "Пустой или неправильный токен"
+                    },
+                    "403": {
+                        "description": "Запрещено"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    },
+                    "406": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Получить новый временный accessToken",
+                "description": "Данный эндпоинт выдает refreshToken и новый временный accessToken",
+                "operationId": "newRefreshToken",
+                "requestBody": {
+                    "description": "Данные для получения accessToken",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "refreshToken": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно"
+                    },
+                    "401": {
+                        "description": "Пустой или неправильный токен"
+                    },
+                    "403": {
+                        "description": "Запрещено"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    },
+                    "406": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Разлогинить пользователя и удалить refreshToken",
+                "description": "Данный эндпоинт удаляет refreshToken для пользователя, который вышел из системы",
+                "operationId": "deleteRefreshToken",
+                "requestBody": {
+                    "description": "Данные для получения accessToken",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "refreshToken": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно"
+                    },
+                    "401": {
+                        "description": "Пустой или неправильный токен"
+                    },
+                    "403": {
+                        "description": "Запрещено"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    },
+                    "406": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     },
