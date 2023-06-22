@@ -8,6 +8,12 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
 /**
+ * @OA\Schema(
+ *     schema="User",
+ *     @OA\Property(property="id", type="integer", example="1", description="ID пользователя"),
+ *     @OA\Property(property="username", type="email", example="qwe@gmail.com", description="Никнейм пользователя"),
+ * )
+ *
  * User model
  *
  * @property integer $id

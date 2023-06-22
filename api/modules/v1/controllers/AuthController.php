@@ -55,6 +55,7 @@ class AuthController extends ApiController
      *     @OA\Response(
      *         response=200,
      *         description="Запрос выполнен успешно",
+     *         @OA\JsonContent(type="array",@OA\Items(ref="#/components/schemas/User")),
      *     ),
      *     @OA\Response(
      *         response=401,

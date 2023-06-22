@@ -49,7 +49,17 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Запрос выполнен успешно"
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Пустой или неправильный токен"
@@ -208,6 +218,23 @@
         }
     },
     "components": {
+        "schemas": {
+            "User": {
+                "properties": {
+                    "id": {
+                        "description": "ID пользователя",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "username": {
+                        "description": "Никнейм пользователя",
+                        "type": "email",
+                        "example": "qwe@gmail.com"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
