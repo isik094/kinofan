@@ -70,6 +70,8 @@ class UserController extends ApiController
      *         description="Ошибка на стороне сервера",
      *         @OA\JsonContent(ref="#/components/schemas/ServerError"),
      *     ),
+     *
+     *     security={ {"accessToken": {}} }
      * )
      *
      * @brief Выход из системы на устройстве
