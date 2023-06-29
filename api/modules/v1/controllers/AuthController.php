@@ -17,7 +17,7 @@ use frontend\models\SignupForm;
 /**
  * @OA\Tag(
  *     name="Auth",
- *     description="Методы для работы с пользователями"
+ *     description="Методы для авторизации/регистрации"
  * )
  */
 class AuthController extends ApiController
@@ -45,20 +45,14 @@ class AuthController extends ApiController
      *         @OA\JsonContent(ref="#/components/schemas/User"),
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="Пустой или неправильный токен",
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Запрещено",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Не найдено",
-     *     ),
-     *     @OA\Response(
      *         response=406,
      *         description="Ошибка валидации",
+     *         @OA\JsonContent(ref="#/components/schemas/ValidateForm"),
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка на стороне сервера",
+     *         @OA\JsonContent(ref="#/components/schemas/ServerError"),
      *     ),
      * )
      *
@@ -92,40 +86,38 @@ class AuthController extends ApiController
      *     @OA\RequestBody(
      *       description = "Данные для авторизации пользователя",
      *       required = true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="username",
-     *                     type="string",
-     *                 ),
-     *                 @OA\Property(
-     *                     property="password",
-     *                     type="string",
-     *                 ),
-     *                 example={"username": "isik@yandex.ru", "password": "qwert123"}
-     *             )
-     *         )
+     *       @OA\JsonContent(ref="#/components/schemas/LoginForm")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Запрос выполнен успешно",
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Пустой или неправильный токен",
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Запрещено",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Не найдено",
+     *         @OA\JsonContent(
+     *           allOf={
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="user",
+     *                      type="object",
+     *                          @OA\Property(property="id", type="integer", example="1", description="ID пользователя"),
+     *                          @OA\Property(property="username", type="email", example="qwe@gmail.com", description="Никнейм пользователя"),
+     *                          @OA\Property(property="email", type="email", example="qwe@gmail.com", description="Электронная почта пользователя"),
+     *                          @OA\Property(property="status", type="integer", example="10", description="Статус пользователя", enum={"0", "9", "10"}),
+     *                          @OA\Property(property="statusText", type="string", example="Активен", description="Статус пользователя", enum={"Удален", "Не активен", "Активен"}),
+     *                          @OA\Property(property="created_at", type="integer", example="1687464863", description="Время в unixtime"),
+     *                  ),
+     *             ),
+     *             @OA\Schema(ref="#/components/schemas/TokenResponse"),
+     *           }
+     *         )
      *     ),
      *     @OA\Response(
      *         response=406,
      *         description="Ошибка валидации",
+     *         @OA\JsonContent(ref="#/components/schemas/ValidateForm"),
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка на стороне сервера",
+     *         @OA\JsonContent(ref="#/components/schemas/ServerError"),
      *     ),
      * )
      *
@@ -163,7 +155,7 @@ class AuthController extends ApiController
      *     path="/auth/refresh",
      *     summary="Получить новый временный accessToken",
      *     description="Данный эндпоинт выдает refreshToken и новый временный accessToken",
-     *     operationId="newRefreshToken",
+     *     operationId="refresh",
      *     tags={"Auth"},
      *     @OA\RequestBody(
      *       description = "Данные для получения accessToken",
@@ -174,30 +166,25 @@ class AuthController extends ApiController
      *                 @OA\Property(
      *                     property="refreshToken",
      *                     type="string",
+     *                     example="1seSXoHn2a1mvq-oQh_xPaquZ1dtTJGmkKgbKAo8bftxk7vGSrf-g9Hi0HytY-qpnXmaYGM6v6rQDzxrvUzcUxnP4Hntux8EXkWMTD9IfafIxE3zNLLJ9Vi0jzGHs7DOH5p2k6UK_wJq-y1SRgpgJuXLTSUi6SpZSNtg5iyFjfcDA6h8vLE7lgQSas4Nga0vKelmfGTo"
      *                 ),
-     *                 example={"refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"}
      *             )
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Запрос выполнен успешно",
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Пустой или неправильный токен",
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Запрещено",
+     *         @OA\JsonContent(ref="#/components/schemas/TokenResponse"),
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Не найдено",
+     *         @OA\JsonContent(ref="#/components/schemas/NotFound"),
      *     ),
      *     @OA\Response(
-     *         response=406,
-     *         description="Ошибка валидации",
+     *         response=500,
+     *         description="Ошибка на стороне сервера",
+     *         @OA\JsonContent(ref="#/components/schemas/ServerError"),
      *     ),
      * )
      *
@@ -205,7 +192,7 @@ class AuthController extends ApiController
      * @return ApiResponse|ApiResponseException|\yii\web\UnauthorizedHttpException
      * @throws \Throwable
      */
-    public function actionNewRefreshToken(): ApiResponse|\yii\web\UnauthorizedHttpException|ApiResponseException
+    public function actionRefresh(): ApiResponse|\yii\web\UnauthorizedHttpException|ApiResponseException
     {
         try {
             $refreshToken = Yii::$app->request->post('refreshToken');
@@ -223,67 +210,6 @@ class AuthController extends ApiController
             ];
 
             return new ApiResponse(false, $response);
-        } catch (\Exception $e) {
-            return new ApiResponseException($e);
-        }
-    }
-
-    /**
-     * @OA\Delete(
-     *     path="/auth/refresh",
-     *     summary="Разлогинить пользователя и удалить refreshToken",
-     *     description="Данный эндпоинт удаляет refreshToken для пользователя, который вышел из системы",
-     *     operationId="deleteRefreshToken",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *       description = "Данные для получения accessToken",
-     *       required = true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="refreshToken",
-     *                     type="string",
-     *                 ),
-     *                 example={"refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"}
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Запрос выполнен успешно",
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Пустой или неправильный токен",
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Запрещено",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Не найдено",
-     *     ),
-     *     @OA\Response(
-     *         response=406,
-     *         description="Ошибка валидации",
-     *     ),
-     * )
-     *
-     * @brief Выход из системы на устройстве
-     * @return ServerErrorHttpException|ApiResponse|ApiResponseException
-     * @throws \Throwable
-     */
-    public function actionDeleteRefreshToken(): ServerErrorHttpException|ApiResponse|ApiResponseException
-    {
-        try {
-            $userRefreshToken = $this->findUserRefreshToken(Yii::$app->request->post('refreshToken'));
-            if ($userRefreshToken && !$userRefreshToken->delete()) {
-                return new \yii\web\ServerErrorHttpException('Failed to delete the refresh token.');
-            }
-
-            return new ApiResponse(false, 'Deleted successfully');
         } catch (\Exception $e) {
             return new ApiResponseException($e);
         }

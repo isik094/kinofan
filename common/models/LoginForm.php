@@ -6,6 +6,14 @@ use yii\base\Model;
 use yii\base\Exception;
 
 /**
+ *
+ * @OA\Schema(
+ *     schema="LoginForm",
+ *     required={"username", "password"},
+ *     @OA\Property(property="username", type="string", example="isik@yandex.ru", description="Электронная почта пользователя"),
+ *     @OA\Property(property="password", type="string", example="qwerty", description="Пароль"),
+ * )
+ *
  * Login form
  */
 class LoginForm extends Model

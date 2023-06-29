@@ -17,14 +17,73 @@ use common\base\ActiveRecord;
 use common\models\User;
 
 /**
+ * @OA\Schema(
+ *     schema="Unauthorized",
+ *     @OA\Property(property="name", type="string", example="Unauthorized", description="Название сообщения"),
+ *     @OA\Property(property="message", type="string", example="Your request was made with invalid credentials.", description="Текст сообщения"),
+ *     @OA\Property(property="code", type="integer", example="0", description="Код сообщения"),
+ *     @OA\Property(property="status", type="integer", example="401", description="Код ошибки"),
+ *     @OA\Property(property="type", type="string", example="yii\web\UnauthorizedHttpException", description="Тип ошибки"),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="Forbidden",
+ *     @OA\Property(property="error", type="boolean", example="true", description="Булево обозначение ошибки"),
+ *     @OA\Property(property="message", type="string", example="Access is denied", description="Текст сообщения о запрете"),
+ *     @OA\Property(property="status", type="integer", example="403", description="Код ошибки"),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="NotFound",
+ *     @OA\Property(property="error", type="boolean", example="true", description="Булево обозначение ошибки"),
+ *     @OA\Property(property="message", type="string", example="Not found", description="Текст сообщения о не найденой записи"),
+ *     @OA\Property(property="status", type="integer", example="404", description="Код ошибки"),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="ValidateForm",
+ *      @OA\Property(property="error", type="boolean", example="true", description="Булево обозначение ошибки"),
+ *      @OA\Property(
+ *          property="message",
+ *          type="object",
+ *          @OA\Property(
+ *          property="attribute",
+ *          type="array",
+ *          @OA\Items(anyOf={@OA\Schema(type="string", example="Значение «Атрибут» не является правильным.", description="Сообщение ошибки валидируемого атрибута")})),
+ *      ),
+ *      @OA\Property(property="status", type="integer", example="406", description="Код ошибки"),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="ServerError",
+ *     @OA\Property(property="error", type="boolean", example="true", description="Булево обозначение ошибки"),
+ *     @OA\Property(property="message", type="string", example="An unexpected error occured.", description="Текст сообщения ошибки на стороне сервера"),
+ *     @OA\Property(property="status", type="integer", example="500", description="Код ошибки"),
+ * )
+ *
+ * @OA\Schema(
+ *     schema="TokenResponse",
+ *     @OA\Property(
+ *      property="accessToken",
+ *      type="string",
+ *      example="UjOPobe6bv_iBGMrrqyPEhv3ebZbamp78JBneh8CyvL0-mPTUpWinsys0OK8yeM6-TEB9hx8QHOaITJfrscLtmmGDo0qexMxyQMoA940LJJDwswqLGvnlzujim4K6wGxOey9uvlwoxyB9MMcROrR5p3gnmAPzFiTda7GQSEQXwlGb5DfkAG110G6-s_8_AZ-PgemnHt0",
+ *      description="Временный access token"
+ *     ),
+ *     @OA\Property(
+ *      property="refreshToken",
+ *      type="string",
+ *      example="UjOPobe6bv_iBGMrrqyPEhv3ebZbamp78JBneh8CyvL0-mPTUpWinsys0OK8yeM6-TEB9hx8QHOaITJfrscLtmmGDo0qexMxyQMoA940LJJDwswqLGvnlzujim4K6wGxOey9uvlwoxyB9MMcROrR5p3gnmAPzFiTda7GQSEQXwlGb5DfkAG110G6-s_8_AZ-PgemnHt0",
+ *      description="Постоянный refresh token"
+ *     ),
+ * )
+ *
  * @OA\Info(
  *     title="Kinofan API",
  *     description = "API для проекта Кинофан",
  *     version="1.0",
- *     version="1.0",
  *     @OA\Contact(
  *     name="Nasirov Ismail",
- *     email="isik94@ciloud.com",
+ *     email="isik94@iсloud.com",
  *  )
  * )
  * @OA\Components(

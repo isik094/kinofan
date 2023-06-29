@@ -5,7 +5,7 @@
         "description": "API для проекта Кинофан",
         "contact": {
             "name": "Nasirov Ismail",
-            "email": "isik94@ciloud.com"
+            "email": "isik94@iсloud.com"
         },
         "version": "1.0"
     },
@@ -46,17 +46,25 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Пустой или неправильный токен"
-                    },
-                    "403": {
-                        "description": "Запрещено"
-                    },
-                    "404": {
-                        "description": "Не найдено"
-                    },
                     "406": {
-                        "description": "Ошибка валидации"
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -75,38 +83,95 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object",
-                                "example": {
-                                    "username": "isik@yandex.ru",
-                                    "password": "qwert123"
-                                }
+                                "$ref": "#/components/schemas/LoginForm"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Запрос выполнен успешно"
-                    },
-                    "401": {
-                        "description": "Пустой или неправильный токен"
-                    },
-                    "403": {
-                        "description": "Запрещено"
-                    },
-                    "404": {
-                        "description": "Не найдено"
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID пользователя",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "username": {
+                                                            "description": "Никнейм пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "email": {
+                                                            "description": "Электронная почта пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "status": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "integer",
+                                                            "enum": [
+                                                                "0",
+                                                                "9",
+                                                                "10"
+                                                            ],
+                                                            "example": "10"
+                                                        },
+                                                        "statusText": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "Удален",
+                                                                "Не активен",
+                                                                "Активен"
+                                                            ],
+                                                            "example": "Активен"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время в unixtime",
+                                                            "type": "integer",
+                                                            "example": "1687464863"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/TokenResponse"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "406": {
-                        "description": "Ошибка валидации"
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -118,7 +183,7 @@
                 ],
                 "summary": "Получить новый временный accessToken",
                 "description": "Данный эндпоинт выдает refreshToken и новый временный accessToken",
-                "operationId": "newRefreshToken",
+                "operationId": "refresh",
                 "requestBody": {
                     "description": "Данные для получения accessToken",
                     "required": true,
@@ -127,76 +192,145 @@
                             "schema": {
                                 "properties": {
                                     "refreshToken": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "1seSXoHn2a1mvq-oQh_xPaquZ1dtTJGmkKgbKAo8bftxk7vGSrf-g9Hi0HytY-qpnXmaYGM6v6rQDzxrvUzcUxnP4Hntux8EXkWMTD9IfafIxE3zNLLJ9Vi0jzGHs7DOH5p2k6UK_wJq-y1SRgpgJuXLTSUi6SpZSNtg5iyFjfcDA6h8vLE7lgQSas4Nga0vKelmfGTo"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"
-                                }
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Запрос выполнен успешно"
-                    },
-                    "401": {
-                        "description": "Пустой или неправильный токен"
-                    },
-                    "403": {
-                        "description": "Запрещено"
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenResponse"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Не найдено"
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
                     },
-                    "406": {
-                        "description": "Ошибка валидации"
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
                     }
                 }
-            },
+            }
+        },
+        "/user/logout": {
             "delete": {
                 "tags": [
-                    "Auth"
+                    "User"
                 ],
                 "summary": "Разлогинить пользователя и удалить refreshToken",
                 "description": "Данный эндпоинт удаляет refreshToken для пользователя, который вышел из системы",
-                "operationId": "deleteRefreshToken",
+                "operationId": "logout",
                 "requestBody": {
-                    "description": "Данные для получения accessToken",
+                    "description": "refreshToken пользователя, которого нужно разлогинить и удалить отправленный токен",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
                                     "refreshToken": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "UjOPobe6bv_iBGMrrqyPEhv3ebZbamp78JBneh8CyvL0-mPTUpWinsys0OK8yeM6-TEB9hx8QHOaITJfrscLtmmGDo0qexMxyQMoA940LJJDwswqLGvnlzujim4K6wGxOey9uvlwoxyB9MMcROrR5p3gnmAPzFiTda7GQSEQXwlGb5DfkAG110G6-s_8_AZ-PgemnHt0"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "refreshToken": "dsweERTWEg25GRdghedgaeojkpojkRERGHAABRH"
-                                }
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Запрос выполнен успешно"
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "error": {
+                                                    "description": "Булево обозначение ошибки",
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "message": {
+                                                    "description": "Текст сообщения ошибки на стороне сервера",
+                                                    "type": "string",
+                                                    "example": "Deleted successfully"
+                                                },
+                                                "status": {
+                                                    "description": "Код ошибки",
+                                                    "type": "integer",
+                                                    "example": "200"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Пустой или неправильный токен"
+                        "description": "Пустой или неправильный токен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthorized"
+                                }
+                            }
+                        }
                     },
                     "403": {
-                        "description": "Запрещено"
+                        "description": "Запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Не найдено"
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
                     },
-                    "406": {
-                        "description": "Ошибка валидации"
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -204,6 +338,162 @@
     },
     "components": {
         "schemas": {
+            "Unauthorized": {
+                "properties": {
+                    "name": {
+                        "description": "Название сообщения",
+                        "type": "string",
+                        "example": "Unauthorized"
+                    },
+                    "message": {
+                        "description": "Текст сообщения",
+                        "type": "string",
+                        "example": "Your request was made with invalid credentials."
+                    },
+                    "code": {
+                        "description": "Код сообщения",
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "401"
+                    },
+                    "type": {
+                        "description": "Тип ошибки",
+                        "type": "string",
+                        "example": "yii\\web\\UnauthorizedHttpException"
+                    }
+                },
+                "type": "object"
+            },
+            "Forbidden": {
+                "properties": {
+                    "error": {
+                        "description": "Булево обозначение ошибки",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "description": "Текст сообщения о запрете",
+                        "type": "string",
+                        "example": "Access is denied"
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "403"
+                    }
+                },
+                "type": "object"
+            },
+            "NotFound": {
+                "properties": {
+                    "error": {
+                        "description": "Булево обозначение ошибки",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "description": "Текст сообщения о не найденой записи",
+                        "type": "string",
+                        "example": "Not found"
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "404"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidateForm": {
+                "properties": {
+                    "error": {
+                        "description": "Булево обозначение ошибки",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "properties": {
+                            "attribute": {
+                                "type": "array",
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "description": "Сообщение ошибки валидируемого атрибута",
+                                            "type": "string",
+                                            "example": "Значение «Атрибут» не является правильным."
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "406"
+                    }
+                },
+                "type": "object"
+            },
+            "ServerError": {
+                "properties": {
+                    "error": {
+                        "description": "Булево обозначение ошибки",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "description": "Текст сообщения ошибки на стороне сервера",
+                        "type": "string",
+                        "example": "An unexpected error occured."
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "500"
+                    }
+                },
+                "type": "object"
+            },
+            "TokenResponse": {
+                "properties": {
+                    "accessToken": {
+                        "description": "Временный access token",
+                        "type": "string",
+                        "example": "UjOPobe6bv_iBGMrrqyPEhv3ebZbamp78JBneh8CyvL0-mPTUpWinsys0OK8yeM6-TEB9hx8QHOaITJfrscLtmmGDo0qexMxyQMoA940LJJDwswqLGvnlzujim4K6wGxOey9uvlwoxyB9MMcROrR5p3gnmAPzFiTda7GQSEQXwlGb5DfkAG110G6-s_8_AZ-PgemnHt0"
+                    },
+                    "refreshToken": {
+                        "description": "Постоянный refresh token",
+                        "type": "string",
+                        "example": "UjOPobe6bv_iBGMrrqyPEhv3ebZbamp78JBneh8CyvL0-mPTUpWinsys0OK8yeM6-TEB9hx8QHOaITJfrscLtmmGDo0qexMxyQMoA940LJJDwswqLGvnlzujim4K6wGxOey9uvlwoxyB9MMcROrR5p3gnmAPzFiTda7GQSEQXwlGb5DfkAG110G6-s_8_AZ-PgemnHt0"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginForm": {
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "description": "Электронная почта пользователя",
+                        "type": "string",
+                        "example": "isik@yandex.ru"
+                    },
+                    "password": {
+                        "description": "Пароль",
+                        "type": "string",
+                        "example": "qwerty"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "type": "object",
                 "allOf": [
@@ -310,6 +600,10 @@
     "tags": [
         {
             "name": "Auth",
+            "description": "Методы для авторизации/регистрации"
+        },
+        {
+            "name": "User",
             "description": "Методы для работы с пользователями"
         }
     ]
