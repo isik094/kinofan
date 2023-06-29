@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 require_once __DIR__ . '/../../vendor/electrolinux/phpquery/phpQuery/phpQuery.php';
 
+use Yii;
 use backend\models\Parser\CaptchaSolving;
 use backend\models\Parser\ParserMoviePage;
 use common\models\Movies;
@@ -20,8 +21,6 @@ class V1Controller extends Controller
 {
     use DataRequest;
 
-    /** @brief Данные для подключения к API videoCDN */
-    private const HOST_CDN = 'https://videocdn.tv/api/';
     private const TOKEN_CDN = 'ieTeLZNAZe0Dxk3hm4ry52q8PacNrS0A';
 
     /** @brief Хост кинопоиска */
@@ -36,8 +35,8 @@ class V1Controller extends Controller
     public function actionStart()
     {
         try {
-            $response = $this->sendRequest(self::HOST_CDN, 'GET', 'short', [
-                'query' => ['api_token' => self::TOKEN_CDN, 'limit' => 100],
+            $response = $this->sendRequest(Yii::$app->params['hostCDN'], 'GET', 'short', [
+                'query' => ['api_token' => Yii::$app->params['tokenCDN'], 'limit' => 100],
             ]);
 
             if ($response->getStatusCode() === 200) {
@@ -64,8 +63,8 @@ class V1Controller extends Controller
     {
         try {
             for ($i = 1; $i <= $body->last_page; $i++) {
-                $response = $this->sendRequest(self::HOST_CDN, 'GET', 'short', [
-                    'query' => ['api_token' => self::TOKEN_CDN, 'page' => $i, 'limit' => 100],
+                $response = $this->sendRequest(Yii::$app->params['hostCDN'], 'GET', 'short', [
+                    'query' => ['api_token' => Yii::$app->params['tokenCDN'], 'page' => $i, 'limit' => 100],
                 ]);
 
                 $responseBody = $this->jsonDecodeBody($response);
