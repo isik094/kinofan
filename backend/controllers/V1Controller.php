@@ -21,9 +21,6 @@ class V1Controller extends Controller
 {
     use DataRequest;
 
-    /** @brief Хост кинопоиска */
-    public const HOST_KINOPOISK = 'https://www.kinopoisk.ru/';
-
     /**
      * @brief Начать парсинг
      * @return void
