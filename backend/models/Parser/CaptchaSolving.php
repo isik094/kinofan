@@ -145,7 +145,7 @@ class CaptchaSolving
                 'base_uri' => $baseUri,
                 'cookies' => $this->cookieJar(),
                 /*'proxy' => [
-                    'http' => $this->randomProxyServer(),
+                    'http' => $this->proxyServerArray(),
                 ],*/
             ]);
 

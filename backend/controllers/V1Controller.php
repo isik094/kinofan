@@ -137,7 +137,7 @@ class V1Controller extends Controller
                 'base_uri' => $baseUri,
                 'cookies' => $this->cookieJar(),
                 /*'proxy' => [
-                    'http' => $this->randomProxyServer(),
+                    'http' => $this->proxyServerArray(),
                 ],*/
             ]);
 

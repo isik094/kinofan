@@ -34,7 +34,7 @@ trait DataRequest
      * @brief Вернуть случайно один из прокси серверов
      * @return string
      */
-    public function randomProxyServer(): string
+    public function proxyServerArray(): string
     {
         $proxy = [
             1 => '185.15.172.212:3128',
