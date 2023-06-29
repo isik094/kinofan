@@ -6,11 +6,11 @@ return [
         'actions' => [
             'auth' => [
                 'login' => true,
-                'new-refresh-token' => true,
-                'delete-refresh-token' => true,
                 'register' => true,
+                'refresh' => true,
             ],
             'user' => [
+                'logout' => true,
                 'index' => true,
                 'create' => true,
                 'update' => true,
@@ -30,11 +30,11 @@ return [
         'actions' => [
             'auth' => [
                 'login' => true,
-                'new-refresh-token' => true,
-                'delete-refresh-token' => true,
                 'register' => true,
+                'refresh' => true,
             ],
             'user' => [
+                'logout' => true,
                 'index' => true,
                 'create' => true,
                 'update' => true,

@@ -82,9 +82,17 @@ return [
                         'OPTIONS ' => 'options',
                         'POST register' => 'register',
                         'OPTIONS register' => 'options',
-                        'POST refresh' => 'new-refresh-token',
-                        'DELETE refresh' => 'delete-refresh-token',
+                        'POST refresh' => 'refresh',
                         'OPTIONS refresh' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/user'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'DELETE logout' => 'logout',
+                        'OPTIONS logout' => 'options',
                     ]
                 ],
             ],
