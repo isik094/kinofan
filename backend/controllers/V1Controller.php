@@ -21,8 +21,6 @@ class V1Controller extends Controller
 {
     use DataRequest;
 
-    private const TOKEN_CDN = 'ieTeLZNAZe0Dxk3hm4ry52q8PacNrS0A';
-
     /** @brief Хост кинопоиска */
     public const HOST_KINOPOISK = 'https://www.kinopoisk.ru/';
 
@@ -93,7 +91,7 @@ class V1Controller extends Controller
                         'kp_id' => $value->kp_id,
                     ]);*/
 
-                    //$htmlPage = new CaptchaSolving(self::HOST_KINOPOISK . "film/{$value->kp_id}/");
+                    //$htmlPage = new CaptchaSolving(Yii::$app->params['hostKinopoisk'] . "film/{$value->kp_id}/");
                     $htmlPage = new CaptchaSolving('https://www.kinopoisk.ru/film/3498/');
                     $HtmlPageKinopoisk = $htmlPage->getHtmlPage();
 
