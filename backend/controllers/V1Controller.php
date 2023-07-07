@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 require_once __DIR__ . '/../../vendor/electrolinux/phpquery/phpQuery/phpQuery.php';
 
+use common\apiClass\VideoData;
+use common\models\ErrorLog;
 use Yii;
 use backend\models\Parser\CaptchaSolving;
 use backend\models\Parser\ParserMoviePage;
@@ -22,6 +24,17 @@ class V1Controller extends Controller
     use DataRequest;
 
     /**
+     * @throws GuzzleException
+     */
+    public function actionApi()
+    {
+        $class = new VideoData(301);
+        $film = $class->run();
+
+        $this->print($film);
+    }
+
+    /**
      * @brief Начать парсинг
      * @return void
      * @throws Exception
@@ -30,8 +43,8 @@ class V1Controller extends Controller
     public function actionStart()
     {
         try {
-            $response = $this->sendRequest(Yii::$app->params['hostCDN'], 'GET', 'short', [
-                'query' => ['api_token' => Yii::$app->params['tokenCDN'], 'limit' => 100],
+            $response = $this->sendRequest(Yii::$app->params['videoCDN']['host'], 'GET', 'short', [
+                'query' => ['api_token' => Yii::$app->params['videoCDN']['token'], 'limit' => 100],
             ]);
 
             if ($response->getStatusCode() === 200) {
@@ -57,16 +70,22 @@ class V1Controller extends Controller
     public function iterateOverData(object $body): bool
     {
         try {
-            for ($i = 1; $i <= $body->last_page; $i++) {
-                $response = $this->sendRequest(Yii::$app->params['hostCDN'], 'GET', 'short', [
-                    'query' => ['api_token' => Yii::$app->params['tokenCDN'], 'page' => $i, 'limit' => 100],
-                ]);
+            if (isset($body->last_page)) {
+                for ($i = 1; $i <= $body->last_page; $i++) {
+                    $response = $this->sendRequest(Yii::$app->params['videoCDN']['host'], 'GET', 'short', [
+                        'query' => ['api_token' => Yii::$app->params['videoCDN']['token'], 'page' => $i, 'limit' => 100],
+                    ]);
 
-                $responseBody = $this->jsonDecodeBody($response);
-                if ($responseBody) $this->parsing($responseBody);
+                    $responseBody = $this->jsonDecodeBody($response);
+                    if ($responseBody) $this->parsing($responseBody);
+                }
+
+                return true;
             }
 
-            return true;
+            ErrorLog::createLog(new \Exception('Произошла ошибка, нет данных'));
+
+            return false;
         } catch (\Exception $e) {
             throw $e;
         }
@@ -122,7 +141,6 @@ class V1Controller extends Controller
      * @return ResponseInterface
      * @throws GuzzleException
      */
-
     protected function sendRequest(string $baseUri, string $method, string $uri = '', array $params = []): ResponseInterface
     {
         try {
@@ -159,11 +177,7 @@ class V1Controller extends Controller
      */
     public function actionTest()
     {
-        $data = [
-            'test' => 'test',
-        ];
-
-        $result = $this->send('/test/test', 'post', $data);
+        $result = $this->send('https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=301');
         echo '<pre>';
         print_r($result);
         die;
@@ -172,15 +186,16 @@ class V1Controller extends Controller
     /**
      * @brief Отправка запроса
      * @param string $method
+     * @param string|null $data
      * @param string $type
-     * @param string $data
      * @return bool|string
      */
-    private function send($method, $type = 'get', string $data)
+    private function send(string $method, ?string $data = null, string $type = 'get'): bool|string
     {
         $headers = [
             //'Authorization: Bearer ' . self::TOKEN,
-            'Content-Type: application/json'
+            'X-API-KEY' => 'dfdb6536-38fd-4930-aa2c-ed620afa9493',
+            'Content-Type' => 'application/json',
         ];
 
         $curl = curl_init();
