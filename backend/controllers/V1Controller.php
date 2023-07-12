@@ -37,7 +37,6 @@ class V1Controller extends Controller
     /**
      * @brief Начать парсинг
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function actionStart()
@@ -48,26 +47,25 @@ class V1Controller extends Controller
             ]);
 
             if ($response->getStatusCode() === 200) {
-                if ($body = $this->jsonDecodeBody($response)) {
-                    $this->iterateOverData($body);
+                $body = $this->jsonDecodeBody($response);
 
-                    echo 'Успешно';
-                }
+                if (empty($body->result)) throw new Exception('Произошла ошибка при получении ответа из videoCDN');
+                $this->iterateOverData($body);
+
+                echo 'Успешно';
             }
-
-            throw new Exception('Произошла ошибка при получении ответа из videoCDN');
         } catch (\Exception $e) {
-            throw $e;
+            ErrorLog::createLog($e);
         }
     }
 
     /**
      * @brief Перебрать все фильмы и начать парсинг
      * @param object $body
-     * @return bool
+     * @return bool|void
      * @throws GuzzleException
      */
-    public function iterateOverData(object $body): bool
+    public function iterateOverData(object $body)
     {
         try {
             if (isset($body->last_page)) {
@@ -83,11 +81,9 @@ class V1Controller extends Controller
                 return true;
             }
 
-            ErrorLog::createLog(new \Exception('Произошла ошибка, нет данных'));
-
-            return false;
+            throw new \Exception('Произошла ошибка, нет данных');
         } catch (\Exception $e) {
-            throw $e;
+            ErrorLog::createLog($e);
         }
     }
 
