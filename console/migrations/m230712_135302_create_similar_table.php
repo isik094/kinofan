@@ -18,7 +18,7 @@ class m230712_135302_create_similar_table extends Migration
         $this->createTable('{{%similar}}', [
             'id' => $this->primaryKey(),
             'cinema_id' => $this->integer(),
-            'id_kp',
+            'id_kp' => $this->integer(),
         ]);
 
         // creates index for column `cinema_id`
