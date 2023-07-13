@@ -20,7 +20,7 @@ class m230713_074516_create_distribution_table extends Migration
         $this->createTable('{{%distribution}}', [
             'id' => $this->primaryKey(),
             'cinema_id' => $this->integer(),
-            'type' => $this->string()(),
+            'type' => $this->string(),
             'sub_type' => $this->string(),
             'date' => $this->timestamp(),
             're_release' => $this->tinyInteger(),
