@@ -137,7 +137,7 @@
     </key>
     <comment>Данные видео (фильмы/сериалы)</comment>
 </table>
-    <table x="809" y="761" name="cinema_country_1">
+    <table x="1233" y="593" name="cinema_country_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -155,7 +155,7 @@
         </key>
         <comment>страны кино</comment>
     </table>
-    <table x="1123" y="714" name="country_1">
+    <table x="938" y="806" name="country_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -168,7 +168,7 @@
         </key>
         <comment>страны кино</comment>
     </table>
-    <table x="538" y="24" name="genre_1">
+    <table x="524" y="27" name="genre_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -199,7 +199,7 @@
         </key>
         <comment>жанры кино</comment>
     </table>
-    <table x="844" y="513" name="seasons">
+    <table x="842" y="505" name="season_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -257,7 +257,7 @@
         </key>
         <comment>факты про кино</comment>
     </table>
-    <table x="1309" y="553" name="distribution">
+    <table x="1483" y="521" name="distribution_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -296,7 +296,7 @@
         </key>
         <comment>данные о прокате в разных странах</comment>
     </table>
-    <table x="1521" y="515" name="company_1">
+    <table x="1692" y="546" name="company_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -335,7 +335,7 @@
         </key>
         <comment>данные о бюджете и сборах</comment>
     </table>
-    <table x="176" y="279" name="person">
+    <table x="194" y="280" name="person_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -388,7 +388,7 @@
         </key>
         <comment>персонал кино</comment>
     </table>
-    <table x="550" y="123" name="award">
+    <table x="552" y="124" name="award_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -421,17 +421,17 @@
         </key>
         <comment>награда</comment>
     </table>
-    <table x="296" y="106" name="award_person">
+    <table x="305" y="90" name="award_person_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_award" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="award" row="id" />
+            <default>NULL</default><relation table="award_1" row="id" />
         </row>
         <row name="id_person" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
         </row>
         <row name="age" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
@@ -487,7 +487,7 @@
         </key>
         <comment>похожее кино</comment>
     </table>
-    <table x="564" y="410" name="image">
+    <table x="579" y="400" name="image_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -503,12 +503,15 @@
             <datatype>INTEGER</datatype>
             <default>NULL</default><comment>превью картинки</comment>
         </row>
+        <row name="type" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
         <comment>картинки</comment>
     </table>
-    <table x="352" y="331" name="sequel_and_prequel">
+    <table x="351" y="335" name="sequel_and_prequel_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -524,18 +527,20 @@
             <part>id</part>
         </key>
     </table>
-    <table x="361" y="521" name="person_cinema">
+    <table x="369" y="490" name="person_cinema_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_person" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
-            <relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
+            <relation table="person_1" row="id" />
+            <relation table="person_1" row="id" />
         </row>
         <row name="id_cinema" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
             <default>NULL</default><relation table="cinema_1" row="id" />
+            <relation table="cinema_1" row="id" />
             <relation table="cinema_1" row="id" />
         </row>
         <row name="professionText" null="1" autoincrement="0">
@@ -545,15 +550,15 @@
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
-        <comment>участники фильма</comment>
+        <comment>участники фильма по id фильма</comment>
     </table>
-    <table x="15" y="410" name="person_fact">
+    <table x="8" y="415" name="person_fact_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_person" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
         </row>
         <row name="text" null="1" autoincrement="0">
             <datatype>VARCHAR</datatype>
@@ -563,37 +568,37 @@
         </key>
         <comment>факты персоны</comment>
     </table>
-    <table x="329" y="666" name="person_cinema">
+    <table x="359" y="644" name="cinema_person_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
+        <row name="professionKey" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
         <row name="id_person" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
         </row>
         <row name="id_cinema" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
             <default>NULL</default><relation table="cinema_1" row="id" />
         </row>
-        <row name="professionKey" null="1" autoincrement="0">
-            <datatype>VARCHAR</datatype>
-            <default>NULL</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
-        <comment>кино персоны</comment>
+        <comment>кино персоны список фильмов для актера</comment>
     </table>
-    <table x="12" y="135" name="spouse">
+    <table x="8" y="156" name="spouse_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_person" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
         </row>
         <row name="id_spouse" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="person" row="id" />
+            <default>NULL</default><relation table="person_1" row="id" />
             <comment>id супруга</comment>
         </row>
         <row name="divorced" null="1" autoincrement="0">
@@ -613,7 +618,7 @@
         </key>
         <comment>супруги</comment>
     </table>
-    <table x="348" y="809" name="product">
+    <table x="348" y="809" name="product_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -638,7 +643,7 @@
         </key>
         <comment>товары</comment>
     </table>
-    <table x="503" y="1059" name="comment">
+    <table x="597" y="885" name="comment_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -648,7 +653,7 @@
         </row>
         <row name="id_user" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="user" row="id" />
+            <default>NULL</default><relation table="user_1" row="id" />
         </row>
         <row name="id_parent" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
@@ -667,7 +672,7 @@
         </key>
         <comment>комментарии</comment>
     </table>
-    <table x="69" y="816" name="user">
+    <table x="69" y="816" name="user_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -676,7 +681,7 @@
         </key>
         <comment>пользователь</comment>
     </table>
-    <table x="743" y="1189" name="compilation">
+    <table x="1541" y="815" name="compilation_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -689,13 +694,13 @@
         </key>
         <comment>подборка</comment>
     </table>
-    <table x="953" y="961" name="compilation_cinema">
+    <table x="1276" y="785" name="compilation_cinema_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_compilation" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="compilation" row="id" />
+            <default>NULL</default><relation table="compilation_1" row="id" />
         </row>
         <row name="id_cinema" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
@@ -706,13 +711,13 @@
         </key>
         <comment>название подборки</comment>
     </table>
-    <table x="32" y="1001" name="profile">
+    <table x="31" y="1001" name="profile_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_user" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="user" row="id" />
+            <default>NULL</default><relation table="user_1" row="id" />
         </row>
         <row name="surname" null="1" autoincrement="0">
             <datatype>VARCHAR(255)</datatype>
@@ -745,13 +750,13 @@
         </key>
         <comment>профиль пользователя</comment>
     </table>
-    <table x="238" y="992" name="favorites">
+    <table x="248" y="991" name="favorites_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_user" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="user" row="id" />
+            <default>NULL</default><relation table="user_1" row="id" />
         </row>
         <row name="id_cinema" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
@@ -762,13 +767,13 @@
         </key>
         <comment>избранное</comment>
     </table>
-    <table x="188" y="1147" name="user_genre_cinema">
+    <table x="188" y="1147" name="user_genre_cinema_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_user" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="user" row="id" />
+            <default>NULL</default><relation table="user_1" row="id" />
         </row>
         <row name="id_genre" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
@@ -779,13 +784,13 @@
         </key>
         <comment>интересующие жанры</comment>
     </table>
-    <table x="180" y="1333" name="user_country_cinema">
+    <table x="509" y="1114" name="user_country_cinema_1">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="id_user" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="user" row="id" />
+            <default>NULL</default><relation table="user_1" row="id" />
         </row>
         <row name="id_country" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
