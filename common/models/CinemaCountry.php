@@ -67,4 +67,25 @@ class CinemaCountry extends \common\base\ActiveRecord
     {
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
+
+    /**
+     * @brief Создать запись
+     * @param Cinema $cinema
+     * @param Country $country
+     * @return CinemaCountry|bool
+     */
+    public static function create(Cinema $cinema, Country $country): CinemaCountry|bool
+    {
+        try {
+            $cinemaCountry = new CinemaCountry();
+            $cinemaCountry->cinema_id = $cinema->id;
+            $cinemaCountry->country_id = $country->id;
+            $cinemaCountry->saveStrict();
+
+            return $cinemaCountry;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return false;
+        }
+    }
 }

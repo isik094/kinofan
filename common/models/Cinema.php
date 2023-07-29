@@ -25,11 +25,11 @@ use Yii;
  * @property int|null $end_year
  * @property int|null $serial
  * @property int|null $completed
- * @property string|null $created_at
- * @property string|null $updated_at
- * @property string|null $deleted_at
- * @property string|null $premiere_ru
- * @property string|null $release_date
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $deleted_at
+ * @property int|null $premiere_ru
+ * @property int|null $release_date
  * @property float|null $rating_imdb
  *
  * @property Award[] $awards
@@ -52,6 +52,12 @@ use Yii;
  */
 class Cinema extends \common\base\ActiveRecord
 {
+    public const MOVIE = 'movie';
+    public const SERIES = 'series';
+    public const CARTOON = 'cartoon';
+    public const ANIME = 'anime';
+    public const TV_SHOW = 'tv_show';
+
     /**
      * {@inheritdoc}
      */
@@ -66,10 +72,9 @@ class Cinema extends \common\base\ActiveRecord
     public function rules()
     {
         return [
-            [['id_kp', 'year', 'film_length', 'start_year', 'end_year', 'serial', 'completed'], 'integer'],
+            [['id_kp', 'year', 'film_length', 'start_year', 'end_year', 'serial', 'completed', 'created_at', 'updated_at', 'deleted_at', 'premiere_ru', 'release_date'], 'integer'],
             [['rating_kinopoisk', 'rating_imdb'], 'number'],
             [['description'], 'string'],
-            [['created_at', 'updated_at', 'deleted_at', 'premiere_ru', 'release_date'], 'safe'],
             [['name_ru', 'name_original', 'poster_url', 'poster_url_preview', 'slogan', 'type', 'rating_mpaa', 'rating_age_limits'], 'string', 'max' => 255],
         ];
     }
@@ -106,6 +111,17 @@ class Cinema extends \common\base\ActiveRecord
             'rating_imdb' => 'Rating Imdb',
         ];
     }
+
+//    public static function defineTypeCinema(\stdClass $cinema)
+//    {
+//        if (array_search('аниме', array_column($cinema->genres, 'genre')) && $cinema->type !== 'TV_SERIES') {
+//            return self::ANIME;
+//        }
+//
+//        if (array_search('мультфильм', array_column($cinema->genres, 'genre'))  && $cinema->type !== 'TV_SERIES') {
+//            return self::CARTOON;
+//        }
+//    }
 
     /**
      * Gets query for [[Awards]].

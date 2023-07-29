@@ -30,6 +30,7 @@ class Genre extends \common\base\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name'], 'trim'],
         ];
     }
 
@@ -62,5 +63,24 @@ class Genre extends \common\base\ActiveRecord
     public function getUserGenreCinemas()
     {
         return $this->hasMany(UserGenreCinema::className(), ['genre_id' => 'id']);
+    }
+
+    /**
+     * @brief Создать запись
+     * @param string $name
+     * @return Genre|false
+     */
+    public static function create(string $name): Genre|bool
+    {
+        try {
+            $genre = new Genre();
+            $genre->name = $name;
+            $genre->saveStrict();
+
+            return $genre;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return false;
+        }
     }
 }

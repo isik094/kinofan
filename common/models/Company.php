@@ -29,6 +29,7 @@ class Company extends \common\base\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name'], 'trim'],
         ];
     }
 
@@ -51,5 +52,24 @@ class Company extends \common\base\ActiveRecord
     public function getDistributions()
     {
         return $this->hasMany(Distribution::className(), ['company_id' => 'id']);
+    }
+
+    /**
+     * @brief Создать название компании
+     * @param string $name
+     * @return Company|bool
+     */
+    public static function create(string $name): Company|bool
+    {
+        try {
+            $company = new Company();
+            $company->name = $name;
+            $company->saveStrict();
+
+            return $company;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return false;
+        }
     }
 }

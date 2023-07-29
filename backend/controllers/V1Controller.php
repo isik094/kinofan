@@ -4,12 +4,13 @@ namespace backend\controllers;
 
 require_once __DIR__ . '/../../vendor/electrolinux/phpquery/phpQuery/phpQuery.php';
 
-use common\apiClass\VideoData;
+use common\apiClass\CinemaData;
+use common\apiClass\CinemaPremieres;
+use common\apiClass\CinemaReleases;
 use common\models\ErrorLog;
 use Yii;
 use backend\models\Parser\CaptchaSolving;
 use backend\models\Parser\ParserMoviePage;
-use common\models\Movies;
 use backend\models\Parser\DataRequest;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -23,14 +24,18 @@ class V1Controller extends Controller
 {
     use DataRequest;
 
-    /**
-     * @throws GuzzleException
-     */
-    public function actionApi()
+    public function actionApi(int $kp_id)
     {
-        $class = new VideoData(301);
-        $film = $class->run();
+//        $class = new CinemaReleases();
+//        $film = $class->start();
+//        $this->print($film);
 
+//        $class = new CinemaPremieres();
+//        $film = $class->start();
+//        $this->print($film);
+
+        $class = new CinemaData($kp_id);
+        $film = $class->run();
         $this->print($film);
     }
 

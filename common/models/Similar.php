@@ -55,4 +55,13 @@ class Similar extends \common\base\ActiveRecord
     {
         return $this->hasOne(Cinema::className(), ['id' => 'cinema_id']);
     }
+
+    /**
+     * @brief Получить похожий фильм
+     * @return Cinema|null
+     */
+    public function getSimilar(): ?Cinema
+    {
+        return Cinema::findOne(['id_kp' => $this->id_kp]);
+    }
 }

@@ -15,8 +15,8 @@ use Yii;
  * @property string|null $sex
  * @property string|null $poster_url
  * @property int|null $growth
- * @property string|null $birthday
- * @property string|null $death
+ * @property int|null $birthday
+ * @property int|null $death
  * @property int|null $age
  * @property string|null $birthplace
  * @property string|null $deathplace
@@ -47,8 +47,7 @@ class Person extends \common\base\ActiveRecord
     {
         return [
             [['person_kp_id'], 'required'],
-            [['person_kp_id', 'growth', 'age', 'has_awards'], 'integer'],
-            [['birthday', 'death'], 'safe'],
+            [['person_kp_id', 'growth', 'age', 'has_awards', 'birthday', 'death'], 'integer'],
             [['web_url', 'name_ru', 'name_en', 'sex', 'poster_url', 'birthplace', 'deathplace', 'profession'], 'string', 'max' => 255],
         ];
     }

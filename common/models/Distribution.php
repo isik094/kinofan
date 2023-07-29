@@ -11,7 +11,7 @@ use Yii;
  * @property int|null $cinema_id
  * @property string|null $type
  * @property string|null $sub_type
- * @property string|null $date
+ * @property int|null $date
  * @property int|null $re_release
  * @property int|null $country_id
  * @property int|null $company_id
@@ -36,8 +36,7 @@ class Distribution extends \common\base\ActiveRecord
     public function rules()
     {
         return [
-            [['cinema_id', 're_release', 'country_id', 'company_id'], 'integer'],
-            [['date'], 'safe'],
+            [['cinema_id', 're_release', 'country_id', 'company_id', 'date'], 'integer'],
             [['type', 'sub_type'], 'string', 'max' => 255],
             [['cinema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cinema::className(), 'targetAttribute' => ['cinema_id' => 'id']],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['company_id' => 'id']],

@@ -14,7 +14,7 @@ use Yii;
  * @property string|null $name_ru
  * @property string|null $name_en
  * @property string|null $synopsis
- * @property string|null $release_date
+ * @property int|null $release_date
  *
  * @property Cinema $cinema
  */
@@ -34,8 +34,7 @@ class Season extends \common\base\ActiveRecord
     public function rules()
     {
         return [
-            [['cinema_id', 'season_number', 'episode_number'], 'integer'],
-            [['release_date'], 'safe'],
+            [['cinema_id', 'season_number', 'episode_number', 'release_date'], 'integer'],
             [['name_ru', 'name_en', 'synopsis'], 'string', 'max' => 255],
             [['cinema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cinema::className(), 'targetAttribute' => ['cinema_id' => 'id']],
         ];

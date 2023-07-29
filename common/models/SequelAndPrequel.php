@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $cinema_id
  * @property string|null $relation_type
+ * @property int|null $id_kp
  *
  * @property Cinema $cinema
  */
@@ -30,7 +31,7 @@ class SequelAndPrequel extends \common\base\ActiveRecord
     {
         return [
             [['cinema_id'], 'required'],
-            [['cinema_id'], 'integer'],
+            [['cinema_id', 'id_kp'], 'integer'],
             [['relation_type'], 'string', 'max' => 255],
             [['cinema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cinema::className(), 'targetAttribute' => ['cinema_id' => 'id']],
         ];
@@ -45,6 +46,7 @@ class SequelAndPrequel extends \common\base\ActiveRecord
             'id' => 'ID',
             'cinema_id' => 'Cinema ID',
             'relation_type' => 'Relation Type',
+            'id_kp' => 'ID KP',
         ];
     }
 

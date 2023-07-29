@@ -17,6 +17,14 @@ use Yii;
  */
 class CinemaFacts extends \common\base\ActiveRecord
 {
+    public const FACT = 'fact';
+    public const BLOOPER = 'blooper';
+
+    public static array $typeFact = [
+        self::FACT => 'Интересный факт о фильме',
+        self::BLOOPER => 'Ошибка в фильме',
+    ];
+
     /**
      * {@inheritdoc}
      */

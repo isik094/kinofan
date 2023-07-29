@@ -67,4 +67,25 @@ class CinemaGenre extends \common\base\ActiveRecord
     {
         return $this->hasOne(Genre::className(), ['id' => 'genre_id']);
     }
+
+    /**
+     * @brief Создать запись фильма и его жанров
+     * @param Cinema $cinema
+     * @param Genre $genre
+     * @return CinemaGenre|false
+     */
+    public static function create(Cinema $cinema, Genre $genre): bool|CinemaGenre
+    {
+        try {
+            $cinemaGenre = new CinemaGenre();
+            $cinemaGenre->cinema_id = $cinema->id;
+            $cinemaGenre->genre_id = $genre->id;
+            $cinemaGenre->saveStrict();
+
+            return $cinemaGenre;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return false;
+        }
+    }
 }

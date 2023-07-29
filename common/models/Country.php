@@ -31,6 +31,7 @@ class Country extends \common\base\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 255],
+            [['name'], 'trim'],
         ];
     }
 
@@ -73,5 +74,23 @@ class Country extends \common\base\ActiveRecord
     public function getUserCountryCinemas()
     {
         return $this->hasMany(UserCountryCinema::className(), ['country_id' => 'id']);
+    }
+
+    /**
+     * @param string $name
+     * @return Country|bool
+     */
+    public static function create(string $name): Country|bool
+    {
+        try {
+            $country = new Country();
+            $country->name = $name;
+            $country->saveStrict();
+
+            return $country;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return false;
+        }
     }
 }

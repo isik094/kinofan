@@ -8,8 +8,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use yii\helpers\FileHelper;
 
-class Kinopoiskapiunofficial
+class KinopoiskApiUnofficial
 {
     /**
      * @brief Получить данные о конкретном актере
@@ -52,7 +53,7 @@ class Kinopoiskapiunofficial
      * @param int $year
      * @param string $month
      * @param int|null $page
-     * @return object|void
+     * @return object|void|null
      * @throws GuzzleException
      */
     public function getFilmReleases(int $year, string $month, ?int $page = 1)
@@ -62,7 +63,11 @@ class Kinopoiskapiunofficial
                 'query' => ['year' => $year, 'month' => $month, 'page' => $page],
             ]);
 
-            if ($response->getStatusCode() === 200) return $this->jsonDecodeBody($response);
+            if ($response?->getStatusCode() === 200) {
+                return $this?->jsonDecodeBody($response);
+            }
+
+            return null;
         } catch (\Exception $e) {
             ErrorLog::createLog($e);
         }
@@ -79,7 +84,7 @@ class Kinopoiskapiunofficial
         try {
             $response = $this->sendRequest(Yii::$app->params['kinopoiskapiunofficial']['host_v2_1'], "films/{$kp_id}/sequels_and_prequels");
 
-            if ($response->getStatusCode() === 200) return (object)json_decode($response->getBody()->getContents(), true);
+            if ($response?->getStatusCode() === 200) return (object)json_decode($response?->getBody()?->getContents(), true);
         } catch (\Exception $e) {
             ErrorLog::createLog($e);
         }
@@ -256,7 +261,7 @@ class Kinopoiskapiunofficial
         try {
             $response = $this->sendRequest(Yii::$app->params['kinopoiskapiunofficial']['host_v2_2'], "films/{$kp_id}");
 
-            if ($response->getStatusCode() === 200) return $this->jsonDecodeBody($response);
+            if ($response?->getStatusCode() === 200) return $this->jsonDecodeBody($response);
         } catch (\Exception $e) {
             ErrorLog::createLog($e);
         }
@@ -294,6 +299,68 @@ class Kinopoiskapiunofficial
             return $client->request('GET', $uri, $params);
         } catch (\Exception $e) {
             ErrorLog::createLog($e);
+        }
+    }
+
+    /**
+     * @brief Сохранить файл
+     * @param string|null $url
+     * @param int $kp_id
+     * @return string|null
+     */
+    protected static function uploadCinemaFile(?string $url, int $kp_id): ?string
+    {
+        try {
+            if ($url === null) {
+                return null;
+            }
+
+            $aliasDir = Yii::getAlias('@uploads');
+            $path = "/cinema/{$kp_id}/";
+            FileHelper::createDirectory($aliasDir . $path);
+            $filename = time() . '_' . uniqid() . '.jpg';
+            $fullPath = $aliasDir . $path . $filename;
+            $fileContents = file_get_contents($url);
+
+            if (file_put_contents($fullPath, $fileContents)) {
+                return $path . $filename;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return null;
+        }
+    }
+
+    /**
+     * @brief Сохранить файл
+     * @param string|null $url
+     * @param int $kp_id
+     * @return string|null
+     */
+    protected static function uploadPersonFile(?string $url, int $kp_id): ?string
+    {
+        try {
+            if ($url === null) {
+                return null;
+            }
+
+            $aliasDir = Yii::getAlias('@uploads');
+            $path = "/person/{$kp_id}/";
+            FileHelper::createDirectory($aliasDir . $path);
+            $filename = time() . '_' . uniqid() . '.jpg';
+            $fullPath = $aliasDir . $path . $filename;
+            $fileContents = file_get_contents($url);
+
+            if (file_put_contents($fullPath, $fileContents)) {
+                return $path . $filename;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            ErrorLog::createLog($e);
+            return null;
         }
     }
 }
