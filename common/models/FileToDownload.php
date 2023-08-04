@@ -93,7 +93,7 @@ class FileToDownload extends ActiveRecord
      * @return string
      * @throws \Exception
      */
-    public function getLink()
+    public function getLink(): string
     {
         if (!isset(Yii::$app->params['fileToDownloadUrl'])) {
             throw new \Exception('fileToDownloadUrl is not defined in params');
