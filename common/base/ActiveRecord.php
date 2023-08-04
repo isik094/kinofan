@@ -1,8 +1,10 @@
 <?php
 namespace common\base;
 
+use Yii;
 use api\components\Markdown;
 use api\models\SearchAttributeRules;
+use common\models\FileToDownload;
 use yii\validators\InlineValidator;
 use yii\validators\NumberValidator;
 use yii\web\BadRequestHttpException;
@@ -259,5 +261,34 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 }
             }
         }
+    }
+
+    /**
+     * @brief Вернуть одноразовую ссылку на файл
+     * @param string $attribute
+     * @return string|null
+     * @throws \Exception
+     */
+    public function uploadsLink(string $attribute): ?string
+    {
+        if ($this->$attribute) {
+            $path = Yii::getAlias('@uploads' . $this->$attribute);
+            if (file_exists($path)) {
+                return $this->getPublicLink($path);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @brief Вернет одноразовые ссылки для файла
+     * @param string $fullPath
+     * @return string
+     * @throws \Exception
+     */
+    public function getPublicLink(string $fullPath): string
+    {
+        return FileToDownload::create($fullPath)->getLink();
     }
 }
