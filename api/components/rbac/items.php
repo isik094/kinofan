@@ -4,11 +4,6 @@ return [
         'type' => 1,
         'description' => 'Администратор',
         'actions' => [
-            'auth' => [
-                'login' => true,
-                'register' => true,
-                'refresh' => true,
-            ],
             'user' => [
                 'logout' => true,
                 'index' => true,
@@ -19,8 +14,16 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
-            'test' => [
-                'test' => true,
+            'auth' => [
+                'login' => true,
+                'register' => true,
+                'refresh' => true,
+            ],
+            'cinema' => [
+                'index' => true,
+                'view' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
             ],
         ]
     ],
@@ -28,11 +31,6 @@ return [
         'type' => 1,
         'description' => 'Пользователь',
         'actions' => [
-            'auth' => [
-                'login' => true,
-                'register' => true,
-                'refresh' => true,
-            ],
             'user' => [
                 'logout' => true,
                 'index' => true,
@@ -43,8 +41,16 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
-            'test' => [
-                'test' => true,
+            'auth' => [
+                'login' => true,
+                'register' => true,
+                'refresh' => true,
+            ],
+            'cinema' => [
+                'index' => true,
+                'view' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
             ],
         ]
     ],

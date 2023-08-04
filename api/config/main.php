@@ -57,15 +57,6 @@ return [
                 //v1
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/test'],
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'POST ' => 'test',
-                        'OPTIONS test' => 'options',
-                    ]
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
                     'controller' => ['v1/file'],
                     'pluralize' => false,
                     'extraPatterns' => [
@@ -93,6 +84,21 @@ return [
                     'extraPatterns' => [
                         'DELETE logout' => 'logout',
                         'OPTIONS logout' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/cinema'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                        'GET /<id:\w+>' => 'view',
+                        'OPTIONS view' => 'options',
+                        'GET get-search-attributes' => 'get-search-attributes',
+                        'OPTIONS get-search-attributes' => 'options',
+                        'GET get-sort-attributes' => 'get-sort-attributes',
+                        'OPTIONS get-sort-attributes' => 'options',
                     ]
                 ],
             ],
