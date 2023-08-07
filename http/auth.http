@@ -1,0 +1,25 @@
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "andrey@mail.ru",
+  "password": "12345678"
+}
+
+
+###
+POST {{host}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "1seSXoHn2a1mvq-oQh_xPaquZ1dtTJGmkKgbKAo8bftxk7vGSrf-g9Hi0HytY-qpnXmaYGM6v6rQDzxrvUzcUxnP4Hntux8EXkWMTD9IfafIxE3zNLLJ9Vi0jzGHs7DOH5p2k6UK_wJq-y1SRgpgJuXLTSUi6SpZSNtg5iyFjfcDA6h8vLE7lgQSas4Nga0vKelmfGTo"
+}
+
+###
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "andrey@mail.ru",
+  "password": "12345678"
+}

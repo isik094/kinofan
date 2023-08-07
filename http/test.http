@@ -1,0 +1,6 @@
+POST {{host}}/test
+Content-Type: application/json
+
+{}
+
+###
