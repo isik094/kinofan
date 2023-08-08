@@ -291,4 +291,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         return FileToDownload::create($fullPath)->getLink();
     }
+
+    /**
+     * @brief Разбить строку с запятыми на массив
+     * @param string $attribute
+     * @return array
+     */
+    public function splitStrToArray(string $attribute): array
+    {
+        return explode(',', $attribute);
+    }
 }
