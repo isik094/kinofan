@@ -5,6 +5,34 @@ namespace common\models;
 use Yii;
 
 /**
+ * @OA\Schema(
+ *  schema="Cinema",
+ *  type="object",
+ *  @OA\Property(property="id", type="integer", example="1", description="ID кино"),
+ *  @OA\Property(property="id_kp", type="integer", example="1", description="ID кинопоиска"),
+ *  @OA\Property(property="name_ru", type="string", example="Матрица", description="Название кино на русском"),
+ *  @OA\Property(property="name_original", type="string", example="Matrix", description="Оригинальное название"),
+ *  @OA\Property(property="poster_url", type="string", example="https://kinofan.api/v1/file?uuid=rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC", description="Ссылка на постер"),
+ *  @OA\Property(property="poster_url_preview", type="string", example="https://kinofan.api/v1/file?uuid=rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC", description="Ссылка на превью"),
+ *  @OA\Property(property="rating_kinopoisk", type="float", example="8.2", description="Рейтинг кино на кинопоиске"),
+ *  @OA\Property(property="year", type="integer", example="2023", description="Год"),
+ *  @OA\Property(property="film_length", type="integer", example="120", description="Продолжительность"),
+ *  @OA\Property(property="slogan", type="string", example="Добро пожаловать в реальный мир", description="Слоган"),
+ *  @OA\Property(property="description", type="string", example="Жизнь Томаса Андерсона разделена на две части: днём он-самый обычный офисный работник, получающий нагоняи от начальства, а ночью превращается в хакера по имени Нео, и нет места в сети, куда он бы не смог проникнуть. Но однажды всё меняется. Томас узнаёт ужасающую правду о реальности.", description="Описание"),
+ *  @OA\Property(property="type", type="string", example="movie", description="Тип", enum={movie, series, cartoon, anime, tv_show}),
+ *  @OA\Property(property="rating_mpaa", type="string", example="r", description="Рейтинг MPAA"),
+ *  @OA\Property(property="rating_age_limits", type="string", example="age16", description="Возрастной лимит"),
+ *  @OA\Property(property="start_year", type="integer", example="1691150253", description="Старт"),
+ *  @OA\Property(property="end_year", type="integer", example="1691150253", description="Конец"),
+ *  @OA\Property(property="serial", type="integer", example="0", description="Сериал"),
+ *  @OA\Property(property="completed", type="integer", example="0", description="Окончен или нет (для сериалов)"),
+ *  @OA\Property(property="completed", type="integer", example="0", description="Окончен или нет (для сериалов)"),
+ *  @OA\Property(property="created_at", type="integer", example="1691150253", description="Время создания"),
+ *  @OA\Property(property="premiere_ru", type="integer", example="1691150253", description="Время премьеры в РФ"),
+ *  @OA\Property(property="release_date", type="integer", example="1691150253", description="Время цифрового релиза"),
+ *  @OA\Property(property="rating_imdb", type="float", example="1691150253", description="Рейтинг IMDB"),
+ * )
+ *
  * This is the model class for table "cinema".
  *
  * @property int $id

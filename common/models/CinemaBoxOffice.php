@@ -5,6 +5,16 @@ namespace common\models;
 use Yii;
 
 /**
+ * @OA\Schema(
+ *  schema="CinemaBoxOffice",
+ *  type="object",
+ *   @OA\Property(property="id", type="integer", example="1", description="ID бюджета и сборов"),
+ *   @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *   @OA\Property(property="type", type="string", example="BUDGET", description="Тип"),
+ *   @OA\Property(property="amount", type="float", example="63000000", description="Сумма"),
+ *   @OA\Property(property="symbol", type="string", example="$", description="Символ"),
+ * )
+ *
  * This is the model class for table "cinema_box_office".
  *
  * @property int $id

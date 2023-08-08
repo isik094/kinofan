@@ -5,6 +5,16 @@ namespace common\models;
 use Yii;
 
 /**
+ * @OA\Schema(
+ *  schema="AwardPerson",
+ *  type="object",
+ *   @OA\Property(property="id", type="integer", example="1", description="ID награды персоны"),
+ *   @OA\Property(property="award_id", type="integer", example="1", description="ID награды"),
+ *   @OA\Property(property="person_id", type="integer", example="3", description="ID персоны"),
+ *   @OA\Property(property="age", type="integer", example="25", description="Возраст"),
+ *   @OA\Property(property="profession", type="string", example="Режиссер", description="Профессия"),
+ * )
+ *
  * This is the model class for table "award_person".
  *
  * @property int $id
