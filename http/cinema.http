@@ -2,5 +2,5 @@ GET {{host}}/cinema/1
 Accept: application/json
 
 ###
-GET {{host}}/cinema?type=FILM&cinemaGenres=1
+GET {{host}}/cinema?countries=1,2
 Accept: application/json
