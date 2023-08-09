@@ -294,11 +294,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
     /**
      * @brief Разбить строку с запятыми на массив
-     * @param string $attribute
-     * @return array
+     * @param string|null $attribute
+     * @return array|null
      */
-    public function splitStrToArray(string $attribute): array
+    public function splitStrToArray(?string $attribute): ?array
     {
-        return explode(',', $attribute);
+        return $attribute ? explode(',', $attribute) : null;
     }
 }
