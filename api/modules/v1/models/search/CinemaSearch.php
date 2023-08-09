@@ -8,7 +8,7 @@ use yii\db\ActiveQuery;
 use common\models\Cinema;
 use api\models\SearchAttributeRules;
 
-class CinemaSearch extends \common\models\Cinema
+class CinemaSearch extends Cinema
 {
     /**
      * @var string

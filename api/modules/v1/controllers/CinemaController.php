@@ -24,7 +24,7 @@ class CinemaController extends ApiWithSearchController
     /**
      * @inheritDoc
      */
-    public function getSearchModel()
+    public function getSearchModel(): CinemaSearch
     {
         return new CinemaSearch();
     }
