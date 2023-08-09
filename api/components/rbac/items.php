@@ -30,6 +30,11 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
+            'product' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
         ]
     ],
     'user' => [
@@ -58,6 +63,11 @@ return [
                 'get-sort-attributes' => true,
             ],
             'similar' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
+            'product' => [
                 'index' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
