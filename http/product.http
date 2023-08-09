@@ -1,0 +1,2 @@
+GET {{host}}/product?cinema_id=3
+Accept: application/json
