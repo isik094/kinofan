@@ -20,5 +20,8 @@ return [
             'key' => 'SECRET-KEY',  //typically a long random string
             'jwtValidationData' => \common\components\JwtValidationData::class,
         ],
+        'formatter' => [
+            'defaultTimeZone' => 'Europe/Moscow',
+        ],
     ],
 ];
