@@ -25,6 +25,11 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
+            'similar' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
         ]
     ],
     'user' => [
@@ -49,6 +54,11 @@ return [
             'cinema' => [
                 'index' => true,
                 'view' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
+            'similar' => [
+                'index' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
