@@ -20,6 +20,11 @@ use Yii;
  */
 class Comment extends \common\base\ActiveRecord
 {
+    /** @var int На рассмотрении */
+    const UNDER_CONSIDERATION = 0;
+    /** @var int Одобрен */
+    const APPROVED = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -37,6 +42,7 @@ class Comment extends \common\base\ActiveRecord
             [['cinema_id', 'user_id', 'parent_id', 'created_at', 'status'], 'integer'],
             [['parent_id'], 'required'],
             [['text'], 'string', 'max' => 600],
+            [['status'], 'in', 'range' => [self::UNDER_CONSIDERATION, self::APPROVED]],
             [['cinema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cinema::className(), 'targetAttribute' => ['cinema_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
