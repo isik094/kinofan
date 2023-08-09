@@ -6,7 +6,7 @@ use common\models\Similar;
 use yii\db\ActiveQuery;
 use api\models\SearchAttributeRules;
 
-class SimilarSearch extends \common\models\Similar
+class SimilarSearch extends Similar
 {
     /**
      * @inheritDoc
