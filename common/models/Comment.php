@@ -12,7 +12,8 @@ use Yii;
  * @property int|null $user_id
  * @property int $parent_id
  * @property string|null $text
- * @property string|null $created_at
+ * @property int|null $created_at
+ * @property int|null $status
  *
  * @property Cinema $cinema
  * @property User $user
@@ -33,9 +34,8 @@ class Comment extends \common\base\ActiveRecord
     public function rules()
     {
         return [
-            [['cinema_id', 'user_id', 'parent_id'], 'integer'],
+            [['cinema_id', 'user_id', 'parent_id', 'created_at', 'status'], 'integer'],
             [['parent_id'], 'required'],
-            [['created_at'], 'safe'],
             [['text'], 'string', 'max' => 600],
             [['cinema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cinema::className(), 'targetAttribute' => ['cinema_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -54,6 +54,7 @@ class Comment extends \common\base\ActiveRecord
             'parent_id' => 'Parent ID',
             'text' => 'Text',
             'created_at' => 'Created At',
+            'status' => 'Status',
         ];
     }
 
