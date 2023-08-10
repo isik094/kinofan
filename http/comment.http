@@ -1,0 +1,3 @@
+###
+GET {{host}}/comment?cinema_id=2
+Accept: application/json
