@@ -201,11 +201,11 @@ class ApiController extends Controller
     }
 
     /**
-     * @brief убирает лишние данные из строки base64
+     * @brief Убирает лишние данные из строки base64
      * @param string $base64
      * @return string
      */
-    public function base64formatter($base64)
+    public function base64formatter(string $base64): string
     {
         $exp = explode(',', $base64);
         return array_pop($exp);
@@ -218,7 +218,7 @@ class ApiController extends Controller
      * @param array $attributes
      * @return array
      */
-    protected function makeObjects(array $objects, array $attributes)
+    protected function makeObjects(array $objects, array $attributes): array
     {
         $result = [];
         foreach ($objects as $object) {
@@ -233,7 +233,7 @@ class ApiController extends Controller
      * @param array $attributes
      * @return \stdClass
      */
-    protected function makeObject(ActiveRecord $object, array $attributes)
+    protected function makeObject(ActiveRecord $object, array $attributes): \stdClass
     {
         $object->formatter();
 
@@ -261,9 +261,9 @@ class ApiController extends Controller
      * @brief Соберет данные для указанного ключа в зависимости от того, что передано
      * @param $attrObject
      * @param ActiveRecord $object
-     * @return array|\stdClass|string
+     * @return array|string|\stdClass|ActiveRecord|null
      */
-    private function _makeData($attrObject, ActiveRecord $object)
+    private function _makeData($attrObject, ActiveRecord $object): array|string|\stdClass|ActiveRecord|null
     {
         if ($attrObject instanceof ApiFunction) {
             if ($attrObject->wayToObject) {
@@ -310,9 +310,9 @@ class ApiController extends Controller
      * @brief Получает конечный объект через геттеры
      * @param array|string $way
      * @param ActiveRecord $object
-     * @return mixed|ActiveRecord
+     * @return mixed
      */
-    private function getFiniteObject($way, ActiveRecord $object)
+    private function getFiniteObject(array|string $way, ActiveRecord $object): mixed
     {
         if (is_array($way)) {
             $result = $object;
@@ -335,17 +335,13 @@ class ApiController extends Controller
      * @param string $attr
      * @return mixed
      */
-    private function _get($object, $attr)
+    private function _get(object $object, string $attr): mixed
     {
         if (!isset($object->id)) {
             return $object->$attr;
         }
 
-        if (isset($this->_getters[get_class($object)][$object->id][$attr])) {
-            return $this->_getters[get_class($object)][$object->id][$attr];
-        } else {
-            return $this->_getters[get_class($object)][$object->id][$attr] = $object->$attr;
-        }
+        return $this->_getters[get_class($object)][$object->id][$attr] ?? ($this->_getters[get_class($object)][$object->id][$attr] = $object->$attr);
     }
 
     /**
@@ -354,28 +350,13 @@ class ApiController extends Controller
      * @param ApiFunction $apiFunction
      * @return mixed
      */
-    private function _runFunc($object, ApiFunction $apiFunction)
+    private function _runFunc(object $object, ApiFunction $apiFunction): mixed
     {
         if (!isset($object->id) || !$apiFunction->enableCache) {
             return call_user_func_array([$object, $apiFunction->function], $apiFunction->args);
         }
 
-        if (isset($this->_funcResults[get_class($object)][$object->id][$apiFunction->function])) {
-            return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function];
-        } else {
-            return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function] = call_user_func_array([$object, $apiFunction->function], $apiFunction->args);
-        }
-    }
-
-    /**
-     * @brief Проверить есть ли доступ к методу в публичном контроллере
-     * @return void
-     * @throws ForbiddenHttpException
-     */
-    public function checkActionAccess()
-    {
-        if (!User::getCurrent()) {
-            throw new ForbiddenHttpException('У Вас нет прав доступа');
-        }
+        return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function]
+            ?? ($this->_funcResults[get_class($object)][$object->id][$apiFunction->function] = call_user_func_array([$object, $apiFunction->function], $apiFunction->args));
     }
 }
