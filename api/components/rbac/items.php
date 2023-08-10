@@ -1,6 +1,6 @@
 <?php
 return [
-    'admin' => [
+    \common\models\User::ROLE_ADMIN => [
         'type' => 1,
         'description' => 'Администратор',
         'actions' => [
@@ -35,9 +35,17 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
+            'comment' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
+            'review' => [
+                'create' => true,
+            ],
         ]
     ],
-    'user' => [
+    \common\models\User::ROLE_USER => [
         'type' => 1,
         'description' => 'Пользователь',
         'actions' => [
@@ -71,6 +79,14 @@ return [
                 'index' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
+            ],
+            'comment' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
+            'review' => [
+                'create' => true,
             ],
         ]
     ],

@@ -127,6 +127,28 @@ return [
                         'OPTIONS get-sort-attributes' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/comment'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                        'GET get-search-attributes' => 'get-search-attributes',
+                        'OPTIONS get-search-attributes' => 'options',
+                        'GET get-sort-attributes' => 'get-sort-attributes',
+                        'OPTIONS get-sort-attributes' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/review'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST ' => 'create',
+                        'OPTIONS create' => 'options',
+                    ]
+                ],
             ],
         ],
     ],
