@@ -366,4 +366,16 @@ class ApiController extends Controller
             return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function] = call_user_func_array([$object, $apiFunction->function], $apiFunction->args);
         }
     }
+
+    /**
+     * @brief Проверить есть ли доступ к методу в публичном контроллере
+     * @return void
+     * @throws ForbiddenHttpException
+     */
+    public function checkActionAccess()
+    {
+        if (!User::getCurrent()) {
+            throw new ForbiddenHttpException('У Вас нет прав доступа');
+        }
+    }
 }
