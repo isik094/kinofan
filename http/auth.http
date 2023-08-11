@@ -12,7 +12,7 @@ POST {{host}}/auth/refresh
 Content-Type: application/json
 
 {
-  "refreshToken": "1seSXoHn2a1mvq-oQh_xPaquZ1dtTJGmkKgbKAo8bftxk7vGSrf-g9Hi0HytY-qpnXmaYGM6v6rQDzxrvUzcUxnP4Hntux8EXkWMTD9IfafIxE3zNLLJ9Vi0jzGHs7DOH5p2k6UK_wJq-y1SRgpgJuXLTSUi6SpZSNtg5iyFjfcDA6h8vLE7lgQSas4Nga0vKelmfGTo"
+  "refreshToken": "QxTXIwrrdNDg_ved9ZrVCd2GSk3HxUIEM94FunX7Gul-2cj_F4UVgC8WIMGo9Nz4-lQwUeT-ro7K2YEZsDOD9zVQGXo0FUmwwmCqfWEPSbdGmsV9a8geWTb553aAp9ZmB7mlOUmVySiq9UOrbxwNT21XaagQrBJ8uHngzynOjGKQVBd50TiUYjSIBk4Wodv0eI0BXF4H"
 }
 
 ###
@@ -20,6 +20,6 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "andrey@mail.ru",
+  "username": "vasya@mail.com",
   "password": "12345678"
 }

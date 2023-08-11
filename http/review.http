@@ -1,0 +1,9 @@
+POST {{host}}/review
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IlVOSVFVRS1KV1QtSURFTlRJRklFUiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmV4YW1wbGUuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2Zyb250ZW5kLmV4YW1wbGUuY29tIiwianRpIjoiVU5JUVVFLUpXVC1JREVOVElGSUVSIiwiaWF0IjoxNjkxNzQ1ODQyLCJleHAiOjE2OTE3NDYxNDIsInVpZCI6Mn0.Kh5YfyRbGEzS4fupu54HvBShnojvsBgRnkC3j4CMD3E
+
+{
+  "cinema_id": 1,
+  "text": "мне",
+  "parent_id": 10
+}
