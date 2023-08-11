@@ -6,7 +6,6 @@ Content-Type: application/json
   "password": "12345678"
 }
 
-
 ###
 POST {{host}}/auth/refresh
 Content-Type: application/json
