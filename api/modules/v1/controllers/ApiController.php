@@ -211,6 +211,7 @@ class ApiController extends Controller
         return array_pop($exp);
     }
 
+
     /**
      * @brief Массив атрибутов для множества объектов одного класса.
      * Может быть ассоциативным и нет. Если массив ассоциативный, то ключи будут использовать в качестве названий аргументов результирующего объекта
@@ -218,7 +219,7 @@ class ApiController extends Controller
      * @param array $attributes
      * @return array
      */
-    protected function makeObjects(array $objects, array $attributes): array
+    protected function makeObjects(array $objects, array $attributes)
     {
         $result = [];
         foreach ($objects as $object) {
@@ -233,7 +234,7 @@ class ApiController extends Controller
      * @param array $attributes
      * @return \stdClass
      */
-    protected function makeObject(ActiveRecord $object, array $attributes): \stdClass
+    protected function makeObject(ActiveRecord $object, array $attributes)
     {
         $object->formatter();
 
@@ -261,9 +262,9 @@ class ApiController extends Controller
      * @brief Соберет данные для указанного ключа в зависимости от того, что передано
      * @param $attrObject
      * @param ActiveRecord $object
-     * @return array|string|\stdClass|ActiveRecord|null
+     * @return array|\stdClass|string
      */
-    private function _makeData($attrObject, ActiveRecord $object): array|string|\stdClass|ActiveRecord|null
+    private function _makeData($attrObject, ActiveRecord $object)
     {
         if ($attrObject instanceof ApiFunction) {
             if ($attrObject->wayToObject) {
@@ -310,9 +311,9 @@ class ApiController extends Controller
      * @brief Получает конечный объект через геттеры
      * @param array|string $way
      * @param ActiveRecord $object
-     * @return mixed
+     * @return mixed|ActiveRecord
      */
-    private function getFiniteObject(array|string $way, ActiveRecord $object): mixed
+    private function getFiniteObject($way, ActiveRecord $object)
     {
         if (is_array($way)) {
             $result = $object;
@@ -335,13 +336,17 @@ class ApiController extends Controller
      * @param string $attr
      * @return mixed
      */
-    private function _get(object $object, string $attr): mixed
+    private function _get($object, $attr)
     {
         if (!isset($object->id)) {
             return $object->$attr;
         }
 
-        return $this->_getters[get_class($object)][$object->id][$attr] ?? ($this->_getters[get_class($object)][$object->id][$attr] = $object->$attr);
+        if (isset($this->_getters[get_class($object)][$object->id][$attr])) {
+            return $this->_getters[get_class($object)][$object->id][$attr];
+        } else {
+            return $this->_getters[get_class($object)][$object->id][$attr] = $object->$attr;
+        }
     }
 
     /**
@@ -350,13 +355,16 @@ class ApiController extends Controller
      * @param ApiFunction $apiFunction
      * @return mixed
      */
-    private function _runFunc(object $object, ApiFunction $apiFunction): mixed
+    private function _runFunc($object, ApiFunction $apiFunction)
     {
         if (!isset($object->id) || !$apiFunction->enableCache) {
             return call_user_func_array([$object, $apiFunction->function], $apiFunction->args);
         }
 
-        return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function]
-            ?? ($this->_funcResults[get_class($object)][$object->id][$apiFunction->function] = call_user_func_array([$object, $apiFunction->function], $apiFunction->args));
+        if (isset($this->_funcResults[get_class($object)][$object->id][$apiFunction->function])) {
+            return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function];
+        } else {
+            return $this->_funcResults[get_class($object)][$object->id][$apiFunction->function] = call_user_func_array([$object, $apiFunction->function], $apiFunction->args);
+        }
     }
 }
