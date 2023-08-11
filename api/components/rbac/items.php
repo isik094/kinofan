@@ -43,6 +43,11 @@ return [
             'review' => [
                 'create' => true,
             ],
+            'person-cinema' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
+            ],
         ]
     ],
     \common\models\User::ROLE_USER => [
@@ -87,6 +92,11 @@ return [
             ],
             'review' => [
                 'create' => true,
+            ],
+            'person-cinema' => [
+                'index' => true,
+                'get-search-attributes' => true,
+                'get-sort-attributes' => true,
             ],
         ]
     ],

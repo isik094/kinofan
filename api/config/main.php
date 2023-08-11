@@ -149,6 +149,15 @@ return [
                         'OPTIONS create' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/person-cinema'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                    ]
+                ],
             ],
         ],
     ],
