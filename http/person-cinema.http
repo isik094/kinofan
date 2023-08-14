@@ -1,2 +1,6 @@
+GET {{host}}/person-cinema/1
+Accept: application/json
+
+###
 GET {{host}}/person-cinema
 Accept: application/json
