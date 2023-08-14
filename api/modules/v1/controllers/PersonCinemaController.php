@@ -51,7 +51,7 @@ class PersonCinemaController extends ApiWithSearchController
      * @param int $id
      * @return ApiResponse|ApiResponseException
      */
-    public function actionPerson(int $id): ApiResponse|ApiResponseException
+    public function actionView(int $id): ApiResponse|ApiResponseException
     {
         try {
             return new ApiResponse(false, $this->makeObject($this->findPerson($id), $this->personData()));
