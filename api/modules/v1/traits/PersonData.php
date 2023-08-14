@@ -3,9 +3,12 @@
 namespace api\modules\v1\traits;
 
 use api\components\ApiFunction;
+use api\components\ApiGetter;
 
 trait PersonData
 {
+    use SpouseData, PersonFactData;
+
     /**
      * @brief Person Data
      * @return array
@@ -27,6 +30,8 @@ trait PersonData
             'deathplace',
             'has_awards',
             'profession',
+            'spouses' => new ApiGetter('spouses', $this->spouseData()),
+            'facts' => new ApiGetter('personFacts', $this->personFactData()),
         ];
     }
 }
