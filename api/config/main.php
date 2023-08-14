@@ -156,6 +156,12 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS index' => 'options',
+                        'GET /<id:\w+>' => 'view',
+                        'OPTIONS view' => 'options',
+                        'GET get-search-attributes' => 'get-search-attributes',
+                        'OPTIONS get-search-attributes' => 'options',
+                        'GET get-sort-attributes' => 'get-sort-attributes',
+                        'OPTIONS get-sort-attributes' => 'options',
                     ]
                 ],
             ],
