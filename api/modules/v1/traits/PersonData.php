@@ -7,13 +7,13 @@ use api\components\ApiGetter;
 
 trait PersonData
 {
-    use SpouseData, PersonFactData;
+    use SpouseData, PersonFactData, CinemaPersonData;
 
     /**
      * @brief Person Data
      * @return array
      */
-    public function personData()
+    public function personData(): array
     {
         return [
             'id',
@@ -32,6 +32,7 @@ trait PersonData
             'profession',
             'spouses' => new ApiGetter('spouses', $this->spouseData()),
             'facts' => new ApiGetter('personFacts', $this->personFactData()),
+            'cinema' => new ApiGetter('cinemaPeople', $this->cinemaPersonData())
         ];
     }
 }
