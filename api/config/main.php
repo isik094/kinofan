@@ -158,6 +158,8 @@ return [
                         'OPTIONS index' => 'options',
                         'GET /<id:\w+>' => 'view',
                         'OPTIONS view' => 'options',
+                        'GET best-cinema/<id:\w+>' => 'best-cinema',
+                        'OPTIONS best-cinema' => 'options',
                         'GET get-search-attributes' => 'get-search-attributes',
                         'OPTIONS get-search-attributes' => 'options',
                         'GET get-sort-attributes' => 'get-sort-attributes',

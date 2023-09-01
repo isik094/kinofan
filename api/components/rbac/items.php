@@ -46,6 +46,7 @@ return [
             'person-cinema' => [
                 'index' => true,
                 'view' => true,
+                'best-cinema' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
@@ -97,6 +98,7 @@ return [
             'person-cinema' => [
                 'index' => true,
                 'view' => true,
+                'best-cinema' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
