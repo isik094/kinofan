@@ -1,3 +1,7 @@
+GET {{host}}/person-cinema/best-cinema/1
+Accept: application/json
+
+###
 GET {{host}}/person-cinema/1
 Accept: application/json
 
