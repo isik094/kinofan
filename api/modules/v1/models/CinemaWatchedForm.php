@@ -49,10 +49,15 @@ class CinemaWatchedForm extends Model
      */
     public function existsValidate($attribute): void
     {
+        $exist = false;
         foreach ($this->cinema_ids as $cinema_id) {
             if (!Cinema::findOne($cinema_id)) {
-                $this->addError($attribute, 'Нет такого фильма в списке');
+                $exist = true;
             }
+        }
+
+        if ($exist === true) {
+            $this->addError($attribute, 'Нет такого фильма в списке');
         }
     }
 
@@ -70,11 +75,15 @@ class CinemaWatchedForm extends Model
 
     /**
      * @brief Создать записи о просмотренных фильмов пользователя
-     * @return bool
+     * @return bool|null
      */
-    public function create(): bool
+    public function create(): ?bool
     {
         try {
+            if ($this->validate()) {
+                return null;
+            }
+
             foreach ($this->cinema_ids as $cinema_id) {
                 $model = new CinemaWatched();
                 $model->cinema_id = $cinema_id;
@@ -85,7 +94,6 @@ class CinemaWatchedForm extends Model
             return true;
         } catch (\Exception $e) {
             ErrorLog::createLog($e);
-
             return false;
         }
     }
