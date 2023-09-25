@@ -166,6 +166,15 @@ return [
                         'OPTIONS get-sort-attributes' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/profile'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST cinema-watched' => 'cinema-watched',
+                        'OPTIONS cinema-watched' => 'options',
+                    ]
+                ],
             ],
         ],
     ],

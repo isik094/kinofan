@@ -50,6 +50,9 @@ return [
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
+            'profile' => [
+                'cinema-watched' => true,
+            ],
         ]
     ],
     \common\models\User::ROLE_USER => [
@@ -101,6 +104,9 @@ return [
                 'best-cinema' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
+            ],
+            'profile' => [
+                'cinema-watched' => true,
             ],
         ]
     ],
