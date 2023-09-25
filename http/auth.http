@@ -11,7 +11,7 @@ POST {{host}}/auth/refresh
 Content-Type: application/json
 
 {
-  "refreshToken": "QxTXIwrrdNDg_ved9ZrVCd2GSk3HxUIEM94FunX7Gul-2cj_F4UVgC8WIMGo9Nz4-lQwUeT-ro7K2YEZsDOD9zVQGXo0FUmwwmCqfWEPSbdGmsV9a8geWTb553aAp9ZmB7mlOUmVySiq9UOrbxwNT21XaagQrBJ8uHngzynOjGKQVBd50TiUYjSIBk4Wodv0eI0BXF4H"
+  "refreshToken": "UAKKNk1V7cJORdtyqYYKkpxncbXr09sdcM0anHPor2ni5G7RKKLGFNcvVEyDmERUjrSHlGQvdGYnaem7XpRMB7Gw95rxXDelSqamxwaJUZC9MxzuL1BllL9VPdKApW_nCXqaWTJrxpgnhfCNLiyAFoEirgik2DPzaQvcQwscbhJFo1F4emYmbhJQJOeBeRigxm4CErdD"
 }
 
 ###
