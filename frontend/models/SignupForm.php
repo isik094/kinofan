@@ -3,6 +3,9 @@
 namespace frontend\models;
 
 use Yii;
+use api\models\UserRole;
+use common\models\Profile;
+use OpenApi\Annotations as OA;
 use yii\base\Model;
 use common\models\User;
 
@@ -53,21 +56,34 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @return User
+     * @return User|null
      * @throws \Exception
      */
-    public function signup(): User
+    public function signup(): ?User
     {
-        $user = new User();
-        $user->username = $this->username;
-        $user->email = $this->username;
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
-        $user->saveStrict();
-        $this->sendEmail($user);
+        if (!$this->validate()) {
+            return null;
+        }
 
-        return $user;
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $user = new User();
+            $user->username = $this->username;
+            $user->email = $this->username;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
+            $user->generateEmailVerificationToken();
+            $user->saveStrict();
+            $this->createProfile($user);
+            $this->createRole($user);
+            $this->sendEmail($user);
+            $transaction->commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -87,5 +103,34 @@ class SignupForm extends Model
             ->setTo($this->username)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+    /**
+     * @brief Создать запись в таблице профиль пользователя
+     * @param User $user
+     * @return bool
+     * @throws \Exception
+     */
+    protected function createProfile(User $user): bool
+    {
+        $profile = new Profile();
+        $profile->user_id = $user->id;
+
+        return $profile->saveStrict();
+    }
+
+    /**
+     * @brief Создать роль пользователя при регистрации
+     * @param User $user
+     * @return bool
+     * @throws \Exception
+     */
+    protected function createRole(User $user): bool
+    {
+        $userRole = new UserRole();
+        $userRole->user_id = $user->id;
+        $userRole->role = User::ROLE_USER;
+
+        return $userRole->saveStrict();
     }
 }
