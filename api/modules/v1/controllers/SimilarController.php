@@ -11,9 +11,9 @@ use api\modules\v1\traits\SimilarData;
 
 class SimilarController extends ApiWithSearchController
 {
-    protected bool $isPrivate = false;
-
     use SimilarData;
+
+    protected bool $isPrivate = false;
 
     /**
      * @inheritDoc

@@ -1,6 +1,8 @@
 <?php
+
 namespace api\modules\v1\controllers;
 
+use OpenApi\Annotations as OA;
 use Yii;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
@@ -106,15 +108,13 @@ class ApiController extends Controller
      * @var bool
      */
     protected bool $isPrivate = true;
-
-    /**
+/**
      * @inheritdoc
      * @return array
      */
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-
         if ($this->isPrivate) {
             $behaviors['authenticator'] = [
                 'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
@@ -131,18 +131,15 @@ class ApiController extends Controller
      * @var array
      */
     protected $ids = [];
-
-    /**
+/**
      * @var array
      */
     private $_getters = [];
-
-    /**
+/**
      * @var array
      */
     private $_funcResults = [];
-
-    /**
+/**
      * @param $action
      * @return bool
      * @throws \Throwable
@@ -152,14 +149,12 @@ class ApiController extends Controller
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: *');
         header('Access-Control-Allow-Methods: *');
-
         try {
             $ip = Yii::$app->request->getUserIP();
-
-            //раскомментировать в случае атак
-//            if (IpBlock::findOne(['ip' => $ip])) {
-//                throw new ForbiddenHttpException();
-//            }
+        //раскомментировать в случае атак
+        //            if (IpBlock::findOne(['ip' => $ip])) {
+        //                throw new ForbiddenHttpException();
+        //            }
 
             if (ArrayHelper::getValue(Yii::$app->params, 'api_log')) {
                 $log = new ApiLog([
@@ -171,12 +166,11 @@ class ApiController extends Controller
                     'ip' => $ip,
                     'created_at' => time(),
                 ]);
-
                 $log->save();
             }
 
             $beforeAction = parent::beforeAction($action);
-            //раскомментировать, если используется rbac
+        //раскомментировать, если используется rbac
             if ($this->isPrivate && !\Yii::$app->request->isOptions) {
                 $component = new RbacComponent(User::getCurrent());
                 if (!$component->can(\Yii::$app->controller->route)) {
@@ -237,12 +231,12 @@ class ApiController extends Controller
     protected function makeObject(ActiveRecord $object, array $attributes)
     {
         $object->formatter();
-
         if (!isset($this->ids[get_class($object)])) {
             $this->ids[get_class($object)] = [];
         }
 
-        if (isset($object->id) && !in_array($object->id, $this->ids[get_class($object)])) { //записываем ID объекта в ids
+        if (isset($object->id) && !in_array($object->id, $this->ids[get_class($object)])) {
+//записываем ID объекта в ids
             $this->ids[get_class($object)][] = $object->id;
         }
 
@@ -284,7 +278,6 @@ class ApiController extends Controller
             return $result;
         } elseif ($attrObject instanceof ApiGetter) {
             $getterResult = $this->getFiniteObject($attrObject->getterName, $object);
-
             if (is_array($getterResult)) {
                 return $this->makeObjects($getterResult, $attrObject->attributes);
             } elseif (is_object($getterResult)) {
@@ -296,7 +289,6 @@ class ApiController extends Controller
             return $attrObject->data;
         } elseif ($attrObject instanceof ApiFromList) {
             $val = $this->getFiniteObject($attrObject->attribute, $object);
-
             if ($attrObject->required) {
                 return $attrObject->list[$val];
             } else {

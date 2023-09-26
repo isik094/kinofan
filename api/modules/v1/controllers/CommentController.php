@@ -11,9 +11,9 @@ use api\modules\v1\traits\CommentData;
 
 class CommentController extends ApiWithSearchController
 {
-    protected bool $isPrivate = false;
-
     use CommentData;
+
+    protected bool $isPrivate = false;
 
     /**
      * @inheritDoc

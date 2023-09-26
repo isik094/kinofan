@@ -7,7 +7,9 @@ use api\components\ApiGetter;
 
 trait PersonData
 {
-    use SpouseData, PersonFactData, CinemaPersonData;
+    use SpouseData;
+    use PersonFactData;
+    use CinemaPersonData;
 
     /**
      * @brief Person Data

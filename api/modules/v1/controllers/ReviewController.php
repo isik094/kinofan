@@ -12,7 +12,8 @@ use common\models\User;
 
 class ReviewController extends ApiController
 {
-    use CommentData, CinemaData;
+    use CommentData;
+    use CinemaData;
 
     /**
      * @brief Создать комментарий

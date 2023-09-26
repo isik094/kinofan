@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use yii\base\Exception;
 use yii\web\ServerErrorHttpException;
 use api\modules\v1\traits\UserData;
@@ -22,7 +23,8 @@ use frontend\models\SignupForm;
  */
 class AuthController extends ApiController
 {
-    use UserData, UserRefreshTokenData;
+    use UserData;
+    use UserRefreshTokenData;
 
     /** @var bool Отключаем аутентификацию для контроллера */
     protected bool $isPrivate = false;
@@ -98,7 +100,7 @@ class AuthController extends ApiController
      *                      property="user",
      *                      type="object",
      *                          @OA\Property(property="id", type="integer", example="1", description="ID пользователя"),
-     *                          @OA\Property(property="username", type="email", example="qwe@gmail.com", description="Никнейм пользователя"),
+     *                          @OA\Property(property="username", type="email",example="qwe@gmail.com", description="Никнейм пользователя"),
      *                          @OA\Property(property="email", type="email", example="qwe@gmail.com", description="Электронная почта пользователя"),
      *                          @OA\Property(property="status", type="integer", example="10", description="Статус пользователя", enum={"0", "9", "10"}),
      *                          @OA\Property(property="statusText", type="string", example="Активен", description="Статус пользователя", enum={"Удален", "Не активен", "Активен"}),
@@ -250,7 +252,6 @@ class AuthController extends ApiController
     {
         $refreshToken = Yii::$app->security->generateRandomString(200);
 
-        // TODO: Don't always regenerate - you could reuse existing one if user already has one with same IP and user agent
         $userRefreshToken = new UserRefreshTokens([
             'user_id' => $user->id,
             'token' => $refreshToken,
@@ -260,7 +261,8 @@ class AuthController extends ApiController
         ]);
 
         if (!$userRefreshToken->save()) {
-            throw new ServerErrorHttpException('Failed to save the refresh token: '. $userRefreshToken->getErrorSummary(true));
+            $errorMessage = "Failed to save the refresh token: {$userRefreshToken->getErrorSummary(true)}";
+            throw new ServerErrorHttpException($errorMessage);
         }
 
         return $userRefreshToken;

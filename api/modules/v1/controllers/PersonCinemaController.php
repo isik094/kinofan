@@ -2,10 +2,10 @@
 
 namespace api\modules\v1\controllers;
 
+use Yii;
 use api\modules\v1\models\BestCinemaPerson;
 use api\modules\v1\traits\CinemaData;
 use common\models\User;
-use Yii;
 use api\modules\v1\traits\PersonCinemaData;
 use api\components\ApiDataPagination;
 use api\components\ApiResponse;
@@ -14,9 +14,10 @@ use api\modules\v1\models\search\PersonCinemaSearch;
 
 class PersonCinemaController extends ApiWithSearchController
 {
-    protected bool $isPrivate = false;
+    use PersonCinemaData;
+    use CinemaData;
 
-    use PersonCinemaData, CinemaData;
+    protected bool $isPrivate = false;
 
     /**
      * @inheritDoc
@@ -57,7 +58,10 @@ class PersonCinemaController extends ApiWithSearchController
     public function actionView(int $id): ApiResponse|ApiResponseException
     {
         try {
-            return new ApiResponse(false, $this->makeObject($this->findPerson($id), $this->personData()));
+            return new ApiResponse(
+                false,
+                $this->makeObject($this->findPerson($id), $this->personData())
+            );
         } catch (\Exception $e) {
             return new ApiResponseException($e);
         }
@@ -74,7 +78,10 @@ class PersonCinemaController extends ApiWithSearchController
             $user = User::getCurrent();
             $bestCinemaPerson = new BestCinemaPerson($user, $id);
 
-            return new ApiResponse(false, $this->makeObjects($bestCinemaPerson->run(), $this->cinemaData()));
+            return new ApiResponse(
+                false,
+                $this->makeObjects($bestCinemaPerson->run(), $this->cinemaData())
+            );
         } catch (\Exception $e) {
             return new ApiResponseException($e);
         }

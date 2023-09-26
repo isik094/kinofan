@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use common\models\User;
 use api\components\ApiResponse;
 use api\components\ApiResponseException;
@@ -82,9 +83,13 @@ class UserController extends ApiController
     {
         try {
             $userRefreshToken = $this->findUserRefreshToken(Yii::$app->request->post('refreshToken'));
-            if (User::getCurrent()->id !== $userRefreshToken->user_id) throw new ForbiddenHttpException('Access is denied');
+            if (User::getCurrent()->id !== $userRefreshToken->user_id) {
+                throw new ForbiddenHttpException('Access is denied');
+            }
 
-            if ($userRefreshToken?->delete()) return new ApiResponse(false, 'Deleted successfully');
+            if ($userRefreshToken?->delete()) {
+                return new ApiResponse(false, 'Deleted successfully');
+            }
 
             return new \yii\web\ServerErrorHttpException('Failed to delete the refresh token.');
         } catch (\Exception $e) {

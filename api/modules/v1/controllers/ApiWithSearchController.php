@@ -1,6 +1,6 @@
 <?php
-namespace api\modules\v1\controllers;
 
+namespace api\modules\v1\controllers;
 
 use api\components\ApiResponse;
 use api\components\ApiSearch;
@@ -15,8 +15,7 @@ abstract class ApiWithSearchController extends ApiController
      * @return ActiveRecord
      */
     abstract public function getSearchModel();
-
-    /**
+/**
      * @brief Возвращает аттрибуты, которые по которым можно осуществлять поиск
      * @return ApiResponse
      * @throws \Exception
@@ -24,7 +23,7 @@ abstract class ApiWithSearchController extends ApiController
     public function actionGetSearchAttributes()
     {
         $searchModel = $this->getSearchModel();
-        /**
+/**
          * @var ActiveRecord $searchModel
          */
 
@@ -73,13 +72,11 @@ abstract class ApiWithSearchController extends ApiController
 
         $limit = (int)$limit;
         $page = (int)$page;
-
         if ($sort) {
             $this->setSort($query, $sort);
         }
 
         $query->addOrderBy(['id' => SORT_DESC]);
-
         $lastPage = null;
         if ($page) {
             $count = $query->count();
@@ -105,7 +102,6 @@ abstract class ApiWithSearchController extends ApiController
         $searchAttributes = $this->getSearchModel()->sortAttributes();
         $sortType = substr($sort, 0, 1) === '-' ? SORT_DESC : SORT_ASC;
         $param = str_replace('-', '', $sort);
-
         if (in_array($param, $searchAttributes)) {
             $query->addOrderBy([$param => $sortType]);
         } elseif (array_key_exists($param, $searchAttributes)) {

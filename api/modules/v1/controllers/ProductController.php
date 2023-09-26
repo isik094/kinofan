@@ -11,9 +11,9 @@ use api\modules\v1\models\search\ProductSearch;
 
 class ProductController extends ApiWithSearchController
 {
-    protected bool $isPrivate = false;
-
     use ProductData;
+
+    protected bool $isPrivate = false;
 
     /**
      * @inheritDoc

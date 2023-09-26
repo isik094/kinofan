@@ -1,4 +1,5 @@
 <?php
+
 namespace api\modules\v1\traits;
 
 use common\models\FileToDownload;
@@ -9,7 +10,7 @@ trait FileToDownloadData
     /**
      * @return array
      */
-    public function fileToDownloadData()
+    public function fileToDownloadData(): array
     {
         return [
             'id',
@@ -22,12 +23,12 @@ trait FileToDownloadData
      * @return FileToDownload|null
      * @throws NotFoundHttpException
      */
-    public function findFileByUuid($uuid)
+    public function findFileByUuid(string $uuid): ?FileToDownload
     {
         if ($model = FileToDownload::findOne(['uuid' => $uuid])) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('File not found');
         }
+
+        throw new NotFoundHttpException('File not found');
     }
 }

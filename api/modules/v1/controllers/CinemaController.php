@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use api\components\ApiDataPagination;
 use api\components\ApiResponse;
 use api\components\ApiResponseException;
@@ -17,9 +18,9 @@ use api\modules\v1\traits\CinemaData;
  */
 class CinemaController extends ApiWithSearchController
 {
-    protected bool $isPrivate = false;
-
     use CinemaData;
+
+    protected bool $isPrivate = false;
 
     /**
      * @inheritDoc

@@ -10,7 +10,7 @@ trait PersonDataDuplicate
      * @brief Person Data
      * @return array
      */
-    public function personDataDuplicate()
+    public function personDataDuplicate(): array
     {
         return [
             'id',
