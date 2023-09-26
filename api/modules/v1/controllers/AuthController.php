@@ -68,7 +68,7 @@ class AuthController extends ApiController
             $model->username = Yii::$app->request->post('username');
             $model->password = Yii::$app->request->post('password');
 
-            if ($model->validate() && $user = $model->signup()) {
+            if ($user = $model->signup()) {
                 return new ApiResponse(false, $this->makeObject($user, $this->userData()));
             }
 

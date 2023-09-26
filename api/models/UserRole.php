@@ -1,13 +1,11 @@
 <?php
+
 namespace api\models;
 
-
+use OpenApi\Annotations as OA;
 use common\base\ActiveRecord;
-use common\models\ErrorLog;
 use common\models\User;
-use Yii;
 use yii\behaviors\TimestampBehavior;
-
 
 /**
  * @OA\Schema(
@@ -32,7 +30,6 @@ use yii\behaviors\TimestampBehavior;
  */
 class UserRole extends ActiveRecord
 {
-
     /**
      * @var User $_user
      */
