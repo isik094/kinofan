@@ -250,21 +250,19 @@ class AuthController extends ApiController
      */
     private function generateRefreshToken(User $user): UserRefreshTokens
     {
-        $refreshToken = Yii::$app->security->generateRandomString(200);
-
         $userRefreshToken = new UserRefreshTokens([
             'user_id' => $user->id,
-            'token' => $refreshToken,
+            'token' => Yii::$app->security->generateRandomString(200),
             'ip' => Yii::$app->request->userIP,
             'user_agent' => Yii::$app->request->userAgent,
             'created_at' => time(),
         ]);
 
-        if (!$userRefreshToken->save()) {
-            $errorMessage = "Failed to save the refresh token: {$userRefreshToken->getErrorSummary(true)}";
-            throw new ServerErrorHttpException($errorMessage);
+        if ($userRefreshToken->save()) {
+            return $userRefreshToken;
         }
 
-        return $userRefreshToken;
+        $errorMessage = "Failed to save the refresh token: {$userRefreshToken->getErrorSummary(true)}";
+        throw new ServerErrorHttpException($errorMessage);
     }
 }
