@@ -201,7 +201,7 @@ class AuthController extends ApiController
             $userRefreshToken = $this->findUserRefreshToken($refreshToken);
             $user = User::findOne(['and', 'id' => $userRefreshToken->user_id, 'status' => User::STATUS_ACTIVE]);
 
-            if (!$user) {
+            if ($user === null) {
                 $userRefreshToken->delete();
                 return new \yii\web\UnauthorizedHttpException('The user is inactive.');
             }

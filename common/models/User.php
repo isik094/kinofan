@@ -1,7 +1,9 @@
 <?php
+
 namespace common\models;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use api\models\UserRole;
 use common\base\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -43,9 +45,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    public const STATUS_DELETED = 0;
+    public const STATUS_INACTIVE = 9;
+    public const STATUS_ACTIVE = 10;
 
     /** @var array|string[] */
     public static array $userStatus = [
@@ -54,8 +56,8 @@ class User extends ActiveRecord implements IdentityInterface
         self::STATUS_ACTIVE => 'Активен',
     ];
 
-    const ROLE_ADMIN = 'admin';
-    const ROLE_USER = 'user';
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_USER = 'user';
 
     /** @var array|string[]  */
     public static array $userRoles = [
@@ -98,7 +100,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param $changedAttributes
      * @return void
      */
-    public function afterSave($insert, $changedAttributes) {
+    public function afterSave($insert, $changedAttributes)
+    {
         if (array_key_exists('password_hash', $changedAttributes)) {
             UserRefreshTokens::deleteAll(['user_id' => $this->id]);
         }
@@ -169,7 +172,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken($token) {
+    public static function findByVerificationToken($token)
+    {
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
