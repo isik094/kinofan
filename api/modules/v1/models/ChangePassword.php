@@ -1,0 +1,69 @@
+<?php
+
+namespace api\modules\v1\models;
+
+use Yii;
+use common\models\User;
+use common\base\Model;
+
+class ChangePassword extends Model
+{
+    /**
+     * @var User
+     */
+    public User $user;
+    /**
+     * @var string
+     */
+    public $currentPassword;
+    /**
+     * @var string
+     */
+    public $newPassword;
+
+    public function rules(): array
+    {
+        return [
+            [['currentPassword', 'newPassword'], 'required'],
+            ['newPassword', 'string', 'max' => 255, 'min' => Yii::$app->params['user.passwordMinLength']],
+            ['currentPassword', 'validatePassword'],
+        ];
+    }
+
+    public function attributeLabels(): array
+    {
+        return [
+            'currentPassword' => 'Старый пароль',
+            'newPassword' => 'Новый пароль',
+        ];
+    }
+
+    /**
+     * @brief Валидация пароля
+     * @param $attribute
+     * @return void
+     */
+    public function validatePassword($attribute): void
+    {
+        if (!$this->user->validatePassword($this->currentPassword)) {
+            $this->addError($attribute, 'Текущий пароль неверный');
+        }
+    }
+
+    /**
+     * @brief Изменить пароль
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function changePassword(): ?bool
+    {
+        if (!$this->validate()) {
+            return null;
+        }
+
+        $this->user->setPassword($this->newPassword);
+        $this->user->generateAuthKey();
+
+        return $this->user->saveStrict();
+    }
+}
