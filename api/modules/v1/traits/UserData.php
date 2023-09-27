@@ -36,8 +36,8 @@ trait UserData
      */
     public function findUser(int $id): User
     {
-        if ($user = User::findOne(['id' => $id, 'status' => User::STATUS_ACTIVE])) {
-            return $user;
+        if (($model = User::findOne(['id' => $id, 'status' => User::STATUS_ACTIVE])) !== null) {
+            return $model;
         }
 
         throw new NotFoundHttpException('Not found');
