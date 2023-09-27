@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 trait UserData
 {
     use UserRoleData;
+    use ProfileTrait;
 
     /**
      * @brief User Data
@@ -24,6 +25,7 @@ trait UserData
             'status',
             'statusText' => new ApiFromList('status', User::$userStatus),
             'created_at',
+            'profile' => new ApiGetter('profile', $this->profileData()),
             'userRoles' => new ApiGetter('userRoles', $this->userRole()),
         ];
     }

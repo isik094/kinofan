@@ -42,6 +42,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $access_token
  *
  * @property UserRole[] $userRoles
+ * @property Profile $profile
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -307,5 +308,32 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $tokenExplode = explode('_', $token);
         return strtotime(date('Y-m-d 23:59:59', (int)$tokenExplode[0])) < time() - 86400;
+    }
+
+    /**
+     * @brief Вернуть профиль пользователя
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile(): \yii\db\ActiveQuery
+    {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Sends confirmation email to user
+     * @return bool whether the email was sent
+     */
+    public function sendEmail(): bool
+    {
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['user' => $this]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($this->username)
+            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->send();
     }
 }
