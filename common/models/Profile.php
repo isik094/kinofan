@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $vk
  * @property string|null $telegram
  * @property string|null $sex
- * @property string|null $birthday
+ * @property int|null $birthday
  *
  * @property User $user
  */
@@ -36,8 +36,7 @@ class Profile extends \common\base\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
-            [['user_id'], 'integer'],
-            [['birthday'], 'safe'],
+            [['user_id', 'birthday'], 'integer'],
             [['surname', 'name', 'patronymic', 'vk', 'telegram', 'sex'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
