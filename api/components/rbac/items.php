@@ -1,4 +1,5 @@
 <?php
+
 return [
     \common\models\User::ROLE_ADMIN => [
         'type' => 1,
@@ -52,6 +53,11 @@ return [
             ],
             'profile' => [
                 'cinema-watched' => true,
+            ],
+            'favorites' => [
+                'index' => true,
+                'add' => true,
+                'delete' => true,
             ],
         ]
     ],
@@ -107,6 +113,11 @@ return [
             ],
             'profile' => [
                 'cinema-watched' => true,
+            ],
+            'favorites' => [
+                'index' => true,
+                'add' => true,
+                'delete' => true,
             ],
         ]
     ],

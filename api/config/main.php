@@ -175,6 +175,19 @@ return [
                         'OPTIONS cinema-watched' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/favorites'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                        'POST ' => 'add',
+                        'OPTIONS add' => 'options',
+                        'DELETE ' => 'delete',
+                        'OPTIONS delete' => 'options',
+                    ]
+                ],
             ],
         ],
     ],
