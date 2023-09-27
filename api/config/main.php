@@ -171,8 +171,12 @@ return [
                     'controller' => ['v1/profile'],
                     'pluralize' => false,
                     'extraPatterns' => [
+                        'PUT /<id:\w+>' => 'update',
+                        'OPTIONS update' => 'update',
                         'POST cinema-watched' => 'cinema-watched',
                         'OPTIONS cinema-watched' => 'options',
+                        'PUT change-password' => 'change-password',
+                        'OPTIONS change-password' => 'options',
                     ]
                 ],
                 [

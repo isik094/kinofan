@@ -52,7 +52,9 @@ return [
                 'get-sort-attributes' => true,
             ],
             'profile' => [
+                'update' => true,
                 'cinema-watched' => true,
+                'change-password' => true,
             ],
             'favorites' => [
                 'index' => true,
@@ -112,7 +114,9 @@ return [
                 'get-sort-attributes' => true,
             ],
             'profile' => [
+                'update' => true,
                 'cinema-watched' => true,
+                'change-password' => true,
             ],
             'favorites' => [
                 'index' => true,
