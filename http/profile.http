@@ -20,16 +20,3 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IlVOSVFVRS1KV1
   "telegram": "user",
   "email": "wocom@mail.ru"
 }
-
-###
-POST {{host}}/profile/cinema-watched
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IlVOSVFVRS1KV1QtSURFTlRJRklFUiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmV4YW1wbGUuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2Zyb250ZW5kLmV4YW1wbGUuY29tIiwianRpIjoiVU5JUVVFLUpXVC1JREVOVElGSUVSIiwiaWF0IjoxNjk1NzE5MzIxLCJleHAiOjE2OTU3MTk2MjEsInVpZCI6Mn0.pf0MsJyRkqwQ5V-wnVdlVFFJCn-AI-6y6WD4mipIjU0
-
-
-{
-  "cinema_ids": [
-    99,
-    105
-  ]
-}

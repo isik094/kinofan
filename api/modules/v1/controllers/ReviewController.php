@@ -17,20 +17,25 @@ class ReviewController extends ApiController
 
     /**
      * @brief Создать комментарий
+     * @param int $cinema_id
      * @return ApiResponse|ApiResponseException
      */
-    public function actionCreate(): ApiResponse|ApiResponseException
+    public function actionCreate(int $cinema_id): ApiResponse|ApiResponseException
     {
         try {
-            $cinema = $this->findCinema(Yii::$app->request->post('cinema_id'));
+            $cinema = $this->findCinema($cinema_id);
+
             $model = new CreateForm();
             $model->user = User::getCurrent();
             $model->cinema = $cinema;
             $model->parent_id = Yii::$app->request->post('parent_id') ?? 0;
             $model->text = Yii::$app->request->post('text');
 
-            if ($model->validate() && $data = $model->create()) {
-                return new ApiResponse(false, $this->makeObject($data, $this->commentData()));
+            if ($data = $model->create()) {
+                return new ApiResponse(
+                    false,
+                    $this->makeObject($data, $this->commentData())
+                );
             }
 
             return new ApiResponse(true, $model->errors);

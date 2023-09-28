@@ -60,8 +60,8 @@ class FavoritesController extends ApiWithSearchController
             $model = new AddFavoritesForm(['user' => $user]);
             $model->cinema_id = $cinema->id;
 
-            if ($model->create()) {
-                return new ApiResponse(false, true);
+            if ($favorites = $model->create()) {
+                return new ApiResponse(false, $favorites);
             }
 
             return new ApiResponse(true, $model->errors);
@@ -72,13 +72,14 @@ class FavoritesController extends ApiWithSearchController
 
     /**
      * @brief Удалить из избранных
+     * @param int $id
      * @return ApiResponse|ApiResponseException
      * @throws \Throwable
      */
-    public function actionDelete(): ApiResponse|ApiResponseException
+    public function actionDelete(int $id): ApiResponse|ApiResponseException
     {
         try {
-            $model = $this->findFavorites(Yii::$app->request->post('id'));
+            $model = $this->findFavorites($id);
             return new ApiResponse(false, (bool)$model->delete());
         } catch (\Exception $e) {
             return new ApiResponseException($e);

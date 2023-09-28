@@ -53,13 +53,16 @@ return [
             ],
             'profile' => [
                 'update' => true,
-                'cinema-watched' => true,
                 'change-password' => true,
             ],
             'favorites' => [
                 'index' => true,
                 'add' => true,
                 'delete' => true,
+            ],
+            'cinema-watched' => [
+                'index' => true,
+                'create' => true,
             ],
         ]
     ],
@@ -115,13 +118,16 @@ return [
             ],
             'profile' => [
                 'update' => true,
-                'cinema-watched' => true,
                 'change-password' => true,
             ],
             'favorites' => [
                 'index' => true,
                 'add' => true,
                 'delete' => true,
+            ],
+            'cinema-watched' => [
+                'index' => true,
+                'create' => true,
             ],
         ]
     ],

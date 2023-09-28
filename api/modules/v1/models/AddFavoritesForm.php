@@ -50,10 +50,10 @@ class AddFavoritesForm extends Model
 
     /**
      * @brief Добавить в избранное фильм
-     * @return bool|null
+     * @return Favorites|null
      * @throws \Exception
      */
-    public function create(): ?bool
+    public function create(): ?Favorites
     {
         if (!$this->validate()) {
             return null;
@@ -62,7 +62,8 @@ class AddFavoritesForm extends Model
         $favorites = new Favorites();
         $favorites->user_id = $this->user->id;
         $favorites->cinema_id = $this->cinema_id;
+        $favorites->saveStrict();
 
-        return $favorites->saveStrict();
+        return $favorites;
     }
 }

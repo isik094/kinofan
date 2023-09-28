@@ -47,7 +47,7 @@ class UserController extends ApiController
      *         description="Запрос выполнен успешно",
      *         @OA\JsonContent(oneOf={@OA\Schema(
      *             @OA\Property(property="error", type="boolean", example="false", description="Булево обозначение ошибки"),
-     *             @OA\Property(property="message", type="string", example="Deleted successfully", description="Текст сообщения ошибки на стороне сервера"),
+     *             @OA\Property(property="message", type="boolean", example="true", description="Текст сообщения ошибки на стороне сервера"),
      *             @OA\Property(property="status", type="integer", example="200", description="Код ошибки"),
      *         )}),
      *     ),
@@ -82,13 +82,14 @@ class UserController extends ApiController
     public function actionLogout(): ServerErrorHttpException|ApiResponse|ApiResponseException
     {
         try {
+            $user = User::getCurrent();
             $userRefreshToken = $this->findUserRefreshToken(Yii::$app->request->post('refreshToken'));
-            if (User::getCurrent()->id !== $userRefreshToken->user_id) {
+            if ($user->id !== $userRefreshToken?->user_id) {
                 throw new ForbiddenHttpException('Access is denied');
             }
 
             if ($userRefreshToken?->delete()) {
-                return new ApiResponse(false, 'Deleted successfully');
+                return new ApiResponse(false, true);
             }
 
             return new \yii\web\ServerErrorHttpException('Failed to delete the refresh token.');

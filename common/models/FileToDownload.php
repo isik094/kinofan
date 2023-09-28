@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use Yii;
 use common\base\ActiveRecord;
 use common\helpers\FileHelper;
-use Yii;
 
 /**
  * This is the model class for table "file_to_download".

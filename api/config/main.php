@@ -60,7 +60,7 @@ return [
                     'controller' => ['v1/file'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET ' => 'index',
+                        'GET <uuid>' => 'index',
                         'OPTIONS ' => 'options',
                     ]
                 ],
@@ -93,7 +93,7 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS index' => 'options',
-                        'GET /<id:\w+>' => 'view',
+                        'GET /<id:\d+>' => 'view',
                         'OPTIONS view' => 'options',
                         'GET get-search-attributes' => 'get-search-attributes',
                         'OPTIONS get-search-attributes' => 'options',
@@ -145,7 +145,7 @@ return [
                     'controller' => ['v1/review'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST ' => 'create',
+                        'POST /<id:\d+>' => 'create',
                         'OPTIONS create' => 'options',
                     ]
                 ],
@@ -156,7 +156,7 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS index' => 'options',
-                        'GET /<id:\w+>' => 'view',
+                        'GET /<id:\d+>' => 'view',
                         'OPTIONS view' => 'options',
                         'GET best-cinema/<id:\w+>' => 'best-cinema',
                         'OPTIONS best-cinema' => 'options',
@@ -171,10 +171,8 @@ return [
                     'controller' => ['v1/profile'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'PUT /<id:\w+>' => 'update',
+                        'PUT /<id:\d+>' => 'update',
                         'OPTIONS update' => 'update',
-                        'POST cinema-watched' => 'cinema-watched',
-                        'OPTIONS cinema-watched' => 'options',
                         'PUT change-password' => 'change-password',
                         'OPTIONS change-password' => 'options',
                     ]
@@ -188,8 +186,19 @@ return [
                         'OPTIONS index' => 'options',
                         'POST ' => 'add',
                         'OPTIONS add' => 'options',
-                        'DELETE ' => 'delete',
+                        'DELETE /<id:\d+>' => 'delete',
                         'OPTIONS delete' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/cinema-watched'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                        'POST ' => 'create',
+                        'OPTIONS create' => 'options',
                     ]
                 ],
             ],

@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "comment".
  *
@@ -21,9 +19,9 @@ use Yii;
 class Comment extends \common\base\ActiveRecord
 {
     /** @var int На рассмотрении */
-    const UNDER_CONSIDERATION = 0;
+    public const UNDER_CONSIDERATION = 0;
     /** @var int Одобрен */
-    const APPROVED = 1;
+    public const APPROVED = 1;
 
     /**
      * {@inheritdoc}

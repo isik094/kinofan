@@ -29,7 +29,7 @@ class CreateForm extends \yii\base\Model
     /**
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['parent_id', 'text'], 'required'],
@@ -43,7 +43,7 @@ class CreateForm extends \yii\base\Model
      * @param $attribute
      * @return void
      */
-    public function parentValidate($attribute)
+    public function parentValidate($attribute): void
     {
         if ($this->parent_id > 0 && !Comment::findOne($this->parent_id)) {
             $this->addError($attribute, 'Не существует комментария, на который вы отвечаете');
@@ -53,7 +53,7 @@ class CreateForm extends \yii\base\Model
     /**
      * @return string[]
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'parent_id' => 'ID родителя',
@@ -63,11 +63,15 @@ class CreateForm extends \yii\base\Model
 
     /**
      * @brief Создать комментарий к фильму
-     * @return Comment|bool
+     * @return Comment|bool|null
      */
-    public function create(): Comment|bool
+    public function create(): Comment|bool|null
     {
         try {
+            if (!$this->validate()) {
+                return null;
+            }
+
             $model = new Comment();
             $model->cinema_id = $this->cinema->id;
             $model->user_id = $this->user->id;

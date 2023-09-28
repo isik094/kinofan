@@ -26,7 +26,6 @@ class CinemaWatchedForm extends Model
     {
         return [
             ['cinema_ids', 'required'],
-            ['cinema_ids', 'countValidate'],
             ['cinema_ids', 'each', 'rule' => ['integer']],
             ['cinema_ids', 'existsValidate'],
         ];
@@ -57,19 +56,7 @@ class CinemaWatchedForm extends Model
         }
 
         if ($exist === true) {
-            $this->addError($attribute, 'Нет такого фильма в списке');
-        }
-    }
-
-    /**
-     * @brief Валидация на существование id в массиве
-     * @param $attribute
-     * @return void
-     */
-    public function countValidate($attribute): void
-    {
-        if (count($this->cinema_ids) === 0) {
-            $this->addError($attribute, 'Массив кино не может быть пустым');
+            $this->addError($attribute, 'Нет одного из фильмов списка');
         }
     }
 
@@ -80,11 +67,19 @@ class CinemaWatchedForm extends Model
     public function create(): ?bool
     {
         try {
-            if ($this->validate()) {
+            if (!$this->validate()) {
                 return null;
             }
 
             foreach ($this->cinema_ids as $cinema_id) {
+                if (
+                    CinemaWatched::findOne([
+                    'user_id' => $this->user->id,
+                    'cinema_id' => $cinema_id])
+                ) {
+                    continue;
+                }
+
                 $model = new CinemaWatched();
                 $model->cinema_id = $cinema_id;
                 $model->user_id = $this->user->id;
