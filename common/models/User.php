@@ -42,6 +42,9 @@ use yii\behaviors\TimestampBehavior;
  * @property string $access_token
  *
  * @property UserRole[] $userRoles
+ * @property UserCountryCinema[] $userCountryCinema
+ * @property UserGenreCinema[] $userGenreCinema
+ * @property UserHobbies[] $userHobbiesCinema
  * @property Profile $profile
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -332,8 +335,32 @@ class User extends ActiveRecord implements IdentityInterface
                 ['user' => $this]
             )
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->username)
+            ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserCountryCinema(): \yii\db\ActiveQuery
+    {
+        return $this->hasMany(UserCountryCinema::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserGenreCinema(): \yii\db\ActiveQuery
+    {
+        return $this->hasMany(UserGenreCinema::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserHobbiesCinema(): \yii\db\ActiveQuery
+    {
+        return $this->hasMany(UserHobbies::className(), ['user_id' => 'id']);
     }
 }

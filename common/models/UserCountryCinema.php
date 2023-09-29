@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "user_country_cinema".
  *
@@ -53,7 +51,7 @@ class UserCountryCinema extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCountry()
+    public function getCountry(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
@@ -63,7 +61,7 @@ class UserCountryCinema extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }

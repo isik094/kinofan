@@ -171,10 +171,12 @@ return [
                     'controller' => ['v1/profile'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'PUT /<id:\d+>' => 'update',
+                        'PUT ' => 'update',
                         'OPTIONS update' => 'update',
                         'PUT change-password' => 'change-password',
                         'OPTIONS change-password' => 'options',
+                        'PUT personalization' => 'personalization',
+                        'OPTIONS personalization' => 'options',
                     ]
                 ],
                 [

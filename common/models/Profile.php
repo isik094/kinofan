@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "profile".
  *
@@ -21,10 +19,13 @@ use Yii;
  */
 class Profile extends \common\base\ActiveRecord
 {
+    public const MALE = 'male';
+    public const FEMALE = 'FEMALE';
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'profile';
     }
@@ -32,7 +33,7 @@ class Profile extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id'], 'required'],
@@ -45,7 +46,7 @@ class Profile extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -65,7 +66,7 @@ class Profile extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }

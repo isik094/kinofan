@@ -11,6 +11,9 @@ trait UserData
 {
     use UserRoleData;
     use ProfileTrait;
+    use UserCountryCinemaTrait;
+    use UserGenreCinemaTrait;
+    use UserHobbiesCinemaTrait;
 
     /**
      * @brief User Data
@@ -26,6 +29,9 @@ trait UserData
             'statusText' => new ApiFromList('status', User::$userStatus),
             'created_at',
             'profile' => new ApiGetter('profile', $this->profileData()),
+            'personalizationCountry' => new ApiGetter('userCountryCinema', $this->userCountryCinemaData()),
+            'personalizationGenre' => new ApiGetter('userGenreCinema', $this->userGenreCinemaData()),
+            'personalizationHobbies' => new ApiGetter('userHobbiesCinema', $this->userHobbiesCinemaData()),
             'userRoles' => new ApiGetter('userRoles', $this->userRole()),
         ];
     }

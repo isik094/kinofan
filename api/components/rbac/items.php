@@ -118,6 +118,7 @@ return [
             ],
             'profile' => [
                 'update' => true,
+                'personalization' => true,
                 'change-password' => true,
             ],
             'favorites' => [

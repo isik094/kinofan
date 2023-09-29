@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "country".
  *
@@ -19,7 +17,7 @@ class Country extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'country';
     }
@@ -27,7 +25,7 @@ class Country extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'string', 'max' => 255],
@@ -38,7 +36,7 @@ class Country extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -51,7 +49,7 @@ class Country extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCinemaCountries()
+    public function getCinemaCountries(): \yii\db\ActiveQuery
     {
         return $this->hasMany(CinemaCountry::className(), ['country_id' => 'id']);
     }
@@ -61,7 +59,7 @@ class Country extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getDistributions()
+    public function getDistributions(): \yii\db\ActiveQuery
     {
         return $this->hasMany(Distribution::className(), ['country_id' => 'id']);
     }
@@ -71,7 +69,7 @@ class Country extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserCountryCinemas()
+    public function getUserCountryCinemas(): \yii\db\ActiveQuery
     {
         return $this->hasMany(UserCountryCinema::className(), ['country_id' => 'id']);
     }

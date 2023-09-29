@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "user_genre_cinema".
  *
@@ -53,7 +51,7 @@ class UserGenreCinema extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGenre()
+    public function getGenre(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Genre::className(), ['id' => 'genre_id']);
     }
@@ -63,7 +61,7 @@ class UserGenreCinema extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }

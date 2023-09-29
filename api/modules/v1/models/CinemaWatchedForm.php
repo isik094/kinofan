@@ -48,14 +48,14 @@ class CinemaWatchedForm extends Model
      */
     public function existsValidate($attribute): void
     {
-        $exist = false;
+        $doesNotExist = false;
         foreach ($this->cinema_ids as $cinema_id) {
             if (!Cinema::findOne($cinema_id)) {
-                $exist = true;
+                $doesNotExist = true;
             }
         }
 
-        if ($exist === true) {
+        if ($doesNotExist === true) {
             $this->addError($attribute, 'Нет одного из фильмов списка');
         }
     }

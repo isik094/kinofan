@@ -67,7 +67,11 @@ class ProfileUpdateForm extends Model
      */
     public function existValidate($attribute): void
     {
-        $user = User::findOne(['email' => $this->email]);
+        $user = User::findOne(['and',
+            ['<>', 'id', $this->user->id],
+            ['email' => $this->email]
+        ]);
+
         if ($user) {
             $this->addError($attribute, 'Электронная почта уже используется');
         }
@@ -88,8 +92,8 @@ class ProfileUpdateForm extends Model
         try {
             $this->user->username = $this->email;
             $this->user->email = $this->email;
-            $this->user->sendEmail();
             $this->user->saveStrict();
+
 
             $profile = $this->user->profile;
             $profile->surname = $this->surname;
@@ -99,6 +103,10 @@ class ProfileUpdateForm extends Model
             $profile->telegram = $this->telegram;
             $profile->saveStrict();
             $transaction->commit();
+
+            if ($this->email) {
+                $this->user->sendEmail();
+            }
 
             return $this->user;
         } catch (\Exception $e) {
