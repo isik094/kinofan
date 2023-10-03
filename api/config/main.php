@@ -203,6 +203,17 @@ return [
                         'OPTIONS create' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/account'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST get-code' => 'get-code',
+                        'OPTIONS get-code' => 'options',
+                        'PUT reset-password' => 'reset-password',
+                        'OPTIONS reset-password' => 'options',
+                    ]
+                ],
             ],
         ],
     ],

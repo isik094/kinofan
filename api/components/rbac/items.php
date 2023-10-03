@@ -64,6 +64,10 @@ return [
                 'index' => true,
                 'create' => true,
             ],
+            'account' => [
+                'get-code' => true,
+                'reset-password' => true,
+            ],
         ]
     ],
     \common\models\User::ROLE_USER => [
@@ -129,6 +133,10 @@ return [
             'cinema-watched' => [
                 'index' => true,
                 'create' => true,
+            ],
+            'account' => [
+                'get-code' => true,
+                'reset-password' => true,
             ],
         ]
     ],
