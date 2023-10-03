@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use console\models\CodeCleanup;
 use console\models\CronTask;
 use console\models\Dump;
 use console\models\FileToDownloadCleaner;
@@ -10,16 +11,16 @@ use yii\console\Controller;
 
 class CronController extends Controller
 {
-    const EVERY_MINUTE = 'every_minute';
-    const EVERY_HOUR = 'every_hour';
-    const EVERY_DAY = 'every_day';
-    const EVERY_WEEK = 'every_week';
-    const EVERY_MONTH = 'every_month';
-    const EVERY_YEAR = 'every_year';
-    const EVERY_DAY_AT_8_O_CLOCK = 'every_day_at_8_o_clock';
-    const EVERY_10_MINUTES = 'every_10_minutes';
-    const EVERY_MONDAY_AT_11_CLOCK = 'every_monday_at_11_clock';
-    const EVERY_3_MINUTES = 'every_3_minutes';
+    public const EVERY_MINUTE = 'every_minute';
+    public const EVERY_HOUR = 'every_hour';
+    public const EVERY_DAY = 'every_day';
+    public const EVERY_WEEK = 'every_week';
+    public const EVERY_MONTH = 'every_month';
+    public const EVERY_YEAR = 'every_year';
+    public const EVERY_DAY_AT_8_O_CLOCK = 'every_day_at_8_o_clock';
+    public const EVERY_10_MINUTES = 'every_10_minutes';
+    public const EVERY_MONDAY_AT_11_CLOCK = 'every_monday_at_11_clock';
+    public const EVERY_3_MINUTES = 'every_3_minutes';
 
     /**
      * @brief Список задач и время их выполнения
@@ -33,6 +34,7 @@ class CronController extends Controller
             ],
             self::EVERY_HOUR => [
                 FileToDownloadCleaner::class,
+                CodeCleanup::class,
             ],
             self::EVERY_DAY => [
                 Dump::class,

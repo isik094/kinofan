@@ -1,6 +1,6 @@
 <?php
-namespace console\models;
 
+namespace console\models;
 
 use common\models\ErrorLog;
 use common\models\FileToDownload;

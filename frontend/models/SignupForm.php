@@ -76,7 +76,7 @@ class SignupForm extends Model
             $user->saveStrict();
             $this->createProfile($user);
             $this->createRole($user);
-            $user->sendEmail();
+            $this->sendEmail($user);
             $transaction->commit();
 
             return $user;
@@ -113,5 +113,23 @@ class SignupForm extends Model
         $userRole->role = User::ROLE_USER;
 
         return $userRole->saveStrict();
+    }
+
+    /**
+     * Sends confirmation email to user
+     * @return bool whether the email was sent
+     */
+    public function sendEmail(User $user): bool
+    {
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($user->email)
+            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->send();
     }
 }

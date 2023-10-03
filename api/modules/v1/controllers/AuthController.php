@@ -4,15 +4,13 @@ namespace api\modules\v1\controllers;
 
 use Yii;
 use OpenApi\Annotations as OA;
-use yii\base\Exception;
-use yii\web\ServerErrorHttpException;
+use api\modules\v1\models\JWT;
 use api\modules\v1\traits\UserData;
 use api\components\ApiResponse;
 use api\components\ApiResponseException;
 use api\modules\v1\traits\UserRefreshTokenData;
 use common\models\User;
 use common\models\LoginForm;
-use common\models\UserRefreshTokens;
 use frontend\models\SignupForm;
 
 /**
@@ -134,8 +132,8 @@ class AuthController extends ApiController
             $model->password = Yii::$app->request->post('password');
 
             if ($user = $model->login()) {
-                $accessToken = $this->generateJwt($user);
-                $userRefreshToken = $this->generateRefreshToken($user);
+                $accessToken = JWT::generateJwt($user);
+                $userRefreshToken = JWT::generateRefreshToken($user);
 
                 $response = [
                     'user' => $this->makeObject($user, $this->userData()),
@@ -203,7 +201,7 @@ class AuthController extends ApiController
 
             if ($user) {
                 $response = [
-                    'accessToken' => (string)$this->generateJwt($user),
+                    'accessToken' => (string)JWT::generateJwt($user),
                     'refreshToken' => $refreshToken,
                 ];
 
@@ -215,54 +213,5 @@ class AuthController extends ApiController
         } catch (\Exception $e) {
             return new ApiResponseException($e);
         }
-    }
-
-    /**
-     * @brief Генерация JWT токена
-     * @param User $user
-     * @return mixed
-     */
-    private function generateJwt(User $user): mixed
-    {
-        $jwt = Yii::$app->jwt;
-        $signer = $jwt->getSigner('HS256');
-        $key = $jwt->getKey();
-        $time = time();
-
-        $jwtParams = Yii::$app->params['jwt'];
-
-        return $jwt->getBuilder()
-            ->issuedBy($jwtParams['issuer'])
-            ->permittedFor($jwtParams['audience'])
-            ->identifiedBy($jwtParams['id'], true)
-            ->issuedAt($time)
-            ->expiresAt($time + $jwtParams['expire'])
-            ->withClaim('uid', $user->id)
-            ->getToken($signer, $key);
-    }
-
-    /**
-     * @brief Обновления токена
-     * @param User $user
-     * @return UserRefreshTokens
-     * @throws Exception
-     * @throws ServerErrorHttpException
-     */
-    private function generateRefreshToken(User $user): UserRefreshTokens
-    {
-        $userRefreshToken = new UserRefreshTokens([
-            'user_id' => $user->id,
-            'token' => Yii::$app->security->generateRandomString(200),
-            'ip' => Yii::$app->request->userIP,
-            'user_agent' => Yii::$app->request->userAgent,
-            'created_at' => time(),
-        ]);
-
-        if ($userRefreshToken->save()) {
-            return $userRefreshToken;
-        }
-
-        $errorMessage = "Failed to save the refresh token: {$userRefreshToken->getErrorSummary(true)}";
-        throw new ServerErrorHttpException($errorMessage);
     }
 }

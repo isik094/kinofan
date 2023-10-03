@@ -1,4 +1,5 @@
 <?php
+
 namespace console\models;
 
 use Yii;

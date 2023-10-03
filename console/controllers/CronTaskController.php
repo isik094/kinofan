@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Renat
@@ -7,17 +8,16 @@
  */
 
 namespace console\controllers;
+
 use console\models\CronTask;
 use yii\console\Controller;
-use Yii;
 
-
-class CronTaskController  extends Controller
+class CronTaskController extends Controller
 {
     /**
      * @brief Запуск поочередного выполнения задач
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         if ($task = CronTask::getAnotherTask()) {
             if ($task->run()) {
