@@ -93,7 +93,7 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS index' => 'options',
-                        'GET /<id:\d+>' => 'view',
+                        'GET /<id>' => 'view',
                         'OPTIONS view' => 'options',
                         'GET get-search-attributes' => 'get-search-attributes',
                         'OPTIONS get-search-attributes' => 'options',
@@ -145,7 +145,7 @@ return [
                     'controller' => ['v1/review'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST /<id:\d+>' => 'create',
+                        'POST /<id>' => 'create',
                         'OPTIONS create' => 'options',
                     ]
                 ],
@@ -156,9 +156,9 @@ return [
                     'extraPatterns' => [
                         'GET ' => 'index',
                         'OPTIONS index' => 'options',
-                        'GET /<id:\d+>' => 'view',
+                        'GET /<id>' => 'view',
                         'OPTIONS view' => 'options',
-                        'GET best-cinema/<id:\w+>' => 'best-cinema',
+                        'GET best-cinema/<id>' => 'best-cinema',
                         'OPTIONS best-cinema' => 'options',
                         'GET get-search-attributes' => 'get-search-attributes',
                         'OPTIONS get-search-attributes' => 'options',
@@ -188,7 +188,7 @@ return [
                         'OPTIONS index' => 'options',
                         'POST ' => 'add',
                         'OPTIONS add' => 'options',
-                        'DELETE /<id:\d+>' => 'delete',
+                        'DELETE /<id>' => 'delete',
                         'OPTIONS delete' => 'options',
                     ]
                 ],
