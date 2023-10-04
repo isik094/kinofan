@@ -15,6 +15,7 @@ trait SelectionTrait
         return [
             'id',
             'name',
+            'image_path' => new ApiFunction('uploadsLink', ['image_path'], null, false, null),
             'cinemas' => new ApiFunction('getCinemaList'),
         ];
     }
