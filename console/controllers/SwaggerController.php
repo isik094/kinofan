@@ -10,11 +10,11 @@ use OpenApi\Generator;
 
 class SwaggerController extends Controller
 {
-    const API_DECLARATION = '@api/modules/v1/controllers';
-    const SCAN_DIRECTORY = '@common/models';
-    const COMPONENTS_DIRECTORY = '@common/components';
-    const FRONTEND_MODELS = '@frontend/models';
-    const API_MODELS = '@api/models';
+    public const API_DECLARATION = '@api/modules/v1/controllers';
+    public const SCAN_DIRECTORY = '@common/models';
+    public const COMPONENTS_DIRECTORY = '@common/components';
+    public const FRONTEND_MODELS = '@frontend/models';
+    public const API_MODELS = '@api/models';
 
     /**
      * @brief Сгенерировать автоматическую документацию для API
