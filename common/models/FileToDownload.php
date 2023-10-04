@@ -99,7 +99,7 @@ class FileToDownload extends ActiveRecord
             throw new \Exception('fileToDownloadUrl is not defined in params');
         }
 
-        return Yii::$app->params['fileToDownloadUrl'] . '/file?uuid=' . $this->uuid;
+        return Yii::$app->params['fileToDownloadUrl'] . "/file/{$this->uuid}";
     }
 
     /**

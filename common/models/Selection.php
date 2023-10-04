@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "selection".
  *
@@ -17,7 +15,7 @@ class Selection extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'selection';
     }
@@ -25,7 +23,7 @@ class Selection extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'string', 'max' => 255],
@@ -35,7 +33,7 @@ class Selection extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -48,7 +46,7 @@ class Selection extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCinemaSelections()
+    public function getCinemaSelections(): \yii\db\ActiveQuery
     {
         return $this->hasMany(CinemaSelection::className(), ['selection_id' => 'id']);
     }
