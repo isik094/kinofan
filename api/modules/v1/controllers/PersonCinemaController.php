@@ -5,7 +5,6 @@ namespace api\modules\v1\controllers;
 use Yii;
 use api\modules\v1\models\BestCinemaPerson;
 use api\modules\v1\traits\CinemaData;
-use common\models\User;
 use api\modules\v1\traits\PersonCinemaData;
 use api\components\ApiDataPagination;
 use api\components\ApiResponse;
@@ -75,12 +74,13 @@ class PersonCinemaController extends ApiWithSearchController
     public function actionBestCinema(int $id): ApiResponse|ApiResponseException
     {
         try {
-            $user = User::getCurrent();
-            $bestCinemaPerson = new BestCinemaPerson($user, $id);
+            $person = $this->findPerson($id);
+            $bestCinemaPerson = new BestCinemaPerson($person);
+            $bestCinemas = $bestCinemaPerson->run();
 
             return new ApiResponse(
                 false,
-                $this->makeObjects($bestCinemaPerson->run(), $this->cinemaData())
+                $this->makeObjects($bestCinemas, $this->cinemaData())
             );
         } catch (\Exception $e) {
             return new ApiResponseException($e);
