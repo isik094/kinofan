@@ -214,6 +214,17 @@ return [
                         'OPTIONS reset-password' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/selection'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                        'GET /<id>' => 'view',
+                        'OPTIONS view' => 'options',
+                    ]
+                ],
             ],
         ],
     ],

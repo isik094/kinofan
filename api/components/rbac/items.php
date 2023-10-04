@@ -68,6 +68,10 @@ return [
                 'get-code' => true,
                 'reset-password' => true,
             ],
+            'selection' => [
+                'index' => true,
+                'view' => true,
+            ],
         ]
     ],
     \common\models\User::ROLE_USER => [
@@ -137,6 +141,10 @@ return [
             'account' => [
                 'get-code' => true,
                 'reset-password' => true,
+            ],
+            'selection' => [
+                'index' => true,
+                'view' => true,
             ],
         ]
     ],
