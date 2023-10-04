@@ -2,11 +2,11 @@
 
 namespace api\modules\v1\models;
 
-use common\models\ConfirmEmailCode;
 use Yii;
+use common\models\ConfirmEmailCode;
 use common\models\User;
 use common\base\Model;
-use api\modules\components\Code;
+use api\components\Code;
 
 class UpdatePasswordForm extends Model
 {

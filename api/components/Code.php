@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\components;
+namespace api\components;
 
 use yii\db\ActiveRecord;
 use common\models\ConfirmEmailCode;

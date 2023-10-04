@@ -6,7 +6,7 @@ use Yii;
 use common\base\Model;
 use common\models\ConfirmEmailCode;
 use common\models\User;
-use api\modules\components\Code;
+use api\components\Code;
 
 class SendCodeForm extends Model
 {
