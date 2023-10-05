@@ -22,6 +22,8 @@ class Comment extends \common\base\ActiveRecord
     public const UNDER_CONSIDERATION = 0;
     /** @var int Одобрен */
     public const APPROVED = 1;
+    /** @var int  */
+    public const DEFAULT_PARENT_ID = 0;
 
     /**
      * {@inheritdoc}

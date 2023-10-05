@@ -1,6 +1,6 @@
 <?php
-namespace api\components;
 
+namespace api\components;
 
 use yii\db\ActiveRecord;
 
@@ -20,7 +20,7 @@ class ApiDataPagination
      * @param ActiveRecord[] $models
      * @param int $lastPage
      */
-    public function __construct(array $models, $lastPage)
+    public function __construct(array $models, int $lastPage)
     {
         $this->models = $models;
         $this->lastPage = $lastPage;

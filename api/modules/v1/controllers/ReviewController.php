@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use common\models\Comment;
 use api\components\ApiResponse;
 use api\components\ApiResponseException;
 use api\modules\v1\models\comment\CreateForm;
@@ -28,7 +29,7 @@ class ReviewController extends ApiController
             $model = new CreateForm();
             $model->user = User::getCurrent();
             $model->cinema = $cinema;
-            $model->parent_id = Yii::$app->request->post('parent_id') ?? 0;
+            $model->parent_id = Yii::$app->request->post('parent_id') ?? Comment::DEFAULT_PARENT_ID;
             $model->text = Yii::$app->request->post('text');
 
             if ($data = $model->create()) {

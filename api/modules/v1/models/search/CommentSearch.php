@@ -51,7 +51,11 @@ class CommentSearch extends Comment
     {
         $this->loadSearchParams($params);
         $this->validateSearch();
-        $query = Comment::find();
+        $query = Comment::find()
+            ->where([
+                'parent_id' => parent::DEFAULT_PARENT_ID,
+                'status' => parent::APPROVED,
+            ]);
 
         $query->andFilterWhere([
             'id' => $this->id,

@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use api\modules\v1\models\CommentList;
 use api\components\ApiDataPagination;
 use api\components\ApiResponse;
 use api\components\ApiResponseException;
@@ -40,7 +41,12 @@ class CommentController extends ApiWithSearchController
 
             $data = $this->makeObjects($apiSearch->query->all(), $this->commentData());
 
-            return new ApiResponse(false, new ApiDataPagination($data, $apiSearch->lastPage));
+            $commentObjects = [];
+            foreach ($data as $object) {
+                $commentObjects[] = new CommentList($object);
+            }
+
+            return new ApiResponse(false, new ApiDataPagination($commentObjects, $apiSearch->lastPage));
         } catch (\Exception $e) {
             return new ApiResponseException($e);
         }
