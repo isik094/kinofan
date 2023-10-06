@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "person".
  *
@@ -134,5 +132,29 @@ class Person extends \common\base\ActiveRecord
     public function getSpouses0()
     {
         return $this->hasMany(Spouse::className(), ['spouse_id' => 'id']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return [
+            'id' => $this->id,
+            'person_kp_id' => $this->person_kp_id,
+            'web_url' => $this->web_url,
+            'name_ru' => $this->name_ru,
+            'name_en' => $this->name_en,
+            'sex' => $this->sex,
+            'poster_url' => $this->poster_url,
+            'growth' => $this->growth,
+            'birthday' => $this->birthday,
+            'death' => $this->death,
+            'age' => $this->age,
+            'birthplace' => $this->birthplace,
+            'deathplace' => $this->deathplace,
+            'has_awards' => $this->has_awards,
+            'profession' => $this->profession,
+        ];
     }
 }

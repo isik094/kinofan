@@ -320,4 +320,35 @@ class Cinema extends \common\base\ActiveRecord
     {
         return $this->hasMany(Video::className(), ['cinema_id' => 'id']);
     }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getData(): array
+    {
+        return [
+            'id' => $this->id,
+            'id_kp' => $this->id_kp,
+            'name_ru' => $this->name_ru,
+            'name_original' => $this->name_original,
+            'poster_url' => $this->uploadsLink('poster_url'),
+            'poster_url_preview' => $this->uploadsLink('poster_url_preview'),
+            'rating_kinopoisk' => $this->rating_kinopoisk,
+            'year' => $this->year,
+            'film_length' => $this->film_length,
+            'slogan' => $this->slogan,
+            'description' => $this->description,
+            'type' => $this->type,
+            'rating_mpaa' => $this->rating_mpaa,
+            'rating_age_limits' => $this->rating_age_limits,
+            'start_year' => $this->start_year,
+            'end_year' => $this->end_year,
+            'completed' => $this->completed,
+            'created_at' => $this->created_at,
+            'premiere_ru' => $this->premiere_ru,
+            'release_date' => $this->release_date,
+            'rating_imdb' => $this->rating_imdb,
+        ];
+    }
 }
