@@ -225,6 +225,15 @@ return [
                         'OPTIONS view' => 'options',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/slider'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                    ]
+                ],
             ],
         ],
     ],

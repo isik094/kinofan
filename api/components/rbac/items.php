@@ -72,6 +72,9 @@ return [
                 'index' => true,
                 'view' => true,
             ],
+            'slider' => [
+                'index' => true,
+            ],
         ]
     ],
     \common\models\User::ROLE_USER => [
@@ -145,6 +148,9 @@ return [
             'selection' => [
                 'index' => true,
                 'view' => true,
+            ],
+            'slider' => [
+                'index' => true,
             ],
         ]
     ],
