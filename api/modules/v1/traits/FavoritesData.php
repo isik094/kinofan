@@ -14,6 +14,7 @@ trait FavoritesData
     public function favoritesData(): array
     {
         return [
+            'id',
             'user' => new ApiGetter('user', $this->userData()),
             'cinema' => new ApiGetter('cinema', $this->cinemaData()),
         ];

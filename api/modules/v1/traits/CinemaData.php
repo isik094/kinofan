@@ -8,6 +8,8 @@ use yii\web\NotFoundHttpException;
 
 trait CinemaData
 {
+    use GenreTrait;
+
     /**
      * @brief Cinema Data
      * @return array
@@ -35,7 +37,9 @@ trait CinemaData
             'created_at',
             'premiere_ru',
             'release_date',
-            'rating_imdb'
+            'rating_imdb',
+            'genres',
+            'countries',
         ];
     }
 

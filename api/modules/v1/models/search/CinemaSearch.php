@@ -43,7 +43,7 @@ class CinemaSearch extends Cinema
     /**
      * @return SearchAttributeRules[]
      */
-    public function searchAttributes()
+    public function searchAttributes(): array
     {
         return [
             'id' => new SearchAttributeRules(SearchAttributeRules::TYPE_INTEGER),
@@ -59,7 +59,7 @@ class CinemaSearch extends Cinema
     /**
      * @return array
      */
-    public function sortAttributes()
+    public function sortAttributes(): array
     {
         return [
             'id' => self::tableName() . '.id',

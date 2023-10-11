@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "genre".
  *
@@ -18,7 +16,7 @@ class Genre extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'genre';
     }
@@ -26,7 +24,7 @@ class Genre extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'string', 'max' => 255],
@@ -37,7 +35,7 @@ class Genre extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -50,7 +48,7 @@ class Genre extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCinemaGenres()
+    public function getCinemaGenres(): \yii\db\ActiveQuery
     {
         return $this->hasMany(CinemaGenre::className(), ['genre_id' => 'id']);
     }
@@ -60,7 +58,7 @@ class Genre extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserGenreCinemas()
+    public function getUserGenreCinemas(): \yii\db\ActiveQuery
     {
         return $this->hasMany(UserGenreCinema::className(), ['genre_id' => 'id']);
     }
