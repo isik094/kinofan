@@ -1,2 +1,0 @@
-GET {{host}}/slider
-Content-Type: application/json

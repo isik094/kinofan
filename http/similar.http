@@ -1,2 +1,0 @@
-GET {{host}}/similar?cinema_id=2
-Accept: application/json

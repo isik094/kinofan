@@ -1,8 +1,0 @@
-GET https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=301
-Accept: application/json
-X-API-KEY: dfdb6536-38fd-4930-aa2c-ed620afa9493
-
-###
-GET https://kinopoiskapiunofficial.tech/api/v2.2/films/301
-Content-Type: application/json
-X-API-KEY: dfdb6536-38fd-4930-aa2c-ed620afa9493
