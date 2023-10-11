@@ -47,7 +47,7 @@ return [
             'person-cinema' => [
                 'index' => true,
                 'view' => true,
-                'best-cinema' => true,
+                'best' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
@@ -73,6 +73,9 @@ return [
                 'view' => true,
             ],
             'slider' => [
+                'index' => true,
+            ],
+            'live-search' => [
                 'index' => true,
             ],
         ]
@@ -123,7 +126,7 @@ return [
             'person-cinema' => [
                 'index' => true,
                 'view' => true,
-                'best-cinema' => true,
+                'best' => true,
                 'get-search-attributes' => true,
                 'get-sort-attributes' => true,
             ],
@@ -150,6 +153,9 @@ return [
                 'view' => true,
             ],
             'slider' => [
+                'index' => true,
+            ],
+            'live-search' => [
                 'index' => true,
             ],
         ]

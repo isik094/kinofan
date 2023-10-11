@@ -145,7 +145,7 @@ return [
                     'controller' => ['v1/review'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST /<id>' => 'create',
+                        'POST ' => 'create',
                         'OPTIONS create' => 'options',
                     ]
                 ],
@@ -158,8 +158,8 @@ return [
                         'OPTIONS index' => 'options',
                         'GET /<id>' => 'view',
                         'OPTIONS view' => 'options',
-                        'GET best-cinema/<id>' => 'best-cinema',
-                        'OPTIONS best-cinema' => 'options',
+                        'GET best/<id>' => 'best',
+                        'OPTIONS best' => 'options',
                         'GET get-search-attributes' => 'get-search-attributes',
                         'OPTIONS get-search-attributes' => 'options',
                         'GET get-sort-attributes' => 'get-sort-attributes',
@@ -231,6 +231,15 @@ return [
                     'pluralize' => false,
                     'extraPatterns' => [
                         'GET ' => 'index',
+                        'OPTIONS index' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/live-search'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET <search>' => 'index',
                         'OPTIONS index' => 'options',
                     ]
                 ],
