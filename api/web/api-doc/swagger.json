@@ -16,6 +16,166 @@
         }
     ],
     "paths": {
+        "/account/get-code": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Получения кода на электронную почту для подтверждения действий пользователя",
+                "description": "Данный эндпоинт отправляет на электронную почту уникальный сгенерированный код для подтверждения пользователя",
+                "operationId": "getCode",
+                "requestBody": {
+                    "description": "Электронная почта на который будет выслан уникальный код",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SendCodeForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/reset-password": {
+            "put": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Восстановление пароля",
+                "description": "Данный эндпоинт восстанавливает пароль пользователя по уникальному коду отправленную на электронную почту, все сессии данного пользователя будут аннулированы на всех устройствах",
+                "operationId": "resetPassword",
+                "requestBody": {
+                    "description": "Данные для восстановления пароля",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePasswordForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID пользователя",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "username": {
+                                                            "description": "Никнейм пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "email": {
+                                                            "description": "Электронная почта пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "status": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "integer",
+                                                            "enum": [
+                                                                "0",
+                                                                "9",
+                                                                "10"
+                                                            ],
+                                                            "example": "10"
+                                                        },
+                                                        "statusText": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "Удален",
+                                                                "Не активен",
+                                                                "Активен"
+                                                            ],
+                                                            "example": "Активен"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время в unixtime",
+                                                            "type": "integer",
+                                                            "example": "1687464863"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/TokenResponse"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/register": {
             "post": {
                 "tags": [
@@ -66,7 +226,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/auth/login": {
@@ -243,13 +408,585 @@
                 "summary": "Получить список кино",
                 "description": "Данный эндпоинт возвращает список кино",
                 "operationId": "getListCinema",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "Год кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Тип кино",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "movie",
+                            "enum": [
+                                "movie",
+                                "series",
+                                "cartoon",
+                                "anime",
+                                "tv_show"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "genre_id",
+                        "in": "query",
+                        "description": "ID жанра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "country_id",
+                        "in": "query",
+                        "description": "ID страны",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Запрос выполнен успешно",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/Cinema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cinema/{id}": {
+            "get": {
+                "tags": [
+                    "Cinema"
+                ],
+                "summary": "Получить данные кино",
+                "description": "Данный эндпоинт возвращает данные кино",
+                "operationId": "getCinema",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID кино",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cinema"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cinema-watched": {
+            "get": {
+                "tags": [
+                    "CinemaWatched"
+                ],
+                "summary": "Получить список просмотренных кино пользователя",
+                "description": "Данный эндпоинт возвращает список кино которые просмотрел пользователь",
+                "operationId": "getListCinemaWatched",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID пользователя",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID пользователя",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "username": {
+                                                            "description": "Никнейм пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "email": {
+                                                            "description": "Электронная почта пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "status": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "integer",
+                                                            "enum": [
+                                                                "0",
+                                                                "9",
+                                                                "10"
+                                                            ],
+                                                            "example": "10"
+                                                        },
+                                                        "statusText": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "Удален",
+                                                                "Не активен",
+                                                                "Активен"
+                                                            ],
+                                                            "example": "Активен"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время в unixtime",
+                                                            "type": "integer",
+                                                            "example": "1687464863"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "cinema": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID кино",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "id_kp": {
+                                                            "description": "ID кинопоиска",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "name_ru": {
+                                                            "description": "Название кино на русском",
+                                                            "type": "string",
+                                                            "example": "Матрица"
+                                                        },
+                                                        "name_original": {
+                                                            "description": "Оригинальное название",
+                                                            "type": "string",
+                                                            "example": "Matrix"
+                                                        },
+                                                        "poster_url": {
+                                                            "description": "Ссылка на постер",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "poster_url_preview": {
+                                                            "description": "Ссылка на превью",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "rating_kinopoisk": {
+                                                            "description": "Рейтинг кино на кинопоиске",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        },
+                                                        "year": {
+                                                            "description": "Год",
+                                                            "type": "integer",
+                                                            "example": "2023"
+                                                        },
+                                                        "film_length": {
+                                                            "description": "Продолжительность",
+                                                            "type": "integer",
+                                                            "example": "120"
+                                                        },
+                                                        "slogan": {
+                                                            "description": "Слоган",
+                                                            "type": "string",
+                                                            "example": "Добро пожаловать в реальный мир"
+                                                        },
+                                                        "description": {
+                                                            "description": "Описание",
+                                                            "type": "string",
+                                                            "example": "Жизнь Томаса Андерсона разделена на две части: днём он-самый обычный офисный работник, получающий нагоняи от начальства, а ночью превращается в хакера по имени Нео, и нет места в сети, куда он бы не смог проникнуть. Но однажды всё меняется. Томас узнаёт ужасающую правду о реальности."
+                                                        },
+                                                        "type": {
+                                                            "description": "Тип",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "movie",
+                                                                "series",
+                                                                "cartoon",
+                                                                "anime",
+                                                                "tv_show"
+                                                            ],
+                                                            "example": "movie"
+                                                        },
+                                                        "rating_mpaa": {
+                                                            "description": "Рейтинг MPAA",
+                                                            "type": "string",
+                                                            "example": "r"
+                                                        },
+                                                        "rating_age_limits": {
+                                                            "description": "Возрастной лимит",
+                                                            "type": "string",
+                                                            "example": "age16"
+                                                        },
+                                                        "start_year": {
+                                                            "description": "Старт",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "end_year": {
+                                                            "description": "Конец",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "serial": {
+                                                            "description": "Сериал",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "completed": {
+                                                            "description": "Окончен или нет (для сериалов)",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время создания",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "premiere_ru": {
+                                                            "description": "Время премьеры в РФ",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "release_date": {
+                                                            "description": "Время цифрового релиза",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "rating_imdb": {
+                                                            "description": "Рейтинг IMDB",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "CinemaWatched"
+                ],
+                "summary": "Создать запись о просмотре кино пользователем",
+                "description": "Данный эндпоинт создает записи о просмотре пользователем фильмов",
+                "operationId": "createCinemaWatched",
+                "requestBody": {
+                    "description": "Данные для сохранения записей о просмотре фильмов",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CinemaWatchedForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/comment": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Получить список комментариев (отзывов) о фильме",
+                "description": "Данный эндпоинт возвращает список комментариев с ответами к нему о фильме",
+                "operationId": "getListComment",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Comment"
                                 }
                             }
                         }
@@ -277,22 +1014,1437 @@
                 }
             }
         },
-        "/cinema/id": {
+        "/favorites": {
             "get": {
                 "tags": [
-                    "Cinema"
+                    "Favorites"
                 ],
-                "summary": "Получить данные кино",
-                "description": "Данный эндпоинт возвращает данные кино",
-                "operationId": "getCinema",
+                "summary": "Получить список избранных для пользователя",
+                "description": "Данный эндпоинт возвращает список избранных кино для пользователя",
+                "operationId": "getListFavorites",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID пользователя",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Запрос выполнен успешно",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID избранного",
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID пользователя",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "username": {
+                                                            "description": "Никнейм пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "email": {
+                                                            "description": "Электронная почта пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "status": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "integer",
+                                                            "enum": [
+                                                                "0",
+                                                                "9",
+                                                                "10"
+                                                            ],
+                                                            "example": "10"
+                                                        },
+                                                        "statusText": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "Удален",
+                                                                "Не активен",
+                                                                "Активен"
+                                                            ],
+                                                            "example": "Активен"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время в unixtime",
+                                                            "type": "integer",
+                                                            "example": "1687464863"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "cinema": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID кино",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "id_kp": {
+                                                            "description": "ID кинопоиска",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "name_ru": {
+                                                            "description": "Название кино на русском",
+                                                            "type": "string",
+                                                            "example": "Матрица"
+                                                        },
+                                                        "name_original": {
+                                                            "description": "Оригинальное название",
+                                                            "type": "string",
+                                                            "example": "Matrix"
+                                                        },
+                                                        "poster_url": {
+                                                            "description": "Ссылка на постер",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "poster_url_preview": {
+                                                            "description": "Ссылка на превью",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "rating_kinopoisk": {
+                                                            "description": "Рейтинг кино на кинопоиске",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        },
+                                                        "year": {
+                                                            "description": "Год",
+                                                            "type": "integer",
+                                                            "example": "2023"
+                                                        },
+                                                        "film_length": {
+                                                            "description": "Продолжительность",
+                                                            "type": "integer",
+                                                            "example": "120"
+                                                        },
+                                                        "slogan": {
+                                                            "description": "Слоган",
+                                                            "type": "string",
+                                                            "example": "Добро пожаловать в реальный мир"
+                                                        },
+                                                        "description": {
+                                                            "description": "Описание",
+                                                            "type": "string",
+                                                            "example": "Жизнь Томаса Андерсона разделена на две части: днём он-самый обычный офисный работник, получающий нагоняи от начальства, а ночью превращается в хакера по имени Нео, и нет места в сети, куда он бы не смог проникнуть. Но однажды всё меняется. Томас узнаёт ужасающую правду о реальности."
+                                                        },
+                                                        "type": {
+                                                            "description": "Тип",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "movie",
+                                                                "series",
+                                                                "cartoon",
+                                                                "anime",
+                                                                "tv_show"
+                                                            ],
+                                                            "example": "movie"
+                                                        },
+                                                        "rating_mpaa": {
+                                                            "description": "Рейтинг MPAA",
+                                                            "type": "string",
+                                                            "example": "r"
+                                                        },
+                                                        "rating_age_limits": {
+                                                            "description": "Возрастной лимит",
+                                                            "type": "string",
+                                                            "example": "age16"
+                                                        },
+                                                        "start_year": {
+                                                            "description": "Старт",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "end_year": {
+                                                            "description": "Конец",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "serial": {
+                                                            "description": "Сериал",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "completed": {
+                                                            "description": "Окончен или нет (для сериалов)",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время создания",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "premiere_ru": {
+                                                            "description": "Время премьеры в РФ",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "release_date": {
+                                                            "description": "Время цифрового релиза",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "rating_imdb": {
+                                                            "description": "Рейтинг IMDB",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Добавить кино в избранное",
+                "description": "Данный эндпоинт добавляет кино в избранное для текущего пользователя",
+                "operationId": "addFavorites",
+                "requestBody": {
+                    "description": "Данные для добавления в избранное",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddFavoritesForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID избранного",
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID пользователя",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "username": {
+                                                            "description": "Никнейм пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "email": {
+                                                            "description": "Электронная почта пользователя",
+                                                            "type": "email",
+                                                            "example": "qwe@gmail.com"
+                                                        },
+                                                        "status": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "integer",
+                                                            "enum": [
+                                                                "0",
+                                                                "9",
+                                                                "10"
+                                                            ],
+                                                            "example": "10"
+                                                        },
+                                                        "statusText": {
+                                                            "description": "Статус пользователя",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "Удален",
+                                                                "Не активен",
+                                                                "Активен"
+                                                            ],
+                                                            "example": "Активен"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время в unixtime",
+                                                            "type": "integer",
+                                                            "example": "1687464863"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "cinema": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID кино",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "id_kp": {
+                                                            "description": "ID кинопоиска",
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "name_ru": {
+                                                            "description": "Название кино на русском",
+                                                            "type": "string",
+                                                            "example": "Матрица"
+                                                        },
+                                                        "name_original": {
+                                                            "description": "Оригинальное название",
+                                                            "type": "string",
+                                                            "example": "Matrix"
+                                                        },
+                                                        "poster_url": {
+                                                            "description": "Ссылка на постер",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "poster_url_preview": {
+                                                            "description": "Ссылка на превью",
+                                                            "type": "string",
+                                                            "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                                                        },
+                                                        "rating_kinopoisk": {
+                                                            "description": "Рейтинг кино на кинопоиске",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        },
+                                                        "year": {
+                                                            "description": "Год",
+                                                            "type": "integer",
+                                                            "example": "2023"
+                                                        },
+                                                        "film_length": {
+                                                            "description": "Продолжительность",
+                                                            "type": "integer",
+                                                            "example": "120"
+                                                        },
+                                                        "slogan": {
+                                                            "description": "Слоган",
+                                                            "type": "string",
+                                                            "example": "Добро пожаловать в реальный мир"
+                                                        },
+                                                        "description": {
+                                                            "description": "Описание",
+                                                            "type": "string",
+                                                            "example": "Жизнь Томаса Андерсона разделена на две части: днём он-самый обычный офисный работник, получающий нагоняи от начальства, а ночью превращается в хакера по имени Нео, и нет места в сети, куда он бы не смог проникнуть. Но однажды всё меняется. Томас узнаёт ужасающую правду о реальности."
+                                                        },
+                                                        "type": {
+                                                            "description": "Тип",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "movie",
+                                                                "series",
+                                                                "cartoon",
+                                                                "anime",
+                                                                "tv_show"
+                                                            ],
+                                                            "example": "movie"
+                                                        },
+                                                        "rating_mpaa": {
+                                                            "description": "Рейтинг MPAA",
+                                                            "type": "string",
+                                                            "example": "r"
+                                                        },
+                                                        "rating_age_limits": {
+                                                            "description": "Возрастной лимит",
+                                                            "type": "string",
+                                                            "example": "age16"
+                                                        },
+                                                        "start_year": {
+                                                            "description": "Старт",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "end_year": {
+                                                            "description": "Конец",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "serial": {
+                                                            "description": "Сериал",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "completed": {
+                                                            "description": "Окончен или нет (для сериалов)",
+                                                            "type": "integer",
+                                                            "example": "0"
+                                                        },
+                                                        "created_at": {
+                                                            "description": "Время создания",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "premiere_ru": {
+                                                            "description": "Время премьеры в РФ",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "release_date": {
+                                                            "description": "Время цифрового релиза",
+                                                            "type": "integer",
+                                                            "example": "1691150253"
+                                                        },
+                                                        "rating_imdb": {
+                                                            "description": "Рейтинг IMDB",
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "8.2"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/favorites/{id}": {
+            "delete": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Удалить из избранного кино",
+                "description": "Данный эндпоинт удаляет кино из избранного у текущего пользователя",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID избранного",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "error": {
+                                                    "description": "Булево обозначение ошибки",
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "message": {
+                                                    "description": "Текст сообщения ошибки на стороне сервера",
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                },
+                                                "status": {
+                                                    "description": "Код ошибки",
+                                                    "type": "integer",
+                                                    "example": "200"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Пустой или неправильный токен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Запрещено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/person-cinema": {
+            "get": {
+                "tags": [
+                    "PersonCinema"
+                ],
+                "summary": "Получить список ролей в кино персоны",
+                "description": "Данный эндпоинт возвращает список ролей персоны в кино со всеми данными",
+                "operationId": "getListPersonCinema",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/person-cinema/{id}": {
+            "get": {
+                "tags": [
+                    "PersonCinema"
+                ],
+                "summary": "Получить данные о роли персоне в кино",
+                "description": "Данный эндпоинт возвращает данные о роли персоны в кино",
+                "operationId": "getPersonCinema",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID персоны",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/person-cinema/best/{id}": {
+            "get": {
+                "tags": [
+                    "PersonCinema"
+                ],
+                "summary": "Получить 10 лучших фильмов с участием персоны",
+                "description": "Данный эндпоинт возвращает данные о 10 лучших фильмов с участием персоны",
+                "operationId": "getPersonBestCinema",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID персоны",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Получить список товаров кино",
+                "description": "Данный эндпоинт возвращает список товаров для кино",
+                "operationId": "getListProduct",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Обновления данных в профиле пользователя",
+                "description": "Данный эндпоинт редактирует данные пользователя во вкладке профиль",
+                "operationId": "updateProfile",
+                "requestBody": {
+                    "description": "Данные для восстановления пароля",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileUpdateForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/profile/change-password": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Изменить пароль текущему пользователю",
+                "description": "Данный эндпоинт изменяет пароль текущего пользователя",
+                "operationId": "сhangePassword",
+                "requestBody": {
+                    "description": "Данные для восстановления пароля",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/profile/personalization": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Изменить персонализацию текущему пользователю",
+                "description": "Данный эндпоинт изменяет персонализацию текущего пользователя",
+                "operationId": "сhangePersonalization",
+                "requestBody": {
+                    "description": "Данные для персонализации профиля пользователя",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PersonalizationForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/review": {
+            "post": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Создать отзыв (комментарий) к кино",
+                "description": "Данный эндпоинт создаeт новый отзыв (комментарий) или ответ к текущему отзыву (комментарию)",
+                "operationId": "addReview",
+                "requestBody": {
+                    "description": "Данные для создания отзыва",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/selection": {
+            "get": {
+                "tags": [
+                    "Selection"
+                ],
+                "summary": "Получить список подборок",
+                "description": "Данный эндпоинт возвращает список подборок",
+                "operationId": "getListSelection",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Название подборки",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/selection/{id}": {
+            "get": {
+                "tags": [
+                    "Selection"
+                ],
+                "summary": "Получить данные подборки",
+                "description": "Данный эндпоинт возвращает данные подборки",
+                "operationId": "getSelection",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID подборки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/similar": {
+            "get": {
+                "tags": [
+                    "Similar"
+                ],
+                "summary": "Получить список похожих фильмов",
+                "description": "Данный эндпоинт возвращает список похожих фильмов",
+                "operationId": "getListSimilar",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cinema_id",
+                        "in": "query",
+                        "description": "ID кино",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateForm"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/Slider": {
+            "get": {
+                "tags": [
+                    "Slider"
+                ],
+                "summary": "Получить список слайдеров",
+                "description": "Данный эндпоинт возвращает список слайдеров",
+                "operationId": "getListSlider",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы для пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Количество запрашиваемых данных",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Название атрибута по которому нужна сортировка пример: id или -id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "-id"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID просмотра",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Название слайдера(ключ)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Описание",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос выполнен успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
                             }
                         }
                     },
@@ -360,8 +2512,8 @@
                                                 },
                                                 "message": {
                                                     "description": "Текст сообщения ошибки на стороне сервера",
-                                                    "type": "string",
-                                                    "example": "Deleted successfully"
+                                                    "type": "boolean",
+                                                    "example": "true"
                                                 },
                                                 "status": {
                                                     "description": "Код ошибки",
@@ -427,6 +2579,26 @@
     },
     "components": {
         "schemas": {
+            "SuccessResponse": {
+                "properties": {
+                    "error": {
+                        "description": "Булево обозначение ошибки",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "description": "Булево обозначение успешного выполнения",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "status": {
+                        "description": "Код ошибки",
+                        "type": "integer",
+                        "example": "500"
+                    }
+                },
+                "type": "object"
+            },
             "Unauthorized": {
                 "properties": {
                     "name": {
@@ -564,6 +2736,635 @@
                 },
                 "type": "object"
             },
+            "AddFavoritesForm": {
+                "properties": {
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePassword": {
+                "required": [
+                    "currentPassword",
+                    "newPassword"
+                ],
+                "properties": {
+                    "currentPassword": {
+                        "description": "Текущий пароль пользователя",
+                        "type": "string",
+                        "example": "123456"
+                    },
+                    "newPassword": {
+                        "description": "Новый пароль пользователя",
+                        "type": "string",
+                        "example": "654321"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaWatchedForm": {
+                "properties": {
+                    "cinema_ids": {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "PersonalizationForm": {
+                "properties": {
+                    "sex": {
+                        "description": "Пол",
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female"
+                        ],
+                        "example": "male"
+                    },
+                    "birthday": {
+                        "description": "Дата рождения в unixtime",
+                        "type": "integer",
+                        "example": "5454545454"
+                    },
+                    "country_id": {
+                        "description": "ID старны",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "genre_ids": {
+                        "description": "ID жанров массивом",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "example": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "hobbies_ids": {
+                        "description": "ID увлечений массивом",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "example": "2"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileUpdateForm": {
+                "properties": {
+                    "surname": {
+                        "description": "Фамилия",
+                        "type": "string",
+                        "example": "Иванов"
+                    },
+                    "name": {
+                        "description": "Имя",
+                        "type": "string",
+                        "example": "Иван"
+                    },
+                    "patronymic": {
+                        "description": "Отчество",
+                        "type": "string",
+                        "example": "Иванович"
+                    },
+                    "vk": {
+                        "description": "ID ВК",
+                        "type": "string",
+                        "example": "1234"
+                    },
+                    "telegram": {
+                        "description": "Никнейм телеграмм",
+                        "type": "string",
+                        "example": "@ivan"
+                    },
+                    "email": {
+                        "description": "Электронная почта пользователя",
+                        "type": "string",
+                        "example": "isik@yandex.ru"
+                    }
+                },
+                "type": "object"
+            },
+            "SendCodeForm": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Электронная почта пользователя",
+                        "type": "string",
+                        "example": "isik@yandex.ru"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePasswordForm": {
+                "required": [
+                    "email",
+                    "code",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Электронная почта пользователя",
+                        "type": "string",
+                        "example": "isik@yandex.ru"
+                    },
+                    "code": {
+                        "description": "Уникальный сгенерированный код с электронной почты",
+                        "type": "string",
+                        "example": "FTY359"
+                    },
+                    "password": {
+                        "description": "Новый пароль пользователя",
+                        "type": "string",
+                        "example": "QWERT1234"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateForm": {
+                "required": [
+                    "cinema_id",
+                    "text"
+                ],
+                "properties": {
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "parent_id": {
+                        "description": "Если новый отзыв, то ничего не отправялем по умолчанию подставиться 0. Если создается ответ к отзыву, то отправляем ID отзыва",
+                        "type": "integer",
+                        "default": "0",
+                        "example": "1"
+                    },
+                    "text": {
+                        "description": "Текст отзыва, проходит модерацию перед тем как появится в списке",
+                        "type": "string",
+                        "example": "отличный фильм"
+                    }
+                },
+                "type": "object"
+            },
+            "Award": {
+                "properties": {
+                    "id": {
+                        "description": "ID награды",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "description": "Название кино на русском",
+                        "type": "string",
+                        "example": "Матрица"
+                    },
+                    "win": {
+                        "description": "Победитель",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "image_url": {
+                        "description": "Ссылка на картинку",
+                        "type": "string",
+                        "example": "https://kinofan.api/v1/file?uuid=rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                    },
+                    "nomination_name": {
+                        "description": "Название номинации",
+                        "type": "string",
+                        "example": "Лучший звук"
+                    },
+                    "year": {
+                        "description": "Год",
+                        "type": "integer",
+                        "example": "2023"
+                    }
+                },
+                "type": "object"
+            },
+            "AwardPerson": {
+                "properties": {
+                    "id": {
+                        "description": "ID награды персоны",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "award_id": {
+                        "description": "ID награды",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "person_id": {
+                        "description": "ID персоны",
+                        "type": "integer",
+                        "example": "3"
+                    },
+                    "age": {
+                        "description": "Возраст",
+                        "type": "integer",
+                        "example": "25"
+                    },
+                    "profession": {
+                        "description": "Профессия",
+                        "type": "string",
+                        "example": "Режиссер"
+                    }
+                },
+                "type": "object"
+            },
+            "Cinema": {
+                "properties": {
+                    "id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "id_kp": {
+                        "description": "ID кинопоиска",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name_ru": {
+                        "description": "Название кино на русском",
+                        "type": "string",
+                        "example": "Матрица"
+                    },
+                    "name_original": {
+                        "description": "Оригинальное название",
+                        "type": "string",
+                        "example": "Matrix"
+                    },
+                    "poster_url": {
+                        "description": "Ссылка на постер",
+                        "type": "string",
+                        "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                    },
+                    "poster_url_preview": {
+                        "description": "Ссылка на превью",
+                        "type": "string",
+                        "example": "https://kinofan.api/v1/file/rSST2uTsf53EZeMSYtDieghZ41yPLlfceiFKOqJQrMsar578Tjfh1xh2-vZxOAVs6u04P-I1hb8h5r35yHzrC5ouVBgPsVsHZrkYi-IOh7NGemYq3SKO6k_nD-B4Q1AgX5FkzdqU8QWpjKPfgjU0fw8s7EH0LTFxLW0GmheaIJHL4Aq9sruBW6zd1f0Q6nNE0s7da7TDzNJmSzlEebuY-d32SNrjbVEt6fHqXvlIGpVmNxhtQrvYJkqB5V7hiXC"
+                    },
+                    "rating_kinopoisk": {
+                        "description": "Рейтинг кино на кинопоиске",
+                        "type": "number",
+                        "format": "float",
+                        "example": "8.2"
+                    },
+                    "year": {
+                        "description": "Год",
+                        "type": "integer",
+                        "example": "2023"
+                    },
+                    "film_length": {
+                        "description": "Продолжительность",
+                        "type": "integer",
+                        "example": "120"
+                    },
+                    "slogan": {
+                        "description": "Слоган",
+                        "type": "string",
+                        "example": "Добро пожаловать в реальный мир"
+                    },
+                    "description": {
+                        "description": "Описание",
+                        "type": "string",
+                        "example": "Жизнь Томаса Андерсона разделена на две части: днём он-самый обычный офисный работник, получающий нагоняи от начальства, а ночью превращается в хакера по имени Нео, и нет места в сети, куда он бы не смог проникнуть. Но однажды всё меняется. Томас узнаёт ужасающую правду о реальности."
+                    },
+                    "type": {
+                        "description": "Тип",
+                        "type": "string",
+                        "enum": [
+                            "movie",
+                            "series",
+                            "cartoon",
+                            "anime",
+                            "tv_show"
+                        ],
+                        "example": "movie"
+                    },
+                    "rating_mpaa": {
+                        "description": "Рейтинг MPAA",
+                        "type": "string",
+                        "example": "r"
+                    },
+                    "rating_age_limits": {
+                        "description": "Возрастной лимит",
+                        "type": "string",
+                        "example": "age16"
+                    },
+                    "start_year": {
+                        "description": "Старт",
+                        "type": "integer",
+                        "example": "1691150253"
+                    },
+                    "end_year": {
+                        "description": "Конец",
+                        "type": "integer",
+                        "example": "1691150253"
+                    },
+                    "serial": {
+                        "description": "Сериал",
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "completed": {
+                        "description": "Окончен или нет (для сериалов)",
+                        "type": "integer",
+                        "example": "0"
+                    },
+                    "created_at": {
+                        "description": "Время создания",
+                        "type": "integer",
+                        "example": "1691150253"
+                    },
+                    "premiere_ru": {
+                        "description": "Время премьеры в РФ",
+                        "type": "integer",
+                        "example": "1691150253"
+                    },
+                    "release_date": {
+                        "description": "Время цифрового релиза",
+                        "type": "integer",
+                        "example": "1691150253"
+                    },
+                    "rating_imdb": {
+                        "description": "Рейтинг IMDB",
+                        "type": "number",
+                        "format": "float",
+                        "example": "8.2"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaBoxOffice": {
+                "properties": {
+                    "id": {
+                        "description": "ID бюджета и сборов",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "type": {
+                        "description": "Тип",
+                        "type": "string",
+                        "example": "BUDGET"
+                    },
+                    "amount": {
+                        "description": "Сумма",
+                        "type": "number",
+                        "format": "float",
+                        "example": "63000000"
+                    },
+                    "symbol": {
+                        "description": "Символ",
+                        "type": "string",
+                        "example": "$"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaCountry": {
+                "properties": {
+                    "id": {
+                        "description": "ID связки страны и фильма",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "country_id": {
+                        "description": "ID страны",
+                        "type": "integer",
+                        "example": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaFacts": {
+                "properties": {
+                    "id": {
+                        "description": "ID факта",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "text": {
+                        "description": "Текст или ошибка фильма",
+                        "type": "string",
+                        "example": "Текст факта"
+                    },
+                    "type": {
+                        "description": "Обозночение факта или ошибки",
+                        "type": "string",
+                        "enum": [
+                            "fact",
+                            "blooper"
+                        ],
+                        "example": "fact"
+                    },
+                    "spoiler": {
+                        "description": "Наличие спойлера",
+                        "type": "integer",
+                        "enum": [
+                            "0",
+                            "1"
+                        ],
+                        "example": "fact"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaGenre": {
+                "properties": {
+                    "id": {
+                        "description": "ID связки кино и жанра",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "genre_id": {
+                        "description": "ID жанра",
+                        "type": "integer",
+                        "example": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaPerson": {
+                "properties": {
+                    "id": {
+                        "description": "ID связки кино и персоны",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "person_id": {
+                        "description": "ID персоны",
+                        "type": "integer",
+                        "example": "2"
+                    },
+                    "profession_key": {
+                        "description": "Ключ названия профессии в кино персоны",
+                        "type": "string",
+                        "example": "DIRECTOR"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaSelection": {
+                "properties": {
+                    "id": {
+                        "description": "ID связки кино и подборки",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "selection_id": {
+                        "description": "ID подборки",
+                        "type": "integer",
+                        "example": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "CinemaWatched": {
+                "properties": {
+                    "id": {
+                        "description": "ID просмотренного фильма пользователя",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "description": "ID пользователя",
+                        "type": "integer",
+                        "example": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "Comment": {
+                "properties": {
+                    "id": {
+                        "description": "ID комментария",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "text": {
+                        "description": "Текст комментария",
+                        "type": "string",
+                        "example": "Крутой фильм"
+                    },
+                    "created_at": {
+                        "description": "Время создания в unixtime",
+                        "type": "integer",
+                        "example": "1696849581"
+                    },
+                    "name": {
+                        "description": "Имя пользователя оставившего комментарий",
+                        "type": "string",
+                        "example": "Иван"
+                    },
+                    "surname": {
+                        "description": "Фамилия пользователя оставившего комментарий",
+                        "type": "string",
+                        "example": "Иванов"
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Company": {
+                "properties": {
+                    "id": {
+                        "description": "ID компании",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "description": "Название кинокомпании",
+                        "type": "string",
+                        "example": "Universal"
+                    }
+                },
+                "type": "object"
+            },
+            "Country": {
+                "properties": {
+                    "id": {
+                        "description": "ID просмотренного фильма пользователя",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "cinema_id": {
+                        "description": "ID кино",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "description": "ID пользователя",
+                        "type": "integer",
+                        "example": "2"
+                    }
+                },
+                "type": "object"
+            },
             "LoginForm": {
                 "required": [
                     "username",
@@ -579,6 +3380,60 @@
                         "description": "Пароль",
                         "type": "string",
                         "example": "qwerty"
+                    }
+                },
+                "type": "object"
+            },
+            "Profile": {
+                "properties": {
+                    "id": {
+                        "description": "ID профиля",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "user_id": {
+                        "description": "ID пользователя",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "surname": {
+                        "description": "Фамилия",
+                        "type": "string",
+                        "example": "Иванов"
+                    },
+                    "name": {
+                        "description": "Имя",
+                        "type": "string",
+                        "example": "Иван"
+                    },
+                    "patronymic": {
+                        "description": "Отчество",
+                        "type": "string",
+                        "example": "Иванович"
+                    },
+                    "vk": {
+                        "description": "ID ВК",
+                        "type": "string",
+                        "example": "122636"
+                    },
+                    "telegram": {
+                        "description": "Никнейм телеграмм",
+                        "type": "string",
+                        "example": "@ivan"
+                    },
+                    "sex": {
+                        "description": "Пол",
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female"
+                        ],
+                        "example": "male"
+                    },
+                    "birthday": {
+                        "description": "Год рождения",
+                        "type": "integer",
+                        "example": "769464000"
                     }
                 },
                 "type": "object"
@@ -682,11 +3537,19 @@
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
+                "description": "Авторизация по JWT обязательна, accessToken время жизни токена 5 минут. После истечения времени нужно запросить новый accessTokenс помощью refreshToken",
+                "name": "Bearer Authentication",
+                "in": "header",
+                "bearerFormat": "JWT",
                 "scheme": "bearer"
             }
         }
     },
     "tags": [
+        {
+            "name": "Account",
+            "description": "Методы для получения кода и восстановления пароля"
+        },
         {
             "name": "Auth",
             "description": "Методы для авторизации/регистрации"
@@ -694,6 +3557,46 @@
         {
             "name": "Cinema",
             "description": "Методы для кино"
+        },
+        {
+            "name": "CinemaWatched",
+            "description": "Методы для просмотренных кино для пользователя"
+        },
+        {
+            "name": "Comment",
+            "description": "Методы для комментариев пользователей о кино"
+        },
+        {
+            "name": "Favorites",
+            "description": "Методы для раздела избранные"
+        },
+        {
+            "name": "PersonCinema",
+            "description": "Методы для получения кино персоны и его роли в этом кино"
+        },
+        {
+            "name": "Product",
+            "description": "Методы для получения товаров к кино"
+        },
+        {
+            "name": "Profile",
+            "description": "Методы для изменение пользовательских данных"
+        },
+        {
+            "name": "Review",
+            "description": "Методы для отзывов"
+        },
+        {
+            "name": "Selection",
+            "description": "Методы для подборок"
+        },
+        {
+            "name": "Similar",
+            "description": "Методы для получения похожих фильмов"
+        },
+        {
+            "name": "Slider",
+            "description": "Методы для получения слайдера"
         },
         {
             "name": "User",
