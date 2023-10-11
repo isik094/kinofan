@@ -6,7 +6,17 @@ use common\models\Cinema;
 use common\models\Comment;
 use common\models\ErrorLog;
 use common\models\User;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *      schema="CreateForm",
+ *      required={"cinema_id", "text"},
+ *      @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *      @OA\Property(property="parent_id", type="integer", example="1", default="0", description="Если новый отзыв, то ничего не отправялем по умолчанию подставиться 0. Если создается ответ к отзыву, то отправляем ID отзыва"),
+ *      @OA\Property(property="text", type="string", example="отличный фильм", description="Текст отзыва, проходит модерацию перед тем как появится в списке"),
+ *  )
+ */
 class CreateForm extends \yii\base\Model
 {
     /**

@@ -2,9 +2,17 @@
 
 namespace common\models;
 
-use Yii;
+use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Schema(
+ *     schema="CinemaGenre",
+ *     type="object",
+ *      @OA\Property(property="id", type="integer", example="1", description="ID связки кино и жанра"),
+ *      @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *      @OA\Property(property="genre_id", type="integer", example="2", description="ID жанра"),
+ * )
+ *
  * This is the model class for table "cinema_genre".
  *
  * @property int $id

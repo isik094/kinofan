@@ -2,9 +2,16 @@
 
 namespace common\models;
 
-use Yii;
+use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Schema(
+ *       schema="Company",
+ *       type="object",
+ *        @OA\Property(property="id", type="integer", example="1", description="ID компании"),
+ *        @OA\Property(property="name", type="string", example="Universal", description="Название кинокомпании"),
+ * )
+ *
  * This is the model class for table "company".
  *
  * @property int $id
@@ -17,7 +24,7 @@ class Company extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'company';
     }
@@ -25,7 +32,7 @@ class Company extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'string', 'max' => 255],
@@ -36,7 +43,7 @@ class Company extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -49,7 +56,7 @@ class Company extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getDistributions()
+    public function getDistributions(): \yii\db\ActiveQuery
     {
         return $this->hasMany(Distribution::className(), ['company_id' => 'id']);
     }

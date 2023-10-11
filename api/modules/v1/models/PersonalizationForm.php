@@ -3,6 +3,7 @@
 namespace api\modules\v1\models;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use common\models\UserGenreCinema;
 use common\models\UserHobbies;
 use common\base\Model;
@@ -13,6 +14,16 @@ use common\models\Profile;
 use common\models\User;
 use common\models\UserCountryCinema;
 
+/**
+ * @OA\Schema(
+ *        schema="PersonalizationForm",
+ *         @OA\Property(property="sex", type="string", example="male", description="Пол", enum={"male", "female"}),
+ *         @OA\Property(property="birthday", type="integer", example="5454545454", description="Дата рождения в unixtime"),
+ *         @OA\Property(property="country_id", type="integer", example="1", description="ID старны"),
+ *         @OA\Property(property="genre_ids", type="array", description="ID жанров массивом", @OA\Items(anyOf={@OA\Schema(type="integer", example="1")})),
+ *         @OA\Property(property="hobbies_ids", type="array", description="ID увлечений массивом", @OA\Items(anyOf={@OA\Schema(type="integer", example="2")})),
+ * )
+ */
 class PersonalizationForm extends Model
 {
     /**

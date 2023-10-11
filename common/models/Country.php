@@ -2,7 +2,17 @@
 
 namespace common\models;
 
+use OpenApi\Annotations as OA;
+
 /**
+ * @OA\Schema(
+ *       schema="Country",
+ *       type="object",
+ *        @OA\Property(property="id", type="integer", example="1", description="ID просмотренного фильма пользователя"),
+ *        @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *        @OA\Property(property="user_id", type="integer", example="2", description="ID пользователя"),
+ * )
+ *
  * This is the model class for table "country".
  *
  * @property int $id

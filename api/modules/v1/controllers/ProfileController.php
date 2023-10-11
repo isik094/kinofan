@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use api\modules\v1\models\PersonalizationForm;
 use api\modules\v1\models\ChangePassword;
 use api\modules\v1\models\ProfileUpdateForm;
@@ -11,11 +12,40 @@ use api\components\ApiResponse;
 use api\components\ApiResponseException;
 use common\models\User;
 
+/**
+ * @OA\Tag(
+ *     name="Profile",
+ *     description="Методы для изменение пользовательских данных"
+ * )
+ */
 class ProfileController extends ApiController
 {
     use UserData;
 
     /**
+     * @OA\Put(
+     *        path="/profile",
+     *        summary="Обновления данных в профиле пользователя",
+     *        description="Данный эндпоинт редактирует данные пользователя во вкладке профиль",
+     *        operationId="updateProfile",
+     *        tags={"Profile"},
+     *        @OA\RequestBody(
+     *          description = "Данные для восстановления пароля",
+     *          required = true,
+     *          @OA\JsonContent(ref="#/components/schemas/ProfileUpdateForm")
+     *        ),
+     *         @OA\Response(response=200, description="Запрос выполнен успешно",
+     *           @OA\JsonContent()
+     *        ),
+     *        @OA\Response(response=406, description="Ошибка валидации",
+     *            @OA\JsonContent(ref="#/components/schemas/ValidateForm"),
+     *        ),
+     *        @OA\Response(response=500, description="Ошибка на стороне сервера",
+     *            @OA\JsonContent(ref="#/components/schemas/ServerError"),
+     *        ),
+     *        security={{"bearerAuth":{}}},
+     * )
+     *
      * @brief Редактировать профиль пользователя
      * @return ApiResponse|ApiResponseException
      */
@@ -47,6 +77,29 @@ class ProfileController extends ApiController
     }
 
     /**
+     * @OA\Put(
+     *         path="/profile/change-password",
+     *         summary="Изменить пароль текущему пользователю",
+     *         description="Данный эндпоинт изменяет пароль текущего пользователя",
+     *         operationId="сhangePassword",
+     *         tags={"Profile"},
+     *         @OA\RequestBody(
+     *           description = "Данные для восстановления пароля",
+     *           required = true,
+     *           @OA\JsonContent(ref="#/components/schemas/ChangePassword")
+     *         ),
+     *          @OA\Response(response=200, description="Запрос выполнен успешно",
+     *            @OA\JsonContent()
+     *         ),
+     *         @OA\Response(response=406, description="Ошибка валидации",
+     *             @OA\JsonContent(ref="#/components/schemas/ValidateForm"),
+     *         ),
+     *         @OA\Response(response=500, description="Ошибка на стороне сервера",
+     *             @OA\JsonContent(ref="#/components/schemas/ServerError"),
+     *         ),
+     *         security={{"bearerAuth":{}}},
+     * )
+     *
      * @brief Изменить пароль
      * @return ApiResponse|ApiResponseException
      */
@@ -71,6 +124,29 @@ class ProfileController extends ApiController
     }
 
     /**
+     * @OA\Put(
+     *          path="/profile/personalization",
+     *          summary="Изменить персонализацию текущему пользователю",
+     *          description="Данный эндпоинт изменяет персонализацию текущего пользователя",
+     *          operationId="сhangePersonalization",
+     *          tags={"Profile"},
+     *          @OA\RequestBody(
+     *            description = "Данные для персонализации профиля пользователя",
+     *            required = true,
+     *            @OA\JsonContent(ref="#/components/schemas/PersonalizationForm")
+     *          ),
+     *           @OA\Response(response=200, description="Запрос выполнен успешно",
+     *             @OA\JsonContent()
+     *          ),
+     *          @OA\Response(response=406, description="Ошибка валидации",
+     *              @OA\JsonContent(ref="#/components/schemas/ValidateForm"),
+     *          ),
+     *          @OA\Response(response=500, description="Ошибка на стороне сервера",
+     *              @OA\JsonContent(ref="#/components/schemas/ServerError"),
+     *          ),
+     *          security={{"bearerAuth":{}}},
+     * )
+     *
      * @brief Персонализация
      * @return ApiResponse|ApiResponseException
      */

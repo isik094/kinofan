@@ -19,7 +19,7 @@ class ConfirmEmailCode extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'confirm_email_code';
     }
@@ -27,7 +27,7 @@ class ConfirmEmailCode extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'created_at', 'accepted_at'], 'integer'],
@@ -39,7 +39,7 @@ class ConfirmEmailCode extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -56,7 +56,7 @@ class ConfirmEmailCode extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }

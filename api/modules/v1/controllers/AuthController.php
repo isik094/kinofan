@@ -54,6 +54,7 @@ class AuthController extends ApiController
      *         description="Ошибка на стороне сервера",
      *         @OA\JsonContent(ref="#/components/schemas/ServerError"),
      *     ),
+     *     security={{"bearerAuth":{}}},
      * )
      *
      * @brief Регистрация

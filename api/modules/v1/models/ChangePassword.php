@@ -3,9 +3,18 @@
 namespace api\modules\v1\models;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use common\models\User;
 use common\base\Model;
 
+/**
+ * @OA\Schema(
+ *        schema="ChangePassword",
+ *        required={"currentPassword", "newPassword"},
+ *         @OA\Property(property="currentPassword", type="string", example="123456", description="Текущий пароль пользователя"),
+ *         @OA\Property(property="newPassword", type="string", example="654321", description="Новый пароль пользователя"),
+ * )
+ */
 class ChangePassword extends Model
 {
     /**

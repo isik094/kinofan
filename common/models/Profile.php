@@ -2,7 +2,23 @@
 
 namespace common\models;
 
+use OpenApi\Annotations as OA;
+
 /**
+ * @OA\Schema(
+ *        schema="Profile",
+ *        type="object",
+ *         @OA\Property(property="id", type="integer", example="1", description="ID профиля"),
+ *         @OA\Property(property="user_id", type="integer", example="1", description="ID пользователя"),
+ *         @OA\Property(property="surname", type="string", example="Иванов", description="Фамилия"),
+ *         @OA\Property(property="name", type="string", example="Иван", description="Имя"),
+ *         @OA\Property(property="patronymic", type="string", example="Иванович", description="Отчество"),
+ *         @OA\Property(property="vk", type="string", example="122636", description="ID ВК"),
+ *         @OA\Property(property="telegram", type="string", example="@ivan", description="Никнейм телеграмм"),
+ *         @OA\Property(property="sex", type="string", example="male", description="Пол", enum={"male", "female"}),
+ *         @OA\Property(property="birthday", type="integer", example="769464000", description="Год рождения"),
+ *  )
+ *
  * This is the model class for table "profile".
  *
  * @property int $id

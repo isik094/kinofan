@@ -2,8 +2,8 @@
 
 namespace api\modules\v1\controllers;
 
-use OpenApi\Annotations as OA;
 use Yii;
+use OpenApi\Annotations as OA;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
@@ -19,6 +19,13 @@ use common\base\ActiveRecord;
 use common\models\User;
 
 /**
+ * @OA\Schema(
+ *      schema="SuccessResponse",
+ *      @OA\Property(property="error", type="boolean", example="true", description="Булево обозначение ошибки"),
+ *      @OA\Property(property="message", type="boolean", example="true", description="Булево обозначение успешного выполнения"),
+ *      @OA\Property(property="status", type="integer", example="500", description="Код ошибки"),
+ * )
+ *
  * @OA\Schema(
  *     schema="Unauthorized",
  *     @OA\Property(property="name", type="string", example="Unauthorized", description="Название сообщения"),
@@ -83,19 +90,19 @@ use common\models\User;
  *     title="Kinofan API",
  *     description = "API для проекта Кинофан",
  *     version="1.0",
- *     @OA\Contact(
- *     name="Nasirov Ismail",
- *     email="isik94@iсloud.com",
+ *     @OA\Contact(name="Nasirov Ismail", email="isik94@iсloud.com")
+ * )
+ *
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      type="http",
+ *      description="Авторизация по JWT обязательна, accessToken время жизни токена 5 минут. После истечения времени нужно запросить новый accessTokenс помощью refreshToken",
+ *      name="Bearer Authentication",
+ *      in="header",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
  *  )
- * )
- * @OA\Components(
- *     @OA\SecurityScheme(
- *         securityScheme="bearerAuth",
- *         type="http",
- *         scheme="bearer",
- *     ),
- *     @OA\Attachable
- * )
+ *
  * @OA\Server(
  *     url="http://kinofan.api/v1",
  *     description="API server"

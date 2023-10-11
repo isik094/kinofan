@@ -2,9 +2,19 @@
 
 namespace common\models;
 
-use Yii;
+use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Schema(
+ *    schema="CinemaFacts",
+ *    type="object",
+ *     @OA\Property(property="id", type="integer", example="1", description="ID факта"),
+ *     @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *     @OA\Property(property="text", type="string", example="Текст факта", description="Текст или ошибка фильма"),
+ *     @OA\Property(property="type", type="string", example="fact", description="Обозночение факта или ошибки", enum={"fact", "blooper"}),
+ *     @OA\Property(property="spoiler", type="integer", example="fact", description="Наличие спойлера", enum={"0", "1"}),
+ * )
+ *
  * This is the model class for table "cinema_facts".
  *
  * @property int $id

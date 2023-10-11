@@ -3,11 +3,19 @@
 namespace api\modules\v1\models;
 
 use Yii;
-use common\base\Model;
-use common\models\ConfirmEmailCode;
-use common\models\User;
 use api\components\Code;
+use common\base\Model;
+use common\models\User;
+use common\models\ConfirmEmailCode;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *       schema="SendCodeForm",
+ *       required={"email"},
+ *        @OA\Property(property="email", type="string", example="isik@yandex.ru", description="Электронная почта пользователя"),
+ * )
+ */
 class SendCodeForm extends Model
 {
     /**

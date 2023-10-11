@@ -2,7 +2,17 @@
 
 namespace common\models;
 
+use OpenApi\Annotations as OA;
+
 /**
+ * @OA\Schema(
+ *      schema="CinemaSelection",
+ *      type="object",
+ *       @OA\Property(property="id", type="integer", example="1", description="ID связки кино и подборки"),
+ *       @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино"),
+ *       @OA\Property(property="selection_id", type="integer", example="2", description="ID подборки"),
+ * )
+ *
  * This is the model class for table "cinema_selection".
  *
  * @property int $id

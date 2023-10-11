@@ -4,9 +4,16 @@ namespace api\modules\v1\models;
 
 use common\models\Favorites;
 use common\models\User;
+use OpenApi\Annotations as OA;
 use yii\base\Model;
 use common\models\Cinema;
 
+/**
+ * @OA\Schema(
+ *       schema="AddFavoritesForm",
+ *       @OA\Property(property="cinema_id", type="integer", example="1", description="ID кино")
+ *  )
+ */
 class AddFavoritesForm extends Model
 {
     /**

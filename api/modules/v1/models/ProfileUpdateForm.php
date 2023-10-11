@@ -3,9 +3,21 @@
 namespace api\modules\v1\models;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use common\base\Model;
 use common\models\User;
 
+/**
+ * @OA\Schema(
+ *        schema="ProfileUpdateForm",
+ *         @OA\Property(property="surname", type="string", example="Иванов", description="Фамилия"),
+ *         @OA\Property(property="name", type="string", example="Иван", description="Имя"),
+ *         @OA\Property(property="patronymic", type="string", example="Иванович", description="Отчество"),
+ *         @OA\Property(property="vk", type="string", example="1234", description="ID ВК"),
+ *         @OA\Property(property="telegram", type="string", example="@ivan", description="Никнейм телеграмм"),
+ *         @OA\Property(property="email", type="string", example="isik@yandex.ru", description="Электронная почта пользователя"),
+ * )
+ */
 class ProfileUpdateForm extends Model
 {
     /**

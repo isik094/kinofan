@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use Yii;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(

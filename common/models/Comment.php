@@ -2,7 +2,21 @@
 
 namespace common\models;
 
+use OpenApi\Annotations as OA;
+
 /**
+ * @OA\Schema(
+ *       schema="Comment",
+ *       type="object",
+ *        @OA\Property(property="id", type="integer", example="1", description="ID комментария"),
+ *        @OA\Property(property="text", type="string", example="Крутой фильм", description="Текст комментария"),
+ *        @OA\Property(property="created_at", type="integer", example="1696849581", description="Время создания в unixtime"),
+ *        @OA\Property(property="name", type="string", example="Иван", description="Имя пользователя оставившего комментарий"),
+ *        @OA\Property(property="surname", type="string", example="Иванов", description="Фамилия пользователя оставившего комментарий"),
+ *        @OA\Property(property="children", type="array", @OA\Items(type="object")
+ *      )
+ * )
+ *
  * This is the model class for table "comment".
  *
  * @property int $id
@@ -22,13 +36,13 @@ class Comment extends \common\base\ActiveRecord
     public const UNDER_CONSIDERATION = 0;
     /** @var int Одобрен */
     public const APPROVED = 1;
-    /** @var int  */
+    /** @var int Значение комментария по умолчанию главного */
     public const DEFAULT_PARENT_ID = 0;
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'comment';
     }
@@ -36,7 +50,7 @@ class Comment extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['cinema_id', 'user_id', 'parent_id', 'created_at', 'status'], 'integer'],
@@ -51,7 +65,7 @@ class Comment extends \common\base\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -69,7 +83,7 @@ class Comment extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCinema()
+    public function getCinema(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Cinema::className(), ['id' => 'cinema_id']);
     }
@@ -79,7 +93,7 @@ class Comment extends \common\base\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): \yii\db\ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }

@@ -7,7 +7,14 @@ use common\models\Cinema;
 use common\models\CinemaWatched;
 use common\models\ErrorLog;
 use common\models\User;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *       schema="CinemaWatchedForm",
+ *       @OA\Property(property="cinema_ids", type="array", @OA\Items(anyOf={@OA\Schema(type="integer")}))
+ *  )
+ */
 class CinemaWatchedForm extends Model
 {
     /**

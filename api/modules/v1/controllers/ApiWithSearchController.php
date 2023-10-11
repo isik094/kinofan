@@ -5,7 +5,6 @@ namespace api\modules\v1\controllers;
 use api\components\ApiResponse;
 use api\components\ApiSearch;
 use common\base\ActiveRecord;
-use Yii;
 use yii\db\ActiveQuery;
 use yii\web\BadRequestHttpException;
 

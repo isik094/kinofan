@@ -3,11 +3,21 @@
 namespace api\modules\v1\models;
 
 use Yii;
+use OpenApi\Annotations as OA;
 use common\models\ConfirmEmailCode;
 use common\models\User;
 use common\base\Model;
 use api\components\Code;
 
+/**
+ * @OA\Schema(
+ *        schema="UpdatePasswordForm",
+ *        required={"email", "code", "password"},
+ *         @OA\Property(property="email", type="string", example="isik@yandex.ru", description="Электронная почта пользователя"),
+ *         @OA\Property(property="code", type="string", example="FTY359", description="Уникальный сгенерированный код с электронной почты"),
+ *         @OA\Property(property="password", type="string", example="QWERT1234", description="Новый пароль пользователя"),
+ * )
+ */
 class UpdatePasswordForm extends Model
 {
     /**
