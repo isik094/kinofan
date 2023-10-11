@@ -10,7 +10,7 @@ use OpenApi\Generator;
 
 class SwaggerController extends Controller
 {
-    public const API_DECLARATION = '@api/modules/v1/controllers';
+    public const API_DECLARATION = '@api/modules/v1';
     public const SCAN_DIRECTORY = '@common/models';
     public const COMPONENTS_DIRECTORY = '@common/components';
     public const FRONTEND_MODELS = '@frontend/models';
